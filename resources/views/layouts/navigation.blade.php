@@ -1,0 +1,74 @@
+<div x-data="{ mobileOpen: false }" class="left-[-4px] w-full md:max-w-7xl md:mx-auto px-4 sm:px-6 lg:px-8 flex justify-between md:justify-normal">
+    <!-- Logo -->
+    <a href="{{ route('home') }}" class="place-self-center">
+        <i class="fa-solid fa-clapperboard fa-2xl" title="Movie Inventory"></i>
+    </a>
+    <!-- Mobile menu button -->
+    <button @click="mobileOpen = ! mobileOpen" class="h-10 w-10 md:hidden p-2 text-gray-700 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-dropdown" aria-expanded="false">
+        <span class="sr-only">Open main menu</span>
+        <i :class="{ 'fa-xmark': mobileOpen, 'fa-bars': !mobileOpen }" class="fa-solid fa-xl"></i>
+    </button>
+    <div :class="{ 'block': mobileOpen, 'hidden': !mobileOpen }" class="md:z-10 absolute top-full left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:w-full px-2 rounded-b-lg md:rounded-none drop-shadow-lg md:shadow-none bg-gray-900 md:bg-transparent divide-y-2 divide-gray-700 md:divide-none">
+        <!-- Primary Navigation Menu -->
+        <x-nav aria-label="main" class="md:grow-1 md:space-x-4 md:flex">
+            <x-nav-link href="/" :active="Route::is('home')">Home</x-nav-link>
+            <x-dropdown align="left">
+                <x-slot:trigger>
+                    <x-dropdown-trigger :active="Route::is('movies.*')">Movies</x-dropdown-trigger>
+                </x-slot:trigger>
+                <x-slot:content>
+                    <x-nav-alt-link href="/movies" :active="Route::is('movies.index')">All</x-nav-alt-link>
+                    <x-nav-alt-link href="/movies/purchased" :active="Route::is('movies.purchased')">Purchased</x-nav-alt-link>
+                    <x-nav-alt-link href="/movies/wishlist" :active="Route::is('movies.wishlist')">Wishlist</x-nav-alt-link>
+                    <x-nav-alt-link href="/movieCollection" :active="Route::is('movieCollection.index')">Collections</x-nav-alt-link>
+                </x-slot:content>
+            </x-dropdown>
+            <x-dropdown align="left">
+                <x-slot:trigger>
+                    <x-dropdown-trigger :active="Route::is('series.*')">Series</x-dropdown-trigger>
+                </x-slot:trigger>
+                <x-slot:content>
+                    <x-nav-alt-link href="/series" :active="Route::is('series.index')">All</x-nav-alt-link>
+                    <x-nav-alt-link href="/series/create" :active="Route::is('series.create')">Add</x-nav-alt-link>
+                </x-slot:content>
+            </x-dropdown>
+            <x-nav-link href="/about" :active="Route::is('about')">About</x-nav-link>
+            <x-nav-link href="/contact" :active="Route::is('contact')">Contact</x-nav-link>
+        </x-nav>
+        <!-- Settings Dropdown -->
+        <x-nav aria-label="profile" class="grow-0 flex flex-row space-x-4 justify-end">
+            @auth
+                <!-- Profile dropdown -->
+                <x-dropdown align="right" width="48">
+                    <x-slot name="trigger">
+                        <button
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md hover:text-gray-700 bg-gray-800 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                            aria-expanded="false" aria-haspopup="true">
+                            <div class="ms-1">
+                                <img class="size-8 rounded-full"
+                                    src="https://gravatar.com/avatar/{{  hash( 'sha256', Auth::user()->email ) }}"
+                                    alt="">
+                            </div>
+                        </button>
+                    </x-slot>
+                    <x-slot name="content">
+                        <x-dropdown-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Dashboard</x-dropdown-link>
+                        <x-dropdown-link :href="route('profile.edit')">Profile</x-dropdown-link>
+                        <!-- Authentication -->
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <x-dropdown-link :href="route('logout')"
+                                onclick="event.preventDefault();
+                            this.closest('form').submit();">Log Out</x-dropdown-link>
+                        </form>
+                    </x-slot>
+                </x-dropdown>
+            @else
+                <x-nav-link :href="route('login')" :active="request()->routeIs('login')">Log in</x-nav-link>
+                @if (Route::has('register'))
+                    <x-nav-link :href="route('register')" :active="request()->routeIs('register')">Register</x-nav-link>
+                @endif
+            @endauth
+        </x-nav>
+    </div>
+</div>

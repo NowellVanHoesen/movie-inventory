@@ -1,0 +1,4 @@
+@import '~fontawesome/css/fontawesome.min.css';
+@import '~fontawesome/css/solid.min.css';
+@import "tailwindcss";
+@source "../views";

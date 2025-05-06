@@ -1,0 +1,599 @@
+{
+  "backdrop_path": "/hP4PMoQfaofHbLDPIAXrirR7wSF.jpg",
+  "genres": [
+    {
+      "id": 35
+    },
+    {
+      "id": 10749
+    }
+  ],
+  "homepage": "",
+  "id": 9602,
+  "imdb_id": "tt0094898",
+  "original_title": "Coming to America",
+  "overview": "An African prince decides it’s time for him to find a princess... and his mission leads him and his most loyal friend to Queens, New York. In disguise as an impoverished immigrant, the pampered prince quickly finds himself a new job, new friends, new digs, new enemies and lots of trouble.",
+  "poster_path": "/djRAvxyvvN2yqlJKDbT3uy4vOBw.jpg",
+  "release_date": "1988-06-29",
+  "runtime": 117,
+  "tagline": "This summer, Prince Akeem discovers America.",
+  "title": "Coming to America",
+  "credits": {
+    "cast": [
+      {
+        "id": 776,
+        "name": "Eddie Murphy",
+        "original_name": "Eddie Murphy",
+        "profile_path": "/qgjMfefsKwSYsyCaIX46uyOXIpy.jpg",
+        "character": "Prince Akeem / Clarence / Randy Watson / Saul"
+      },
+      {
+        "id": 44994,
+        "name": "Arsenio Hall",
+        "original_name": "Arsenio Hall",
+        "profile_path": "/8oqVGysLVXkWlTOWIWkWIbL4i2q.jpg",
+        "character": "Semmi / Extremely Ugly Girl / Morris / Reverend Brown"
+      },
+      {
+        "id": 155783,
+        "name": "Shari Headley",
+        "original_name": "Shari Headley",
+        "profile_path": "/hPsuuE1C7FSNmjHUQ9Mj3YEZfSk.jpg",
+        "character": "Lisa McDowell"
+      },
+      {
+        "id": 22384,
+        "name": "John Amos",
+        "original_name": "John Amos",
+        "profile_path": "/b2zYGkMG28wYDHC9CunfYAeoeMQ.jpg",
+        "character": "Cleo McDowell"
+      },
+      {
+        "id": 15152,
+        "name": "James Earl Jones",
+        "original_name": "James Earl Jones",
+        "profile_path": "/oqMPIsXrl9SZkRfIKN08eFROmH6.jpg",
+        "character": "King Jaffe Joffer"
+      },
+      {
+        "id": 58074,
+        "name": "Madge Sinclair",
+        "original_name": "Madge Sinclair",
+        "profile_path": "/oWYmecHCjrA14IWNyhIcRGu5RAi.jpg",
+        "character": "Queen Aoleon"
+      },
+      {
+        "id": 23628,
+        "name": "Eriq La Salle",
+        "original_name": "Eriq La Salle",
+        "profile_path": "/5tV56htJbF33uc1rOmsOxXFO808.jpg",
+        "character": "Darryl Jenks"
+      },
+      {
+        "id": 167736,
+        "name": "Allison Dean",
+        "original_name": "Allison Dean",
+        "profile_path": "/tpdKWbK5BxTyZZHMbIbTM5G62VQ.jpg",
+        "character": "Patrice McDowell"
+      },
+      {
+        "id": 13936,
+        "name": "Frankie Faison",
+        "original_name": "Frankie Faison",
+        "profile_path": "/bNHMANGaSqcki768UVAdYiYdawZ.jpg",
+        "character": "Landlord"
+      },
+      {
+        "id": 44795,
+        "name": "Louie Anderson",
+        "original_name": "Louie Anderson",
+        "profile_path": "/6yxIwla3vi06Hd3l16S5kaXgSI0.jpg",
+        "character": "Maurice"
+      },
+      {
+        "id": 4693,
+        "name": "Paul Bates",
+        "original_name": "Paul Bates",
+        "profile_path": "/cvHI8cb5vKjqaigqwljpsERsv8R.jpg",
+        "character": "Oha"
+      },
+      {
+        "id": 2231,
+        "name": "Samuel L. Jackson",
+        "original_name": "Samuel L. Jackson",
+        "profile_path": "/AiAYAqwpM5xmiFrAIeQvUXDCVvo.jpg",
+        "character": "Hold-Up Man"
+      },
+      {
+        "id": 100653,
+        "name": "Vanessa Bell Calloway",
+        "original_name": "Vanessa Bell Calloway",
+        "profile_path": "/6gJua6IKvhGrCTU1UzgRhOM9oyl.jpg",
+        "character": "Imani Izzi"
+      },
+      {
+        "id": 2067,
+        "name": "Calvin Lockhart",
+        "original_name": "Calvin Lockhart",
+        "profile_path": "/m5DyAG5LtUVgLgtXNiFpK2Naftc.jpg",
+        "character": "Colonel Izzi"
+      },
+      {
+        "id": 6198,
+        "name": "Vondie Curtis-Hall",
+        "original_name": "Vondie Curtis-Hall",
+        "profile_path": "/eJbwjnUB3VGGioAtQTmiYI4k7lH.jpg",
+        "character": "Basketball Game Vendor"
+      },
+      {
+        "id": 9777,
+        "name": "Cuba Gooding Jr.",
+        "original_name": "Cuba Gooding Jr.",
+        "profile_path": "/2JguzbpOXoTGzSmLbWFlulKyyAe.jpg",
+        "character": "Boy Getting Haircut"
+      },
+      {
+        "id": 2794211,
+        "name": "Feather",
+        "original_name": "Feather",
+        "profile_path": null,
+        "character": "Rose Bearer #1"
+      },
+      {
+        "id": 1424554,
+        "name": "Stephanie Simon",
+        "original_name": "Stephanie Simon",
+        "profile_path": null,
+        "character": "Rose Bearer #2"
+      },
+      {
+        "id": 31647,
+        "name": "Garcelle Beauvais",
+        "original_name": "Garcelle Beauvais",
+        "profile_path": "/nzqrGejC3bQPKDwWLB0HrZJbAf9.jpg",
+        "character": "Rose Bearer #3"
+      },
+      {
+        "id": 31839,
+        "name": "Ruben Santiago-Hudson",
+        "original_name": "Ruben Santiago-Hudson",
+        "profile_path": "/tNuO8MO2jFwKo1VlQiq0tLH2rCz.jpg",
+        "character": "Street Hustler"
+      },
+      {
+        "id": 192602,
+        "name": "Birdie M. Hale",
+        "original_name": "Birdie M. Hale",
+        "profile_path": null,
+        "character": "Elderly Passenger"
+      },
+      {
+        "id": 108188,
+        "name": "Clyde Jones",
+        "original_name": "Clyde Jones",
+        "profile_path": "/2cBB2KLk9C5IBPfEleYOLDpPukK.jpg",
+        "character": "Soul Glo Man"
+      },
+      {
+        "id": 12936,
+        "name": "Jim Abrahams",
+        "original_name": "Jim Abrahams",
+        "profile_path": "/22B24mvWEkorhoxEOPCxNcYdcTX.jpg",
+        "character": "Face on Cutting Room Floor"
+      },
+      {
+        "id": 172103,
+        "name": "Victoria Dillard",
+        "original_name": "Victoria Dillard",
+        "profile_path": "/mjkQ5ChfjaLi5mNGAtt2DBwLRx1.jpg",
+        "character": "Bather / Dancer"
+      },
+      {
+        "id": 2794213,
+        "name": "Felicia Taylor",
+        "original_name": "Felicia Taylor",
+        "profile_path": null,
+        "character": "Bather"
+      },
+      {
+        "id": 1632692,
+        "name": "Midori",
+        "original_name": "Midori",
+        "profile_path": "/r66X36FRIAC5b1SpBB8mhYGLko1.jpg",
+        "character": "Bather"
+      },
+      {
+        "id": 2794217,
+        "name": "Sheila Johnson",
+        "original_name": "Sheila Johnson",
+        "profile_path": null,
+        "character": "Lady-in-Waiting"
+      },
+      {
+        "id": 21199,
+        "name": "Jake Steinfeld",
+        "original_name": "Jake Steinfeld",
+        "profile_path": "/e3kTqdVzr1APOGn9kONDHUihDaY.jpg",
+        "character": "Cab Driver"
+      },
+      {
+        "id": 214291,
+        "name": "Clint Smith",
+        "original_name": "Clint Smith",
+        "profile_path": null,
+        "character": "Sweets"
+      },
+      {
+        "id": 2006463,
+        "name": "Uncle Ray Murphy",
+        "original_name": "Uncle Ray Murphy",
+        "profile_path": null,
+        "character": "Stu"
+      },
+      {
+        "id": 2794219,
+        "name": "Paulette Banoza",
+        "original_name": "Paulette Banoza",
+        "profile_path": null,
+        "character": "Soul Glo Woman"
+      },
+      {
+        "id": 217219,
+        "name": "Patricia Matthews",
+        "original_name": "Patricia Matthews",
+        "profile_path": "/hvWCS6h51ksA7O0bdvmwfVyHbC4.jpg",
+        "character": "Devil Woman"
+      },
+      {
+        "id": 1228029,
+        "name": "Mary Bond Davis",
+        "original_name": "Mary Bond Davis",
+        "profile_path": "/34mgH8UHOcpPm0qKigFwaIjtS3F.jpg",
+        "character": "Big Stank Woman"
+      },
+      {
+        "id": 2794232,
+        "name": "Carla Earle",
+        "original_name": "Carla Earle",
+        "profile_path": null,
+        "character": "Tough Girl"
+      },
+      {
+        "id": 193393,
+        "name": "Karen Owens",
+        "original_name": "Karen Owens",
+        "profile_path": null,
+        "character": "Ex-Siamese Twin / Dancer"
+      },
+      {
+        "id": 439999,
+        "name": "Sharon Owens",
+        "original_name": "Sharon Owens",
+        "profile_path": null,
+        "character": "Ex-Siamese Twin / Dancer"
+      },
+      {
+        "id": 2794235,
+        "name": "Lisa Gumora",
+        "original_name": "Lisa Gumora",
+        "profile_path": null,
+        "character": "Kinky Girl"
+      },
+      {
+        "id": 2794236,
+        "name": "June Boykins",
+        "original_name": "June Boykins",
+        "profile_path": null,
+        "character": "Strange Woman"
+      },
+      {
+        "id": 2794237,
+        "name": "Janette Colon",
+        "original_name": "Janette Colon",
+        "profile_path": null,
+        "character": "Fresh Peaches"
+      },
+      {
+        "id": 2794238,
+        "name": "Vanessa Colon",
+        "original_name": "Vanessa Colon",
+        "profile_path": null,
+        "character": "Sugar Cube"
+      },
+      {
+        "id": 179982,
+        "name": "Monique Mannen",
+        "original_name": "Monique Mannen",
+        "profile_path": null,
+        "character": "Boring Girl / Dancer"
+      },
+      {
+        "id": 2794239,
+        "name": "Mindora Mimms",
+        "original_name": "Mindora Mimms",
+        "profile_path": null,
+        "character": "Awareness Woman"
+      },
+      {
+        "id": 2794241,
+        "name": "Cynthia Finkley",
+        "original_name": "Cynthia Finkley",
+        "profile_path": null,
+        "character": "Awareness Woman"
+      },
+      {
+        "id": 1563479,
+        "name": "David Sosna",
+        "original_name": "David Sosna",
+        "profile_path": null,
+        "character": "Cartier Delivery Man"
+      },
+      {
+        "id": 113731,
+        "name": "Arthur Adams",
+        "original_name": "Arthur Adams",
+        "profile_path": null,
+        "character": "Mr. Jenks"
+      },
+      {
+        "id": 2794244,
+        "name": "Loni Kaye Harkless",
+        "original_name": "Loni Kaye Harkless",
+        "profile_path": null,
+        "character": "Mrs. Jenks"
+      },
+      {
+        "id": 154041,
+        "name": "Montrose Hagins",
+        "original_name": "Montrose Hagins",
+        "profile_path": null,
+        "character": "Grandma Jenks"
+      },
+      {
+        "id": 2794245,
+        "name": "Tonja Rivers",
+        "original_name": "Tonja Rivers",
+        "profile_path": null,
+        "character": "Party Guest"
+      },
+      {
+        "id": 1208,
+        "name": "Ralph Bellamy",
+        "original_name": "Ralph Bellamy",
+        "profile_path": "/ubQCzzzOOeb1rsRCXjkSb7s08Cw.jpg",
+        "character": "Randolph Duke / Homeless Man #1 (uncredited)"
+      },
+      {
+        "id": 18156,
+        "name": "Don Ameche",
+        "original_name": "Don Ameche",
+        "profile_path": "/p2Q0LE3SECDvb5W2yAvvfRtzIyo.jpg",
+        "character": "Mortimer Duke / Homeless Man #2 (uncredited)"
+      },
+      {
+        "id": 1318592,
+        "name": "Karl Denson",
+        "original_name": "Karl Denson",
+        "profile_path": null,
+        "character": "'Sexual Chocolate' Saxophonist (uncredited)"
+      },
+      {
+        "id": 153926,
+        "name": "Elaine Kagan",
+        "original_name": "Elaine Kagan",
+        "profile_path": "/4gsYeQLOw48pAE3VNXpR3NTxcep.jpg",
+        "character": "Telegraph Lady (uncredited)"
+      },
+      {
+        "id": 17630,
+        "name": "Michael Tadross",
+        "original_name": "Michael Tadross",
+        "profile_path": "/7lEZHHqKnowFWEXsTlmX2emnvdW.jpg",
+        "character": "Taxi Driver (uncredited)"
+      },
+      {
+        "id": 15536,
+        "name": "Steve White",
+        "original_name": "Steve White",
+        "profile_path": "/sxOUPWrGPWszcAe6h5OVIzDi3mL.jpg",
+        "character": "Subway Guy (uncredited)"
+      },
+      {
+        "id": 1276096,
+        "name": "Helen Hanft",
+        "original_name": "Helen Hanft",
+        "profile_path": "/vnSXrgvl4XLq6PLT1Y1m4Wbr0EB.jpg",
+        "character": "Subway Lady (uncredited)"
+      },
+      {
+        "id": 1508559,
+        "name": "Leah Aldridge",
+        "original_name": "Leah Aldridge",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 1748052,
+        "name": "Aurorah Allain",
+        "original_name": "Aurorah Allain",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 1956367,
+        "name": "Paula Brown",
+        "original_name": "Paula Brown",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 1439543,
+        "name": "Dwayne Chattman",
+        "original_name": "Dwayne Chattman",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 2666301,
+        "name": "Stephanie Clark",
+        "original_name": "Stephanie Clark",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 2794247,
+        "name": "Robin L. Dimension",
+        "original_name": "Robin L. Dimension",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 208710,
+        "name": "Shaun Earl",
+        "original_name": "Shaun Earl",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 2794248,
+        "name": "Eric L. Ellis",
+        "original_name": "Eric L. Ellis",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 1748115,
+        "name": "Sharon Ferrol-Young",
+        "original_name": "Sharon Ferrol-Young",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 1506263,
+        "name": "Eric D. Henderson",
+        "original_name": "Eric D. Henderson",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 2794250,
+        "name": "Gigi Hunter",
+        "original_name": "Gigi Hunter",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 1513861,
+        "name": "Debra Johnson",
+        "original_name": "Debra Johnson",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 1656667,
+        "name": "Tanya Lynne Lee",
+        "original_name": "Tanya Lynne Lee",
+        "profile_path": "/m1xhYeMh68FVEBVSEU07NhQMdiy.jpg",
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 2154973,
+        "name": "Jimmy Locust",
+        "original_name": "Jimmy Locust",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 1029935,
+        "name": "Donna M. Perkins",
+        "original_name": "Donna M. Perkins",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 2794253,
+        "name": "Dionne Rockhold",
+        "original_name": "Dionne Rockhold",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 2794254,
+        "name": "Gina Consuela Rose",
+        "original_name": "Gina Consuela Rose",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 2794255,
+        "name": "Randolph Scott",
+        "original_name": "Randolph Scott",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 2794256,
+        "name": "Robbin Tasha-Ford",
+        "original_name": "Robbin Tasha-Ford",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 1379081,
+        "name": "Jerald Vincent",
+        "original_name": "Jerald Vincent",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 2656111,
+        "name": "Eyan Williams",
+        "original_name": "Eyan Williams",
+        "profile_path": null,
+        "character": "Dancer (uncredited)"
+      },
+      {
+        "id": 203757,
+        "name": "Roy Milton Davis",
+        "original_name": "Roy Milton Davis",
+        "profile_path": null,
+        "character": "Homeless Man Around Garbage Can Bonfire (uncredited)"
+      },
+      {
+        "id": 53234,
+        "name": "Dorian DeMichele",
+        "original_name": "Dorian DeMichele",
+        "profile_path": null,
+        "character": "Viola (uncredited)"
+      },
+      {
+        "id": 1486413,
+        "name": "Alison Gordy",
+        "original_name": "Alison Gordy",
+        "profile_path": null,
+        "character": "Blond Hooker / Bag Lady in Fast Food Place (uncredited)"
+      },
+      {
+        "id": 2915734,
+        "name": "Mary Young",
+        "original_name": "Mary Young",
+        "profile_path": null,
+        "character": "Stuck-Up Girl (uncredited)"
+      },
+      {
+        "id": 10051,
+        "name": "Tobe Hooper",
+        "original_name": "Tobe Hooper",
+        "profile_path": "/rE5TqnAvgaKjWwWZ9AsoU9KcUGU.jpg",
+        "character": "Party Guest (uncredited)"
+      },
+      {
+        "id": 1311895,
+        "name": "Raymond D. Turner",
+        "original_name": "Raymond D. Turner",
+        "profile_path": null,
+        "character": "T-Shirt Hawker"
+      }
+    ]
+  }
+}

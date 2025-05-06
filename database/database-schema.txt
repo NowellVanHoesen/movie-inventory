@@ -1,0 +1,94 @@
+database schema
+
+movie (cfm)
+	* id - integer
+	U imdb_id - string(10)
+	  title - string
+	  original_title
+	  tagline - string
+	  overview - text
+	  release_date - date
+	  poster_path - string
+	  backdrop_path - string
+	  certification_id - integer
+	  runtime - integer
+
+genres
+	* id - integer
+	U name - string
+
+movie_genre
+	* genres_id - integer
+	* movie_id - integer
+
+series_genre
+	* series_id - integer
+	* genres_id - integer
+
+cast_members
+	* id - integer
+	U imdb_id - string(10)
+	  name - string
+	  original_name - string
+	  also_known_as - string
+	  profile_path - string
+
+cast
+	* cast_member_id - integer
+	* type_id - integer
+	* type (movie, series, season, episode) - enum
+	  character - string
+
+series
+	* id - integer
+	  name - string
+	  original_name - string
+	  overview - text
+	  tagline - string
+	  homepage - string
+	  certification_id - integer
+	  poster_path - string
+	  backdrop_path - string
+	  first_air_date - date
+
+seasons
+	* id - integer
+	U _id - string
+	  name - string
+	  air_date - date
+	  overview - text
+	  poster_path - string
+	  season_number - integer
+	  series_id - integer
+
+episodes
+	* id - integer
+	  name - string
+	  air_date - date
+	  overview - text
+	  runtime - integer
+	  still_path - string
+	  episode_number - integer
+	  season_id - integer
+
+certifications
+	* id - integer
+	U name - string
+	  meaning - text
+
+media_types
+	* id - integer
+	  parent_id - integer
+	  name - string
+
+movie_media_type
+	* movie_id - integer
+	* media_type_id - integer
+
+season_media_type
+	* season_id - integer
+	* media_type_id - integer
+
+series_media_type
+	* series_id - integer
+	* media_type_id - integer

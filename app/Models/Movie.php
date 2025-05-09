@@ -57,7 +57,7 @@ class Movie extends Model
         return $this->belongsToMany(CastMember::class, foreignPivotKey: 'movie_id')->withPivot('character', 'order')->orderByPivot('order', 'asc');
     }
 
-    public function movie_collection()
+    public function collection()
     {
         return $this->belongsTo(MovieCollection::class);
     }

@@ -2,11 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\CastMember;
-use App\Models\Certification;
-use App\Models\Genre;
-use App\Models\MediaType;
-use App\Models\MovieCollection;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,17 +19,20 @@ class Movie extends Model
     public $timestamps = false;
 
     #[Scope]
-    protected function purchased(Builder $query) {
+    protected function purchased(Builder $query)
+    {
         $query->whereNotNull('purchase_date');
     }
 
     #[Scope]
-    protected function wishlist(Builder $query) {
+    protected function wishlist(Builder $query)
+    {
         $query->whereNull('purchase_date');
     }
 
     #[Scope]
-    protected function search($query, $term) {
+    protected function search($query, $term)
+    {
         $term = "%{$term}%";
         $query->where('title', 'like', $term);
     }
@@ -56,10 +54,11 @@ class Movie extends Model
 
     public function cast_members()
     {
-        return $this->belongsToMany(CastMember::class, foreignPivotKey: "movie_id")->withPivot('character','order')->orderByPivot('order', 'asc');
+        return $this->belongsToMany(CastMember::class, foreignPivotKey: 'movie_id')->withPivot('character', 'order')->orderByPivot('order', 'asc');
     }
 
-    public function movie_collection() {
+    public function movie_collection()
+    {
         return $this->belongsTo(MovieCollection::class);
     }
 }

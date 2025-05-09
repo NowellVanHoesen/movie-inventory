@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Movie;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,7 +10,7 @@ class MediaType extends Model
     /** @use HasFactory<\Database\Factories\MediaTypeFactory> */
     use HasFactory;
 
-    protected $fillable = [ 'name', 'parent_id' ];
+    protected $fillable = ['name', 'parent_id'];
 
     public $timestamps = false;
 
@@ -29,5 +28,4 @@ class MediaType extends Model
     {
         return $this->belongsToMany(Season::class);
     }
-
 }

@@ -22,7 +22,7 @@ class MoviesFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'movie_id' => 'required|integer'
+            'movie_id' => 'required|integer',
         ];
     }
 }

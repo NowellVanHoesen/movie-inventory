@@ -12,7 +12,7 @@ use Illuminate\Support\Arr;
 
 class processMovieCollection implements ShouldQueue
 {
-    use Queueable, InteractsWithTMDB;
+    use InteractsWithTMDB, Queueable;
 
     /**
      * Create a new job instance.
@@ -20,8 +20,7 @@ class processMovieCollection implements ShouldQueue
     public function __construct(
         #[WithoutRelations]
         private int $collection_id
-        )
-    {
+    ) {
         //
     }
 
@@ -30,21 +29,21 @@ class processMovieCollection implements ShouldQueue
      */
     public function handle(): void
     {
-        $collection = $this->getMovieCollection( $this->collection_id );
+        $collection = $this->getMovieCollection($this->collection_id);
 
         $movieCollection = MovieCollection::firstOrCreate(
-            [ 'id' => $collection->id ],
+            ['id' => $collection->id],
             [
                 'name' => $collection->name,
                 'overview' => $collection->overview,
                 'poster_path' => $collection->poster_path ?: '',
-                'backdrop_path' => $collection->backdrop_path ?: ''
+                'backdrop_path' => $collection->backdrop_path ?: '',
             ],
         );
 
         $movie_ids = Arr::pluck($collection->parts, 'id');
 
-        Movie::whereIn( 'id', $movie_ids )
-            ->update([ 'collection_id' => $movieCollection->id ]);
+        Movie::whereIn('id', $movie_ids)
+            ->update(['collection_id' => $movieCollection->id]);
     }
 }

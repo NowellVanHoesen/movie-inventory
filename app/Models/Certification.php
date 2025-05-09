@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Movie;
-use App\Models\Series;
 use Illuminate\Database\Eloquent\Model;
 
 class Certification extends Model

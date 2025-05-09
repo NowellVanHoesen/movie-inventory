@@ -2,10 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Episode;
-use App\Models\Movie;
-use App\Models\Season;
-use App\Models\Series;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,7 +10,7 @@ class CastMember extends Model
     /** @use HasFactory<\Database\Factories\CastMemberFactory> */
     use HasFactory;
 
-    protected $fillable = [ 'id', 'name', 'original_name', 'profile_path' ];
+    protected $fillable = ['id', 'name', 'original_name', 'profile_path'];
 
     public $incrementing = false;
 
@@ -22,7 +18,7 @@ class CastMember extends Model
 
     public function movies()
     {
-        return $this->belongsToMany(Movie::class, relatedPivotKey: "movie_id")->withPivot('character');
+        return $this->belongsToMany(Movie::class, relatedPivotKey: 'movie_id')->withPivot('character');
     }
 
     public function series()

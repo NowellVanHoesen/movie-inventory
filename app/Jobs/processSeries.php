@@ -12,7 +12,7 @@ use Illuminate\Foundation\Queue\Queueable;
 
 class processSeries implements ShouldQueue
 {
-    use Queueable, InteractsWithTMDB;
+    use InteractsWithTMDB, Queueable;
 
     protected int $series_id;
 
@@ -25,7 +25,7 @@ class processSeries implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct( array $args )
+    public function __construct(array $args)
     {
         $this->series_id = $args['series_id'];
         $this->media_type = $args['media_type'];
@@ -39,26 +39,26 @@ class processSeries implements ShouldQueue
     public function handle(): void
     {
         // get Series detail
-        $series = Series::firstWhere( 'id', $this->series_id );
+        $series = Series::firstWhere('id', $this->series_id);
 
-        $series_detail = $this->getSeriesDetail( $this->series_id );
+        $series_detail = $this->getSeriesDetail($this->series_id);
 
         // get and attach Series cast members
-        $series_cast = $this->getSeriesCast( $series->id );
+        $series_cast = $this->getSeriesCast($series->id);
 
-        foreach ( $series_cast->cast as $cast_member ) {
-            $member = $this->getCastMember( $cast_member );
+        foreach ($series_cast->cast as $cast_member) {
+            $member = $this->getCastMember($cast_member);
 
-            $series->cast_members()->attach( $cast_member->id, [ 'character' => $cast_member->character, 'order' => $cast_member->order ] );
+            $series->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
 
         // loop over seasons
-        foreach ( $series_detail->seasons as $season ) {
+        foreach ($series_detail->seasons as $season) {
             // get and save season detail - set purchase date for all unless $args[season_number] has list of selected, then only set date on the selected
-            $season_detail = $this->getSeasonDetail( $this->series_id, $season->season_number );
+            $season_detail = $this->getSeasonDetail($this->series_id, $season->season_number);
 
             $season_record = Season::firstOrCreate(
-                [ 'id' => $season->id ],
+                ['id' => $season->id],
                 [
                     '_id' => $season_detail->_id,
                     'series_id' => $this->series_id,
@@ -73,22 +73,22 @@ class processSeries implements ShouldQueue
             );
 
             // get and attach media type(s)
-            if ( ! empty( $this->media_type ) ) {
-                foreach ( $this->media_type as $media_type_id ) {
-                    $season_record->media_types()->attach( $media_type_id );
+            if (! empty($this->media_type)) {
+                foreach ($this->media_type as $media_type_id) {
+                    $season_record->media_types()->attach($media_type_id);
                 }
             }
 
             // get and attach Season cast members
-            $this->processSeasonCastMembers( $season_record );
+            $this->processSeasonCastMembers($season_record);
 
             // loop over episodes
-            foreach ( $season_detail->episodes as $episode ) {
+            foreach ($season_detail->episodes as $episode) {
                 // get and save episode detail
-                $episode_detail = $this->getEpisodeDetail( $this->series_id, $season_record->season_number, $episode->episode_number );
+                $episode_detail = $this->getEpisodeDetail($this->series_id, $season_record->season_number, $episode->episode_number);
 
                 $episode_record = Episode::firstOrCreate(
-                    [ 'id' => $episode_detail->id ],
+                    ['id' => $episode_detail->id],
                     [
                         'imdb_id' => $episode_detail->external_ids->imdb_id ?? null,
                         'name' => $episode_detail->name,
@@ -101,46 +101,49 @@ class processSeries implements ShouldQueue
                     ]
                 );
                 // get and attach guest cast
-                $this->processEpisodeCastMembers( $episode_record, $season_record );
+                $this->processEpisodeCastMembers($episode_record, $season_record);
             }
         }
     }
 
-    private function processSeasonCastMembers( Season $season ) {
-        $cast = $this->getSeasonCast( $season->series_id, $season->season_number );
+    private function processSeasonCastMembers(Season $season)
+    {
+        $cast = $this->getSeasonCast($season->series_id, $season->season_number);
 
-        foreach ( $cast->cast as $cast_member ) {
-            $member = $this->getCastMember( $cast_member );
+        foreach ($cast->cast as $cast_member) {
+            $member = $this->getCastMember($cast_member);
 
-            $season->cast_members()->attach( $cast_member->id, [ 'character' => $cast_member->character, 'order' => $cast_member->order ] );
+            $season->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
     }
 
-    private function processEpisodeCastMembers( Episode $episode, Season $season ) {
-        $cast = $this->getSeasonCast( $this->series_id, $season->season_number, $episode->episode_number );
+    private function processEpisodeCastMembers(Episode $episode, Season $season)
+    {
+        $cast = $this->getSeasonCast($this->series_id, $season->season_number, $episode->episode_number);
 
-        foreach ( $cast->cast as $cast_member ) {
-            $member = $this->getCastMember( $cast_member );
+        foreach ($cast->cast as $cast_member) {
+            $member = $this->getCastMember($cast_member);
 
-            $episode->cast_members()->attach( $cast_member->id, [ 'character' => $cast_member->character, 'order' => $cast_member->order ] );
+            $episode->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
 
-        if ( ! empty( $cast->guest_stars ) ) {
-            foreach ( $cast->guest_stars as $cast_member ) {
-                $member = $this->getCastMember( $cast_member );
+        if (! empty($cast->guest_stars)) {
+            foreach ($cast->guest_stars as $cast_member) {
+                $member = $this->getCastMember($cast_member);
 
-                $episode->cast_members()->attach( $cast_member->id, [ 'character' => $cast_member->character, 'order' => $cast_member->order ] );
+                $episode->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
             }
         }
     }
 
-    private function getCastMember( $cast_member ) {
+    private function getCastMember($cast_member)
+    {
         return CastMember::firstOrCreate(
-            [ 'id' => $cast_member->id ],
+            ['id' => $cast_member->id],
             [
                 'name' => $cast_member->name,
                 'original_name' => $cast_member->original_name,
-                'profile_path' => $cast_member->profile_path ?: ''
+                'profile_path' => $cast_member->profile_path ?: '',
             ]
         );
     }

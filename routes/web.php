@@ -4,7 +4,6 @@ use App\Http\Controllers\MovieCollectionController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeriesController;
-use App\Models\MovieCollection;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');

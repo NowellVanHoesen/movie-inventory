@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Season;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,5 +23,6 @@ class Episode extends Model
 
     public function cast_members()
     {
-        return $this->belongsToMany(CastMember::class, table: "cast_member_episode", foreignPivotKey: "episode_id")->withPivot('character','order')->orderByPivot('order', 'asc');
-    }}
+        return $this->belongsToMany(CastMember::class, table: 'cast_member_episode', foreignPivotKey: 'episode_id')->withPivot('character', 'order')->orderByPivot('order', 'asc');
+    }
+}

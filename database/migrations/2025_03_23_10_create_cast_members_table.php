@@ -1,10 +1,5 @@
 <?php
 
-use App\Models\CastMember;
-use App\Models\Episode;
-use App\Models\Movie;
-use App\Models\Season;
-use App\Models\Series;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -30,7 +25,7 @@ return new class extends Migration
             $table->integer('movie_id')->unsigned();
             $table->string('character');
             $table->integer('order');
-            $table->primary(['cast_member_id','movie_id']);
+            $table->primary(['cast_member_id', 'movie_id']);
             $table->foreign('cast_member_id')->references('id')->on('cast_members')->cascadeOnDelete();
             $table->foreign('movie_id')->references('id')->on('movies')->cascadeOnDelete();
         });
@@ -41,7 +36,7 @@ return new class extends Migration
             $table->integer('series_id')->unsigned();
             $table->string('character');
             $table->integer('order');
-            $table->primary(['cast_member_id','series_id']);
+            $table->primary(['cast_member_id', 'series_id']);
             $table->foreign('cast_member_id')->references('id')->on('cast_members')->cascadeOnDelete();
             $table->foreign('series_id')->references('id')->on('series')->cascadeOnDelete();
         });
@@ -52,7 +47,7 @@ return new class extends Migration
             $table->integer('season_id')->unsigned();
             $table->string('character');
             $table->integer('order');
-            $table->primary(['cast_member_id','season_id']);
+            $table->primary(['cast_member_id', 'season_id']);
             $table->foreign('cast_member_id')->references('id')->on('cast_members')->cascadeOnDelete();
             $table->foreign('season_id')->references('id')->on('seasons')->cascadeOnDelete();
         });
@@ -63,7 +58,7 @@ return new class extends Migration
             $table->integer('episode_id')->unsigned();
             $table->string('character');
             $table->integer('order');
-            $table->primary(['cast_member_id','episode_id']);
+            $table->primary(['cast_member_id', 'episode_id']);
             $table->foreign('cast_member_id')->references('id')->on('cast_members')->cascadeOnDelete();
             $table->foreign('episode_id')->references('id')->on('episodes')->cascadeOnDelete();
         });

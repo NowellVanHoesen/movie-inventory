@@ -10,9 +10,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Attributes\WithoutRelations;
 
-class processMovieCastMembers implements ShouldQueue, ShouldBeUnique
+class processMovieCastMembers implements ShouldBeUnique, ShouldQueue
 {
-    use Queueable, InteractsWithTMDB;
+    use InteractsWithTMDB, Queueable;
 
     /**
      * Create a new job instance.
@@ -20,8 +20,7 @@ class processMovieCastMembers implements ShouldQueue, ShouldBeUnique
     public function __construct(
         #[WithoutRelations]
         private Movie $movie
-        )
-    {
+    ) {
         //
     }
 
@@ -32,19 +31,19 @@ class processMovieCastMembers implements ShouldQueue, ShouldBeUnique
      */
     public function handle(): void
     {
-        $credits = $this->getMovieCast( $this->movie->id );
+        $credits = $this->getMovieCast($this->movie->id);
 
-        foreach ( $credits->cast as $cast_member ) {
+        foreach ($credits->cast as $cast_member) {
             $member = CastMember::firstOrCreate(
-                [ 'id' => $cast_member->id ],
+                ['id' => $cast_member->id],
                 [
                     'name' => $cast_member->name,
                     'original_name' => $cast_member->original_name,
-                    'profile_path' => $cast_member->profile_path ?: ''
+                    'profile_path' => $cast_member->profile_path ?: '',
                 ]
             );
 
-            $this->movie->cast_members()->attach( $cast_member->id, [ 'character' => $cast_member->character, 'order' => $cast_member->order ] );
+            $this->movie->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
     }
 }

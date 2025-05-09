@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Episode;
-use App\Models\MediaType;
-use App\Models\Series;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +20,7 @@ class Season extends Model
         'air_date',
         'purchase_date',
         'season_number',
-        'poster_path'
+        'poster_path',
     ];
 
     public $incrementing = false;
@@ -47,5 +44,6 @@ class Season extends Model
 
     public function cast_members()
     {
-        return $this->belongsToMany(CastMember::class, table: "cast_member_season", foreignPivotKey: "season_id")->withPivot('character','order')->orderByPivot('order', 'asc');
-    }}
+        return $this->belongsToMany(CastMember::class, table: 'cast_member_season', foreignPivotKey: 'season_id')->withPivot('character', 'order')->orderByPivot('order', 'asc');
+    }
+}

@@ -62,13 +62,13 @@ class processSeries implements ShouldQueue
                 [
                     '_id' => $season_detail->_id,
                     'series_id' => $this->series_id,
-                    'imdb_id' => $season_detail->external_ids->imdb_id ?? null,
+                    'imdb_id' => $season_detail->external_ids->imdb_id ?: null,
                     'name' => $season_detail->name,
                     'overview' => $season_detail->overview,
                     'air_date' => $season_detail->air_date,
                     'purchase_date' => $this->purchase_date,
                     'season_number' => $season_detail->season_number,
-                    'poster_path' => $season_detail->poster_path ?? '',
+                    'poster_path' => $season_detail->poster_path ?: null,
                 ]
             );
 
@@ -90,11 +90,11 @@ class processSeries implements ShouldQueue
                 $episode_record = Episode::firstOrCreate(
                     ['id' => $episode_detail->id],
                     [
-                        'imdb_id' => $episode_detail->external_ids->imdb_id ?? null,
+                        'imdb_id' => $episode_detail->external_ids->imdb_id ?: null,
                         'name' => $episode_detail->name,
                         'overview' => $episode_detail->overview,
-                        'still_path' => $episode_detail->still_path ?? '',
-                        'air_date' => $episode_detail->air_date ?? null,
+                        'still_path' => $episode_detail->still_path ?: null,
+                        'air_date' => $episode_detail->air_date ?: null,
                         'runtime' => $episode_detail->runtime,
                         'episode_number' => $episode_detail->episode_number,
                         'season_id' => $season->id,
@@ -143,7 +143,7 @@ class processSeries implements ShouldQueue
             [
                 'name' => $cast_member->name,
                 'original_name' => $cast_member->original_name,
-                'profile_path' => $cast_member->profile_path ?: '',
+                'profile_path' => $cast_member->profile_path ?: null,
             ]
         );
     }

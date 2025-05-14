@@ -36,8 +36,8 @@ class processMovieCollection implements ShouldQueue
             [
                 'name' => $collection->name,
                 'overview' => $collection->overview,
-                'poster_path' => $collection->poster_path ?: '',
-                'backdrop_path' => $collection->backdrop_path ?: '',
+                'poster_path' => $collection->poster_path ?: null,
+                'backdrop_path' => $collection->backdrop_path ?: null,
             ],
         );
 

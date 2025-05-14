@@ -127,8 +127,8 @@ class MoviesController extends Controller
             'overview' => $movie_detail->overview,
             'release_date' => $movie_detail->release_date,
             'purchase_date' => $attributes['purchase_date'],
-            'poster_path' => $movie_detail->poster_path,
-            'backdrop_path' => $movie_detail->backdrop_path ?? '',
+            'poster_path' => $movie_detail->poster_path ?: null,
+            'backdrop_path' => $movie_detail->backdrop_path ?: null,
             'certification_id' => $certification->id,
             'runtime' => $movie_detail->runtime,
         ]);

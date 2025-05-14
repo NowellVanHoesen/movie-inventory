@@ -94,14 +94,14 @@ class SeriesController extends Controller
 
         $series = Series::create([
             'id' => $series_detail->id,
-            'imdb_id' => $series_detail->external_ids->imdb_id ?? null,
+            'imdb_id' => $series_detail->external_ids->imdb_id ?: null,
             'name' => $series_detail->name,
             'original_name' => $series_detail->original_name,
             'tagline' => $series_detail->tagline,
             'overview' => $series_detail->overview,
             'homepage' => $series_detail->homepage,
-            'poster_path' => $series_detail->poster_path ?? '',
-            'backdrop_path' => $series_detail->backdrop_path ?? '',
+            'poster_path' => $series_detail->poster_path ?: null,
+            'backdrop_path' => $series_detail->backdrop_path ?: null,
             'certification_id' => $certification_id->id,
             'first_air_date' => $series_detail->first_air_date,
             'purchase_date' => $attributes['purchase_date'],
@@ -120,8 +120,8 @@ class SeriesController extends Controller
 
         processSeries::dispatch([
             'series_id' => $series->id,
-            'media_type' => $attributes['media_type'] ?? null,
-            'season_numbers' => $attributes['season_numbers'] ?? [],
+            'media_type' => $attributes['media_type'] ?: [],
+            'season_numbers' => $attributes['season_numbers'] ?: [],
             'purchase_date' => $attributes['purchase_date'],
         ]);
 

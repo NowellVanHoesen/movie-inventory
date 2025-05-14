@@ -904,7 +904,7 @@ class MoviesSeeder extends Seeder
                 'release_date' => $movie['release_date'],
                 'poster_path' => $movie['poster_path'],
                 'backdrop_path' => $movie['backdrop_path'],
-                'purchase_date' => $movie['purchase_date'] ?? null,
+                'purchase_date' => $movie['purchase_date'] ?: null,
                 'certification_id' => $movie['certification'],
                 'runtime' => $movie['runtime'],
             ]);

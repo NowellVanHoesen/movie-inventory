@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('id')->unsigned()->primary();
             $table->string('name');
             $table->string('original_name');
-            $table->string('profile_path');
+            $table->string('profile_path')->nullable();
         });
 
         Schema::create('cast_member_movie', function (Blueprint $table) {

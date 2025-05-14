@@ -6,7 +6,7 @@
 
 			<div class="sm:flex sm:flex-col my-4">
 				<p class="text-2xl">{{ $series_detail->name }}: <em class="text-base">{{ $series_detail->tagline }}</em></p>
-				<p class="text-sm">{{ $series_detail->original_name ?? '' }}</p>
+				<p class="text-sm">{{ $series_detail->original_name ?: '' }}</p>
 				<p class="text-sm">{{ implode( ' | ',$series_detail->genres ) }}</p>
 				<p class="space-x-4 text-sm">
 					<span>First Air Date: {{ $series_detail->first_air_date }}</span>

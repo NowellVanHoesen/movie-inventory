@@ -13,7 +13,7 @@
                 <div class="flex items-center">
                     <div>
                         <h1 class="text-3xl font-bold tracking-tight">{{ $heading }}</h1>
-                        <p class="text-sm">{{ $tagline ?: '' }}</p>
+                        <p class="text-sm">{{ $tagline ?? '' }}</p>
                     </div>
                 </div>
                 <div class="place-content-center"><a href="{{ route('series.create') }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 leading-5 rounded-md hover:text-white hover:border-gray-50 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-300 dark:focus:border-blue-700 dark:active:bg-gray-700 dark:active:text-gray-300">Add TV Series</a></div>

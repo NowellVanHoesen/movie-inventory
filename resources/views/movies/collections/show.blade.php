@@ -5,7 +5,11 @@
 	<x-slot:tagline></x-slot:tagline>
 	<div class="bg-white/75 text-gray-900 mt-6 p-6 rounded-xl md:grid md:grid-cols-[300px_1fr] gap-4">
 		<div>
-			<img src={{ "https://image.tmdb.org/t/p/w300/" . $collection->poster_path }} alt="{{ $collection->name }} movie poster">
+			@if ( is_null( $collection->poster_path ) )
+				<img src={{ env('POSTER_PLACEHOLDER') }} class="rounded-xl max-w-full" alt="Movie collection poster placeholder" />
+			@else
+				<img src={{ "https://image.tmdb.org/t/p/w300" . $collection->poster_path }} class="rounded-xl max-w-full" alt="{{ $collection->name }} movie poster" />
+			@endif
 		</div>
 		<div>
 			<p class="mt-4">{{ $collection->overview }}</p>

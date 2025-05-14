@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Models\MediaType;
+
 trait MediaTypeHelpers
 {
     private function get_media_types()

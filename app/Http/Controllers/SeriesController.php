@@ -9,11 +9,12 @@ use App\Models\MediaType;
 use App\Models\Season;
 use App\Models\Series;
 use App\Traits\InteractsWithTMDB;
+use App\Traits\MediaTypeHelpers;
 use Illuminate\Http\Request;
 
 class SeriesController extends Controller
 {
-    use InteractsWithTMDB;
+    use InteractsWithTMDB, MediaTypeHelpers;
 
     /**
      * Display a listing of the resource.
@@ -174,48 +175,5 @@ class SeriesController extends Controller
         $series->media_types_display = $this->get_media_types_display($series->media_types);
 
         return view('series.seasons.episodes.show', ['series' => $series, 'season' => $season, 'episode' => $episode]);
-    }
-
-    private function get_media_types()
-    {
-        $media_types = MediaType::orderBy('parent_id')->orderBy('name')->get();
-
-        $media_types_arr = [];
-
-        foreach ($media_types as $type) {
-            if ($type->parent_id === 0) {
-                $media_types_arr[$type->name] = $media_types->filter(function ($item) use ($type) {
-                    return $type->id === $item->parent_id;
-                })->pluck('name', 'id');
-            }
-        }
-
-        return $media_types_arr;
-
-    }
-
-    private function get_media_types_display($media_types)
-    {
-        $media_types_display = [];
-
-        if (empty($media_types)) {
-            return $media_types_display;
-        }
-
-        foreach ($media_types as $type) {
-            $tmp_media_type_arr = [$type->name];
-
-            $current_parent_id = $type->parent_id;
-
-            while ($current_parent_id !== 0) {
-                $media_type_parent = MediaType::find($current_parent_id);
-                $tmp_media_type_arr = [$media_type_parent->name => $tmp_media_type_arr];
-                $current_parent_id = $media_type_parent->parent_id;
-            }
-
-            $media_types_display = array_merge_recursive($media_types_display, $tmp_media_type_arr);
-        }
-
-        return $media_types_display;
     }
 }

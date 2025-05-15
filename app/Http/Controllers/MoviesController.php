@@ -21,7 +21,7 @@ class MoviesController extends Controller
     public function index()
     {
         return view('movies.index', [
-            'movies' => Movie::orderByDesc('release_date')->simplePaginate(24),
+            'movies' => Movie::orderByDesc('release_date')->orderBy('title')->simplePaginate(24),
         ]);
     }
 
@@ -31,7 +31,7 @@ class MoviesController extends Controller
     public function wishlist()
     {
         return view('movies.index', [
-            'movies' => Movie::wishlist()->orderByDesc('release_date')->simplePaginate(24),
+            'movies' => Movie::wishlist()->orderByDesc('release_date')->orderBy('title')->simplePaginate(24),
         ]);
     }
 
@@ -41,7 +41,7 @@ class MoviesController extends Controller
     public function purchased()
     {
         return view('movies.index', [
-            'movies' => Movie::purchased()->orderByDesc('purchase_date')->simplePaginate(24),
+            'movies' => Movie::purchased()->orderByDesc('purchase_date')->orderByDesc('release_date')->simplePaginate(24),
         ]);
     }
 

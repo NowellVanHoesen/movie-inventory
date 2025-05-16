@@ -10,7 +10,7 @@
 					<x-form-label for="query" :value="__('Title Search')" />
 
 					<div class="mt-2">
-						<x-form-input id="query" name="query" :value="old('query', $search_term ?: '')" required autofocus />
+						<x-form-input id="query" name="query" :value="old('query', $search_term ?? '')" required autofocus />
 						<x-form-error name="query" />
 					</div>
 				</x-form-field>

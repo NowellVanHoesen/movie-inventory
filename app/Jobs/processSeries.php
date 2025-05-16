@@ -62,7 +62,7 @@ class processSeries implements ShouldQueue
                 [
                     '_id' => $season_detail->_id,
                     'series_id' => $this->series_id,
-                    'imdb_id' => $season_detail->external_ids->imdb_id ?: null,
+                    'imdb_id' => $season_detail->external_ids->imdb_id ?? null,
                     'name' => $season_detail->name,
                     'overview' => $season_detail->overview,
                     'air_date' => $season_detail->air_date,
@@ -90,7 +90,7 @@ class processSeries implements ShouldQueue
                 $episode_record = Episode::firstOrCreate(
                     ['id' => $episode_detail->id],
                     [
-                        'imdb_id' => $episode_detail->external_ids->imdb_id ?: null,
+                        'imdb_id' => $episode_detail->external_ids->imdb_id ?? null,
                         'name' => $episode_detail->name,
                         'overview' => $episode_detail->overview,
                         'still_path' => $episode_detail->still_path ?: null,

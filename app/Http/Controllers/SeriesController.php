@@ -121,8 +121,8 @@ class SeriesController extends Controller
 
         processSeries::dispatch([
             'series_id' => $series->id,
-            'media_type' => $attributes['media_type'] ?: [],
-            'season_numbers' => $attributes['season_numbers'] ?: [],
+            'media_type' => $attributes['media_type'] ?? [],
+            'season_numbers' => $attributes['season_numbers'] ?? [],
             'purchase_date' => $attributes['purchase_date'],
         ]);
 

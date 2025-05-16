@@ -39,27 +39,27 @@
         <x-nav aria-label="profile" class="grow-0 flex flex-row space-x-4 justify-end">
             @auth
                 <!-- Profile dropdown -->
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
+                <x-dropdown align="right">
+                    <x-slot:trigger>
                         <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md hover:text-gray-700 bg-gray-800 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                            class="inline-flex items-center px-3 py-2 group"
                             aria-expanded="false" aria-haspopup="true">
                             <div class="ms-1">
-                                <img class="size-8 rounded-full"
+                                <img class="size-10 ring-transparent ring-2 rounded-full group-hover:size-11 group-hover:ring-blue-500 group-focus:ring-blue-500 group-focus:size-11"
                                     src="https://gravatar.com/avatar/{{  hash( 'sha256', Auth::user()->email ) }}"
                                     alt="">
                             </div>
                         </button>
                     </x-slot>
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Dashboard</x-dropdown-link>
-                        <x-dropdown-link :href="route('profile.edit')">Profile</x-dropdown-link>
+                    <x-slot:content>
+                        <x-nav-alt-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Dashboard</x-nav-alt-link>
+                        <x-nav-alt-link :href="route('profile.edit')">Profile</x-nav-alt-link>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <x-dropdown-link :href="route('logout')"
+                            <x-nav-alt-link :href="route('logout')"
                                 onclick="event.preventDefault();
-                            this.closest('form').submit();">Log Out</x-dropdown-link>
+                            this.closest('form').submit();">Log Out</x-nav-alt-link>
                         </form>
                     </x-slot>
                 </x-dropdown>

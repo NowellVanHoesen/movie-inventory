@@ -6,7 +6,7 @@
 	<x-slot:tagline>
 		{{ $movie->tagline }}
 	</x-slot:tagline>
-	<div class="bg-white/75 text-gray-900 mt-6 p-6 rounded-xl md:grid md:grid-cols-[150px_1fr] gap-4">
+	<div class="bg-white/80 text-gray-900 mt-6 p-6 rounded-xl md:grid md:grid-cols-[150px_1fr] gap-4">
 		<div>
 			<img src={{ "https://image.tmdb.org/t/p/w154/" . $movie->poster_path }} alt="{{ $movie->title }} movie poster">
 		</div>

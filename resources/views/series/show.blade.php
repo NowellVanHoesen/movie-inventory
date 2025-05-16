@@ -1,4 +1,4 @@
-<x-series-layout main_bg_style="background-image: linear-gradient( rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url(https://image.tmdb.org/t/p/original{{ $series->backdrop_path }})">
+<x-series-layout main_bg_style="background-image: linear-gradient( rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url(https://image.tmdb.org/t/p/original{{ $series->backdrop_path }})">
 	<x-slot:heading>
 		Series: {{ $series->name }}
 	</x-slot:heading>
@@ -8,7 +8,7 @@
 	<div class="grid grid-cols-[1fr_calc(50%-93px)] gap-4 text-gray-900">
 		@include( 'series.partials.detail' )
 		{{-- @include( 'series.seasons.detail' ) --}}
-		<div class="bg-white/75 mt-6 p-6 rounded-xl row-span-2 mb-auto">
+		<div class="bg-white/80 mt-6 p-6 rounded-xl row-span-2 mb-auto">
 			<x-cast_members :cast="$series->cast_members" />
 		</div>
 		<div class="grid grid-cols-2 gap-4">

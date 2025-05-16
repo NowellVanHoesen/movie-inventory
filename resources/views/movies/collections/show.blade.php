@@ -3,7 +3,7 @@
 		{{ $collection->name }}
 	</x-slot:heading>
 	<x-slot:tagline></x-slot:tagline>
-	<div class="bg-white/75 text-gray-900 mt-6 p-6 rounded-xl md:grid md:grid-cols-[300px_1fr] gap-4">
+	<div class="bg-white/80 text-gray-900 mt-6 p-6 rounded-xl md:grid md:grid-cols-[300px_1fr] gap-4">
 		<div>
 			@if ( is_null( $collection->poster_path ) )
 				<img src={{ env('POSTER_PLACEHOLDER') }} class="rounded-xl max-w-full" alt="Movie collection poster placeholder" />

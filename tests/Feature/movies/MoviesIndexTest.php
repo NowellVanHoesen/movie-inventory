@@ -74,3 +74,19 @@ it('displays only purchased movies in order of purchase date desc then release d
             'Bourne Legacy',
         ]);
 });
+
+it('it does not display an add movie button when logged not in', function() {
+    get(route('movies.index'))
+        ->assertOk()
+        ->assertDontSeeText('Add Movie')
+        ->assertDontSee(route('movies.create'));
+});
+
+it('it displays an add movie button when logged in', function() {
+    $user = loginAsUser();
+
+    get(route('movies.index'))
+        ->assertOk()
+        ->assertSeeText('Add Movie')
+        ->assertSee(route('movies.create'));
+});

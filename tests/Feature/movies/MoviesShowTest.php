@@ -16,6 +16,7 @@ it('displays movie details, and credited cast members', function () {
         ->assertSee([
             $movie->title,
             $movie->tagline,
+            $movie->overview,
             "{$movie->runtime} min."
         ])
         ->assertDontSee([
@@ -31,4 +32,23 @@ it('displays movie details, and credited cast members', function () {
         ]);
 });
 
+it('does not display a link to edit the displayed movie when not logged in', function() {
+    $this->seed(MoviesSeeder::class);
+    $movie = Movie::where('imdb_id', 'tt1194173')->first();
 
+    get(route('movies.show', $movie))
+        ->assertOk()
+        ->assertDontSeeText('Edit')
+        ->assertDontSee(route('movies.edit', $movie));
+});
+
+it('displays a link to edit the displayed movie when logged in', function() {
+    $this->seed(MoviesSeeder::class);
+    $movie = Movie::where('imdb_id', 'tt1194173')->first();
+    $user = loginAsUser();
+
+    get(route('movies.show', $movie))
+        ->assertOk()
+        ->assertSeeText('Edit')
+        ->assertSee(route('movies.edit', $movie));
+});

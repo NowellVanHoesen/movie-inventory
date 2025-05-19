@@ -21,7 +21,9 @@
 						<p><a href="{{ route('movieCollection.show', $movie->collection_id ) }}">{{ $movie->collection->name }}</a></p>
 					@endif
 				</div>
-				<div class="place-content-center"><a href="{{ route('movies.edit', [ 'movie' => $movie->imdb_id ] ) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-300 bg-[#3e4b62] border border-gray-300 leading-5 rounded-md hover:bg-gray-800 hover:text-white focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 transition ease-in-out duration-150">Edit</a></div>
+				@auth
+					<div class="place-content-center"><a href="{{ route('movies.edit', [ 'movie' => $movie->imdb_id ] ) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-300 bg-[#3e4b62] border border-gray-300 leading-5 rounded-md hover:bg-gray-800 hover:text-white focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 transition ease-in-out duration-150">Edit</a></div>
+				@endauth
 			</div>
 			<p class="mt-4">{{ $movie->overview }}</p>
 			<ul class="mt-4 columns-1 gap-4 lg:columns-2">

@@ -13,7 +13,7 @@
 		</div>
 		<div>
 			<p class="mt-4">{{ $collection->overview }}</p>
-			<div class="grid grid-cols-[repeat(auto-fill,minmax(190px,1fr))] gap-3 mt-6">
+			<div class="grid grid-cols-[repeat(auto-fill,minmax(185px,1fr))] gap-3 mt-6 leading-none">
 				@foreach ($collection_details->parts as $movie)
 					@if ($collection->movies->contains($movie->id))
 						@include('movies.partials.select-movie-link', [ 'movie' => $collection->movies->find($movie->id)])

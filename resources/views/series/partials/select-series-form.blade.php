@@ -8,7 +8,7 @@
 		@else
 			<img src={{ "https://image.tmdb.org/t/p/w185" . $series->poster_path }} class="rounded-xl max-w-full" />
 		@endif
-		<div class="text-gray-900 p-2 absolute bottom-0 left-0 right-0 bg-white/60 rounded-b-xl">
+		<div class="text-gray-900 p-2 absolute bottom-0 left-0 right-0 bg-white/75 rounded-b-xl invisible group-hover:visible">
 			<span class="font-bold">{{ $series->name }}</span><br>
 			<div class="text-sm flex flex-row items-center justify-between">
 				<div>{{ $series->first_air_date ? date( 'Y-m-d', strtotime( $series->first_air_date )) : "TBA" }}</div>

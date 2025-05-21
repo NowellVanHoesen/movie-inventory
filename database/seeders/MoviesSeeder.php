@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Certification;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -191,7 +193,7 @@ class MoviesSeeder extends Seeder
             'purchase_date' => '2021-05-25',
             'release_date' => '2007-08-03',
             'release_dates' => [
-                'resultrs' => [
+                'results' => [
                     [
                         'iso_3166_1' => "US",
                         'release_dates' => [
@@ -1071,6 +1073,7 @@ class MoviesSeeder extends Seeder
             'original_title' => "Wicked",
             'overview' => "In the land of Oz, ostracized and misunderstood green-skinned Elphaba is forced to share a room with the popular aristocrat Glinda at Shiz University, and the two's unlikely friendship is tested as they begin to fulfill their respective destinies as Glinda the Good and the Wicked Witch of the West.",
             'poster_path' => "/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg",
+            'runtime' => 162,
             'tagline' => "Everyone deserves the chance to fly.",
             'title' => "Wicked",
             'purchase_date' => '',
@@ -1125,8 +1128,6 @@ class MoviesSeeder extends Seeder
                 ['id' => 1207206, 'name' => "Debbie Kurup", 'original_name' => "Debbie Kurup", 'profile_path' => "/fDHLWFD79AWRetvYJLy0ISBftks.jpg", 'character' => "Winkie Mother", 'order' => 29],
                 ['id' => 4976677, 'name' => "Jasmine McIvor", 'original_name' => "Jasmine McIvor", 'profile_path' => "/ywcVfLrftJU1Fbog9TTONxBMqpr.jpg", 'character' => "Winkie Mother", 'order' => 30],
                 ['id' => 5152474, 'name' => "Hattie Ryan", 'original_name' => "Hattie Ryan", 'profile_path' => "/tZ5jRJDcPjuU1b5uc4SlTBzf3vx.jpg", 'character' => "Curious Munchkin", 'order' => 31],
-                ['id' => 4850927, 'name' => "Kirsty Anne Shaw", 'original_name' => "Kirsty Anne Shaw", 'profile_path' => "/zusnuYManor9tVonmjJ4uyfH2z4.jpg", 'character' => "Skeptical Munchkin", 'order' => 32],
-                ['id' => 4716775, 'name' => "Karis Musongole", 'original_name' => "Karis Musongole", 'profile_path' => "/o7tVy3HlrNGrL3DLfnx13ciCVwd.jpg", 'character' => "Young Elphaba", 'order' => 33],
                 ['id' => 4850927, 'name' => "Kirsty Anne Shaw", 'original_name' => "Kirsty Anne Shaw", 'profile_path' => "/zusnuYManor9tVonmjJ4uyfH2z4.jpg", 'character' => "Skeptical Munchkin", 'order' => 32],
                 ['id' => 4716775, 'name' => "Karis Musongole", 'original_name' => "Karis Musongole", 'profile_path' => "/o7tVy3HlrNGrL3DLfnx13ciCVwd.jpg", 'character' => "Young Elphaba", 'order' => 33],
                 ['id' => 4625103, 'name' => "Cesily Collette Taylor", 'original_name' => "Cesily Collette Taylor", 'profile_path' => "/54a0uoK06bukqkzJo1SlwcPzn3n.jpg", 'character' => "Young Nessarose", 'order' => 34],
@@ -1503,6 +1504,8 @@ class MoviesSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->movies as $movie) {
+            $release_date = $this->get_release_date($movie['release_dates']['results'], $movie['release_date']);
+
             DB::table('movies')->insert([
                 'id' => $movie['id'],
                 'imdb_id' => $movie['imdb_id'],
@@ -1510,11 +1513,12 @@ class MoviesSeeder extends Seeder
                 'original_title' => $movie['original_title'],
                 'tagline' => $movie['tagline'],
                 'overview' => $movie['overview'],
-                'release_date' => $movie['release_date'],
-                'poster_path' => $movie['poster_path'],
-                'backdrop_path' => $movie['backdrop_path'],
+                'release_date' => $release_date['date'],
+                'poster_path' => $movie['poster_path'] ?: null,
+                'backdrop_path' => $movie['backdrop_path'] ?: null,
                 'purchase_date' => $movie['purchase_date'] ?: null,
-                'certification_id' => $movie['certification'],
+                'certification_id' => $release_date['certification_id'],
+                'collection_id' => $movie['belongs_to_collection']['id'] ?? null,
                 'runtime' => $movie['runtime'],
             ]);
 
@@ -1547,5 +1551,23 @@ class MoviesSeeder extends Seeder
                 $order++;
             }
         }
+    }
+
+    private function get_release_date( $dates, $date ) {
+        $release_date['date'] = $date;
+        $certification = 'NR';
+
+        foreach ( $dates[0]['release_dates'] as $r_date ) {
+            if ( in_array( $r_date['type'], [3,4], true ) ) {
+                $release_date['date'] = Carbon::create( $r_date['release_date'] )->toDateString();
+                $certification = $r_date['certification'];
+
+                break;
+            }
+        }
+
+        $release_date['certification_id'] = Certification::select('id')->where('name', '=', $certification)->first()->id;
+
+        return $release_date;
     }
 }

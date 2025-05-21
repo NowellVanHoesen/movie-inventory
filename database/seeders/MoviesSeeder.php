@@ -21,12 +21,24 @@ class MoviesSeeder extends Seeder
             'original_title' => 'The Bourne Identity',
             'overview' => 'Wounded to the brink of death and suffering from amnesia, Jason Bourne is rescued at sea by a fisherman. With nothing to go on but a Swiss bank account number, he starts to reconstruct his life, but finds that many people he encounters want him dead. However, Bourne realizes that he has the combat and mental skills of a world-class spy—but who does he work for?',
             'poster_path' => '/aP8swke3gmowbkfZ6lmNidu0y9p.jpg',
-            'release_date' => '2002-06-14',
             'runtime' => 119,
             'tagline' => 'He was the perfect weapon until he became the target.',
             'title' => 'The Bourne Identity',
             'purchase_date' => '2021-05-25',
-            'certification' => 4,
+            'release_date' => '2002-06-14',
+            'release_dates' => [
+                'results' => [
+                    [
+                        'iso_3166_1' => "US",
+                        'release_dates' => [
+                            ['certification' => "PG-13", 'release_date' => "2002-06-06T00:00:00.000Z", 'type' => 1],
+                            ['certification' => "PG-13", 'release_date' => "2002-06-14T00:00:00.000Z", 'type' => 3],
+                            ['certification' => "PG-13", 'release_date' => "2003-01-21T00:00:00.000Z", 'type' => 5],
+                            ['certification' => "PG-13", 'release_date' => "2010-01-19T00:00:00.000Z", 'type' => 5]
+                        ]
+                    ]
+                ]
+            ],
             'cast' => [
                 ['id' => 1892, 'name' => 'Matt Damon', 'original_name' => 'Matt Damon', 'profile_path' => '/At3JgvaNeEN4Z4ESKlhhes85Xo3.jpg', 'character' => 'Jason Bourne'],
                 ['id' => 679, 'name' => 'Franka Potente', 'original_name' => 'Franka Potente', 'profile_path' => '/aU6f9UemZsTkqKEG4l77zf6masg.jpg', 'character' => 'Marie Helena Kreutz'],
@@ -93,12 +105,24 @@ class MoviesSeeder extends Seeder
             'original_title' => 'The Bourne Supremacy',
             'overview' => 'A CIA operation to purchase classified Russian documents is blown by a rival agent, who then shows up in the sleepy seaside village where Bourne and Marie have been living. The pair run for their lives and Bourne, who promised retaliation should anyone from his former life attempt contact, is forced to once again take up his life as a trained assassin to survive.',
             'poster_path' => '/g09UIYfShY8uWGMGP3HkvWp8L8n.jpg',
-            'release_date' => '2004-07-23',
             'runtime' => 108,
             'tagline' => 'They should have left him alone.',
             'title' => 'The Bourne Supremacy',
             'purchase_date' => '2021-05-25',
-            'certification' => 4,
+            'release_date' => '2004-07-23',
+            'release_dates' => [
+                'results' => [
+                    [
+                        'iso_3166_1' => "US",
+                        'release_dates' => [
+                            ['certification' => "PG-13", 'release_date' => "2004-07-15T00:00:00.000Z", 'type' => 1],
+                            ['certification' => "PG-13", 'release_date' => "2004-07-23T00:00:00.000Z", 'type' => 3],
+                            ['certification' => "PG-13", 'release_date' => "2004-12-07T00:00:00.000Z", 'type' => 5],
+                            ['certification' => "PG-13", 'release_date' => "2010-01-19T00:00:00.000Z", 'type' => 5]
+                        ]
+                    ]
+                ]
+            ],
             'cast' => [
                 ['id' => 1892, 'name' => 'Matt Damon', 'original_name' => 'Matt Damon', 'profile_path' => '/At3JgvaNeEN4Z4ESKlhhes85Xo3.jpg', 'character' => 'Jason Bourne'],
                 ['id' => 679, 'name' => 'Franka Potente', 'original_name' => 'Franka Potente', 'profile_path' => '/aU6f9UemZsTkqKEG4l77zf6masg.jpg', 'character' => 'Marie Helene Kreutz'],
@@ -161,12 +185,24 @@ class MoviesSeeder extends Seeder
             'original_title' => 'The Bourne Ultimatum',
             'overview' => "Bourne is brought out of hiding once again by reporter Simon Ross who is trying to unveil Operation Blackbriar, an upgrade to Project Treadstone, in a series of newspaper columns. Information from the reporter stirs a new set of memories, and Bourne must finally uncover his dark past while dodging The Company's best efforts to eradicate him.",
             'poster_path' => '/15rMz5MRXFp7CP4VxhjYw4y0FUn.jpg',
-            'release_date' => '2007-08-03',
             'runtime' => 115,
             'tagline' => 'Remember everything. Forgive nothing.',
             'title' => 'The Bourne Ultimatum',
             'purchase_date' => '2021-05-25',
-            'certification' => 4,
+            'release_date' => '2007-08-03',
+            'release_dates' => [
+                'resultrs' => [
+                    [
+                        'iso_3166_1' => "US",
+                        'release_dates' => [
+                            ['certification' => "PG-13", 'release_date' => "2007-07-25T00:00:00.000Z", 'type' => 1],
+                            ['certification' => "PG-13", 'release_date' => "2007-08-03T00:00:00.000Z", 'type' => 3],
+                            ['certification' => "PG-13", 'release_date' => "2007-12-11T00:00:00.000Z", 'type' => 5],
+                            ['certification' => "PG-13", 'release_date' => "2010-01-19T00:00:00.000Z", 'type' => 5]
+                        ]
+                    ]
+                ]
+            ],
             'cast' => [
                 ['id' => 1892, 'name' => 'Matt Damon', 'original_name' => 'Matt Damon', 'profile_path' => '/At3JgvaNeEN4Z4ESKlhhes85Xo3.jpg', 'character' => 'Jason Bourne'],
                 ['id' => 12041, 'name' => 'Julia Stiles', 'original_name' => 'Julia Stiles', 'profile_path' => '/9PJ6G5begxnZkkwvqZqMs0Iwn5o.jpg', 'character' => 'Nicky Parsons'],
@@ -250,12 +286,21 @@ class MoviesSeeder extends Seeder
             'original_title' => 'The Bourne Legacy',
             'overview' => 'New CIA operative Aaron Cross experiences life-or-death stakes that have been triggered by the previous actions of Jason Bourne.',
             'poster_path' => '/1aExL5DTGHj25ZfIC3dDwS84RWi.jpg',
-            'release_date' => '2012-08-10',
             'runtime' => 135,
             'tagline' => 'There Was Never Just One',
             'title' => 'The Bourne Legacy',
             'purchase_date' => '2015-02-17',
-            'certification' => 4,
+            'release_date' => '2012-08-10',
+            'release_dates' => [
+                'results' => [
+                    [
+                        'iso_3166_1' => "US",
+                        'release_dates' => [
+                            ['certification' => "PG-13", 'release_date' => "2012-08-10T00:00:00.000Z", 'type' => 3]
+                        ]
+                    ]
+                ]
+            ],
             'cast' => [
                 ['id' => 17604, 'name' => 'Jeremy Renner', 'original_name' => 'Jeremy Renner', 'profile_path' => '/yB84D1neTYXfWBaV0QOE9RF2VCu.jpg', 'character' => 'Aaron Cross'],
                 ['id' => 3293, 'name' => 'Rachel Weisz', 'original_name' => 'Rachel Weisz', 'profile_path' => '/9tfHL5tholha1YF6bSKt422ETPM.jpg', 'character' => 'Dr. Marta Shearing'],
@@ -372,12 +417,22 @@ class MoviesSeeder extends Seeder
             'original_title' => 'Jason Bourne',
             'overview' => 'The most dangerous former operative of the CIA is drawn out of hiding to uncover hidden truths about his past.',
             'poster_path' => '/ziU0b3hRM6raH1u4wym02EYMLZ6.jpg',
-            'release_date' => '2016-07-29',
             'runtime' => 123,
             'tagline' => 'You know his name',
             'title' => 'Jason Bourne',
             'purchase_date' => '2017-10-16',
-            'certification' => 4,
+            'release_date' => '2016-07-29',
+            'release_dates' => [
+                'results' => [
+                    [
+                        'iso_3166_1' => "US",
+                        'release_dates' => [
+                            ['certification' => "PG-13", 'release_date' => "2016-07-29T00:00:00.000Z", 'type' => 3],
+                            ['certification' => "PG-13", 'release_date' => "2016-12-06T00:00:00.000Z", 'type' => 5]
+                        ]
+                    ]
+                ]
+            ],
             'cast' => [
                 ['id' => 1892, 'name' => 'Matt Damon', 'original_name' => 'Matt Damon', 'profile_path' => '/At3JgvaNeEN4Z4ESKlhhes85Xo3.jpg', 'character' => 'Jason Bourne'],
                 ['id' => 2176, 'name' => 'Tommy Lee Jones', 'original_name' => 'Tommy Lee Jones', 'profile_path' => '/zixpaPmOonRh1I3TWgxDkeGxkrv.jpg', 'character' => 'CIA Director Robert Dewey'],
@@ -640,12 +695,22 @@ class MoviesSeeder extends Seeder
             'original_title' => 'Coming to America',
             'overview' => "An African prince decides it's time for him to find a princess... and his mission leads him and his most loyal friend to Queens, New York. In disguise as an impoverished immigrant, the pampered prince quickly finds himself a new job, new friends, new digs, new enemies and lots of trouble.",
             'poster_path' => '/djRAvxyvvN2yqlJKDbT3uy4vOBw.jpg',
-            'release_date' => '1988-06-29',
             'runtime' => 117,
             'tagline' => 'This summer, Prince Akeem discovers America.',
             'title' => 'Coming to America',
             'purchase_date' => '2023-09-23',
-            'certification' => 5,
+            'release_date' => '1988-06-29',
+            'release_dates' => [
+                'results' => [
+                    [
+                        'iso_3166_1' => "US",
+                        'release_dates' => [
+                            ['certification' => "R", 'release_date' => "1988-06-26T00:00:00.000Z", 'type' => 1],
+                            ['certification' => "R", 'release_date' => "1988-06-29T00:00:00.000Z", 'type' => 3]
+                        ]
+                    ]
+                ]
+            ],
             'cast' => [
                 ['id' => 776, 'name' => 'Eddie Murphy', 'original_name' => 'Eddie Murphy', 'profile_path' => '/qgjMfefsKwSYsyCaIX46uyOXIpy.jpg', 'character' => 'Prince Akeem / Clarence / Randy Watson / Saul'],
                 ['id' => 44994, 'name' => 'Arsenio Hall', 'original_name' => 'Arsenio Hall', 'profile_path' => '/8oqVGysLVXkWlTOWIWkWIbL4i2q.jpg', 'character' => 'Semmi / Extremely Ugly Girl / Morris / Reverend Brown'],
@@ -741,12 +806,22 @@ class MoviesSeeder extends Seeder
             'original_title' => 'Coming 2 America',
             'overview' => "Prince Akeem Joffer is set to become King of Zamunda when he discovers he has a son he never knew about in America - a street savvy Queens native named Lavelle. Honoring his royal father's dying wish to groom this son as the crown prince, Akeem and Semmi set off to America once again.",
             'poster_path' => '/nWBPLkqNApY5pgrJFMiI9joSI30.jpg',
-            'release_date' => '2021-03-04',
             'runtime' => 110,
             'tagline' => 'A sequel is in the heir.',
             'title' => 'Coming 2 America',
             'purchase_date' => '',
-            'certification' => 4,
+            'release_date' => '2021-03-04',
+            'release_dates' => [
+                'results' => [
+                    [
+                        'iso_3166_1' => "US",
+                        'release_dates' => [
+                            ['certification' => "PG-13", 'release_date' => "2021-03-04T00:00:00.000Z", 'type' => 4],
+                            ['certification' => "PG-13", 'release_date' => "2022-03-08T00:00:00.000Z", 'type' => 5]
+                        ]
+                    ]
+                ]
+            ],
             'cast' => [
                 ['id' => 776, 'name' => 'Eddie Murphy', 'original_name' => 'Eddie Murphy', 'profile_path' => '/qgjMfefsKwSYsyCaIX46uyOXIpy.jpg', 'character' => 'Prince Akeem / Clarence / Saul / Randy Watson'],
                 ['id' => 44994, 'name' => 'Arsenio Hall', 'original_name' => 'Arsenio Hall', 'profile_path' => '/8oqVGysLVXkWlTOWIWkWIbL4i2q.jpg', 'character' => 'Semmi / Morris / Reverend Brown / Baba'],
@@ -906,12 +981,25 @@ class MoviesSeeder extends Seeder
             'original_title' => "Gladiator II",
             'overview' => "Years after witnessing the death of the revered hero Maximus at the hands of his uncle, Lucius is forced to enter the Colosseum after his home is conquered by the tyrannical Emperors who now lead Rome with an iron fist. With rage in his heart and the future of the Empire at stake, Lucius must look to his past to find strength and honor to return the glory of Rome to its people.",
             'poster_path' => "/2cxhvwyEwRlysAmRH4iodkvo0z5.jpg",
-            'release_date' => "2024-11-22",
             'runtime' => 148,
             'tagline' => "Prepare to be entertained.",
             'title' => "Gladiator II",
             'purchase_date' => '',
-            'certification' => 5,
+            'release_date' => "2024-11-22",
+            'release_dates' => [
+                'results' => [
+                    [
+                        'iso_3166_1' => "US",
+                        'release_dates' => [
+                            ['certification' => "R", 'release_date' => "2024-10-18T00:00:00.000Z", 'type' => 1],
+                            ['certification' => "R", 'release_date' => "2024-11-22T00:00:00.000Z", 'type' => 3],
+                            ['certification' => "R", 'release_date' => "2024-12-24T00:00:00.000Z", 'type' => 4],
+                            ['certification' => "R", 'release_date' => "2025-01-21T00:00:00.000Z", 'type' => 4],
+                            ['certification' => "R", 'release_date' => "2025-04-22T00:00:00.000Z", 'type' => 4]
+                        ]
+                    ]
+                ]
+            ],
             'cast' => [
                 ['id' => 2326151, 'name' => "Paul Mescal", 'original_name' => "Paul Mescal", 'profile_path' => "/vrzZ41TGNAFgfmZjC2sOJySzBLd.jpg", 'character' => "Lucius",],
                 ['id' => 5292, 'name' => "Denzel Washington", 'original_name' => "Denzel Washington", 'profile_path' => "/9Iyt3wbsla5bM6IzbICDVnBhkER.jpg", 'character' => "Macrinus"],
@@ -983,54 +1071,23 @@ class MoviesSeeder extends Seeder
             'original_title' => "Wicked",
             'overview' => "In the land of Oz, ostracized and misunderstood green-skinned Elphaba is forced to share a room with the popular aristocrat Glinda at Shiz University, and the two's unlikely friendship is tested as they begin to fulfill their respective destinies as Glinda the Good and the Wicked Witch of the West.",
             'poster_path' => "/xDGbZ0JJ3mYaGKy4Nzd9Kph6M9L.jpg",
-            'release_date' => "2024-11-20",
             'tagline' => "Everyone deserves the chance to fly.",
             'title' => "Wicked",
+            'purchase_date' => '',
+            'release_date' => "2024-11-20",
             'release_dates' => [
                 'results' => [
                     [
                         'iso_3166_1' => "US",
                         'release_dates' => [
-                            [
-                                'certification' => "",
-                                'release_date' => "2024-11-09T00:00:00.000Z",
-                                'type' => 1
-                            ],
-                            [
-                                'certification' => "",
-                                'release_date' => "2024-11-14T00:00:00.000Z",
-                                'type' => 1
-                            ],
-                            [
-                                'certification' => "PG",
-                                'release_date' => "2025-06-04T00:00:00.000Z",
-                                'type' => 2
-                            ],
-                            [
-                                'certification' => "PG",
-                                'release_date' => "2024-11-22T00:00:00.000Z",
-                                'type' => 3
-                            ],
-                            [
-                                'certification' => "PG",
-                                'release_date' => "2024-12-25T00:00:00.000Z",
-                                'type' => 3
-                            ],
-                            [
-                                'certification' => "PG",
-                                'release_date' => "2024-12-31T00:00:00.000Z",
-                                'type' => 4
-                            ],
-                            [
-                                'certification' => "PG",
-                                'release_date' => "2025-03-21T00:00:00.000Z",
-                                'type' => 4
-                            ],
-                            [
-                                'certification' => "PG",
-                                'release_date' => "2025-02-04T00:00:00.000Z",
-                                'type' => 5
-                            ]
+                            ['certification' => "", 'release_date' => "2024-11-09T00:00:00.000Z", 'type' => 1],
+                            ['certification' => "", 'release_date' => "2024-11-14T00:00:00.000Z", 'type' => 1],
+                            ['certification' => "PG", 'release_date' => "2025-06-04T00:00:00.000Z", 'type' => 2],
+                            ['certification' => "PG", 'release_date' => "2024-11-22T00:00:00.000Z", 'type' => 3],
+                            ['certification' => "PG", 'release_date' => "2024-12-25T00:00:00.000Z", 'type' => 3],
+                            ['certification' => "PG", 'release_date' => "2024-12-31T00:00:00.000Z", 'type' => 4],
+                            ['certification' => "PG", 'release_date' => "2025-03-21T00:00:00.000Z", 'type' => 4],
+                            ['certification' => "PG", 'release_date' => "2025-02-04T00:00:00.000Z", 'type' => 5]
                         ]
                     ]
                 ]

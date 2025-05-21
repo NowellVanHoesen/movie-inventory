@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('tagline');
             $table->text('overview');
             $table->string('homepage');
-            $table->string('poster_path');
-            $table->string('backdrop_path');
+            $table->string('poster_path')->nullable();
+            $table->string('backdrop_path')->nullable();
             $table->foreignId('certification_id')->constrained();
             $table->date('first_air_date');
             $table->date('purchase_date')->nullable();

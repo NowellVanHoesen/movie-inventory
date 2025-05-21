@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date('air_date')->nullable();
             $table->date('purchase_date')->nullable();
             $table->integer('season_number')->unsigned();
-            $table->string('poster_path');
+            $table->string('poster_path')->nullable();
             $table->foreign('series_id')->references('id')->on('series')->cascadeOnDelete();
         });
     }

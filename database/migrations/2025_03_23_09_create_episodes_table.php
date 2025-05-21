@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('imdb_id', 10)->unique()->nullable();
             $table->string('name');
             $table->text('overview');
-            $table->string('still_path');
+            $table->string('still_path')->nullable();
             $table->date('air_date')->nullable();
             $table->integer('runtime')->unsigned()->nullable();
             $table->integer('episode_number')->unsigned();

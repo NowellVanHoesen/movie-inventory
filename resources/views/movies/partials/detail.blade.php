@@ -4,7 +4,9 @@
 	<div class="sm:flex sm:flex-col sm:justify-between">
 		<div>
             <p>{{ $movie->title }}</p>
-            <p>( {{ $movie->original_title }} )</p>
+            @if ( $movie->title !== $movie->original_title )
+                <p><strong>Original Title</strong>:( {{ $movie->original_title }} )</p>
+            @endif
             <p><em>{{ $movie->tagline }}</em></p>
             <p>{{ implode( ' | ',$movie->genres ) }}</p>
             <p class="space-x-4">

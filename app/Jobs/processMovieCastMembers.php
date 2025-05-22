@@ -43,6 +43,10 @@ class processMovieCastMembers implements ShouldBeUnique, ShouldQueue
                 ]
             );
 
+            if ( $this->movie->cast_members()->where('cast_member_id', $cast_member->id)->exists() ) {
+                continue;
+            }
+
             $this->movie->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
     }

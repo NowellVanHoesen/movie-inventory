@@ -47,9 +47,13 @@ class processSeries implements ShouldQueue
         $series_cast = $this->getSeriesCast($series->id);
 
         foreach ($series_cast->cast as $cast_member) {
+            if ( $series->cast_members()->where('cast_member_id', $cast_member->id)->exists() ) {
+                continue;
+            }
+
             $member = $this->getCastMember($cast_member);
 
-            $series->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
+            $series->cast_members()->attach($member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
 
         // loop over seasons
@@ -111,9 +115,13 @@ class processSeries implements ShouldQueue
         $cast = $this->getSeasonCast($season->series_id, $season->season_number);
 
         foreach ($cast->cast as $cast_member) {
+            if ( $season->cast_members()->where('cast_member_id', $cast_member->id)->exists() ) {
+                continue;
+            }
+
             $member = $this->getCastMember($cast_member);
 
-            $season->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
+            $season->cast_members()->attach($member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
     }
 
@@ -122,16 +130,20 @@ class processSeries implements ShouldQueue
         $cast = $this->getSeasonCast($this->series_id, $season->season_number, $episode->episode_number);
 
         foreach ($cast->cast as $cast_member) {
+            if ( $episode->cast_members()->where('cast_member_id', $cast_member->id)->exists() ) {
+                continue;
+            }
+
             $member = $this->getCastMember($cast_member);
 
-            $episode->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
+            $episode->cast_members()->attach($member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
 
         if (! empty($cast->guest_stars)) {
             foreach ($cast->guest_stars as $cast_member) {
                 $member = $this->getCastMember($cast_member);
 
-                $episode->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
+                $episode->cast_members()->attach($member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
             }
         }
     }

@@ -7,5 +7,4 @@
 			@include('movies.partials.select-movie-form')
 		@endif
 	@endforeach
-
 </div>

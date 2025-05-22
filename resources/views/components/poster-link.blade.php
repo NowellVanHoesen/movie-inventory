@@ -1,3 +1,3 @@
-<a {{ $attributes->merge(['class' => "block group relative border border-gray-900 rounded-xl max-w-fit"]) }} >
+<a {{ $attributes->merge(['class' => "block group relative rounded-xl max-w-fit mb-auto"]) }} >
 	{{ $slot }}
 </a>

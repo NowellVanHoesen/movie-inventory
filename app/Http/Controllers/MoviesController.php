@@ -115,7 +115,7 @@ class MoviesController extends Controller
                     continue;
                 }
 
-                $release_date = Carbon::create( $usReleaseDates['release_date'] )->toDateString();
+                $release_date = Carbon::create( $usReleaseDates->release_date )->toDateString();
                 $certification_name = $usReleaseDates->certification;
 
                 break 2;

@@ -9,6 +9,7 @@ use App\Models\MediaType;
 use App\Models\Movie;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class MoviesController extends Controller
@@ -102,6 +103,7 @@ class MoviesController extends Controller
         $movie_detail = $this->getMovieDetail($attributes['movie_id']);
 
         $certification_name = 'NR';
+        $release_date = $movie_detail->release_date;
 
         foreach ($movie_detail->release_dates->results as $rDate) {
             if ($rDate->iso_3166_1 !== 'US') {
@@ -109,11 +111,14 @@ class MoviesController extends Controller
             }
 
             foreach ($rDate->release_dates as $usReleaseDates) {
-                if ($usReleaseDates->type < 3 || empty($usReleaseDates->certification)) {
+                if ( ! in_array( $usReleaseDates->type, [3,4], true ) || empty($usReleaseDates->certification)) {
                     continue;
                 }
 
+                $release_date = Carbon::create( $usReleaseDates['release_date'] )->toDateString();
                 $certification_name = $usReleaseDates->certification;
+
+                break 2;
             }
         }
 
@@ -126,7 +131,7 @@ class MoviesController extends Controller
             'original_title' => $movie_detail->original_title,
             'tagline' => $movie_detail->tagline,
             'overview' => $movie_detail->overview,
-            'release_date' => $movie_detail->release_date,
+            'release_date' => $release_date,
             'purchase_date' => $attributes['purchase_date'],
             'poster_path' => $movie_detail->poster_path ?: null,
             'backdrop_path' => $movie_detail->backdrop_path ?: null,

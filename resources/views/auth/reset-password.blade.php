@@ -6,7 +6,7 @@
         @csrf
 
         <!-- Password Reset Token -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+        <x-form-hidden-input name="token" value="{{ $request->route('token') }}" />
 
         <!-- Email Address -->
         <div>

@@ -21,7 +21,7 @@
 				<form method="POST" action="{{ route('movies.update', [ 'movie' => $movie->imdb_id ] ) }}">
 					@csrf
 					@method('PATCH')
-					<x-form-input type="hidden" name="movie_id" value="{{ $movie->id }}" />
+					<x-form-hidden-input name="movie_id" value="{{ $movie->id }}" />
 					<x-form-field>
 						<x-form-label for="purchase_date" value="Date Purchased" class="text-gray-900" />
 						<x-form-input type="date" name="purchase_date" id="purchase_date" value="{{ $movie->purchase_date }}" />

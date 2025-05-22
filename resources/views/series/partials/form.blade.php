@@ -55,7 +55,7 @@
 			@include('series.partials.seasons-form')
 		</div>
 		<div class="col-start-2 text-right mt-6">
-			<x-form-input type="hidden" name="series_id" :value="$series_detail->id" />
+			<x-form-hidden-input name="series_id" value="{{ $series_detail->id }}" />
 			<x-form-button>{{ __('Add Series') }}</x-form-button>
 		</div>
 	</div>

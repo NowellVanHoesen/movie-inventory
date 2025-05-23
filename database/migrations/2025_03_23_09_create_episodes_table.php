@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('episodes', function (Blueprint $table) {
             $table->engine('InnoDB');
             $table->integer('id')->unsigned()->primary();
-            $table->string('imdb_id', 10)->unique()->nullable();
+            $table->string('imdb_id', 10)->nullable();
             $table->string('name');
             $table->text('overview');
             $table->string('still_path')->nullable();

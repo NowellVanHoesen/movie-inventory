@@ -1,36 +1,26 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-gray-100">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <x-head page_title="{{ config('app.name', 'Laravel') }}" />
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
+    <body class="h-screen flex flex-col">
+        <header class="bg-[#333C50] shadow-sm z-10">
+            <div class="relative bg-gray-800 text-gray-200 flex flex-row px-4 py-4 place-items-center md:justify-normal h-16">
+                @include('layouts.navigation')
+            </div>
+            <div class="flex justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 text-gray-50">
+                <div class="flex items-center">
+                    <div>
+                        <h1 class="text-3xl font-bold tracking-tight">{{ $header }}</h1>
                     </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 grow mb-auto text-gray-50 bg-[#3e4b62] bg-cover bg-no-repeat bg-top bg-fixed">
+            <div class="mx-auto max-w-7xl p-6 lg:px-8">
                 {{ $slot }}
-            </main>
-        </div>
+            </div>
+        </main>
+        <x-footer class="bg-gray-800" />
     </body>
 </html>

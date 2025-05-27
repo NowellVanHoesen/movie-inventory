@@ -18,13 +18,13 @@
         @method('patch')
 
         <x-form-field>
-            <x-form-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('Name')" />
             <x-form-input id="name" name="name" type="text" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-form-error name="name" />
         </x-form-field>
 
         <x-form-field>
-            <x-form-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('Email')" />
             <x-form-input id="email" name="email" type="email" :value="old('email', $user->email)" required autocomplete="username" />
             <x-form-error name="email" />
 

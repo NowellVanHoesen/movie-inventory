@@ -1,6 +1,6 @@
 @props([ 'main_bg_style' => '' ])
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-gray-100">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-gray-100">
 
     <x-head page_title="Movie Inventory" />
 

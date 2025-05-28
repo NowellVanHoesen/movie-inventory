@@ -21,9 +21,38 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        return view('movies.index', [
-            'movies' => Movie::orderByDesc('release_date')->orderBy('title')->simplePaginate(24),
-        ]);
+        $query = Movie::query();
+
+        $sort = request()->input('sort', 'release_date|desc');
+
+        switch ($sort) {
+            case 'purchase_date|desc':
+                $query->orderByDesc('purchase_date')->orderBy('title');
+                break;
+            case 'purchase_date':
+                $query->orderBy('purchase_date')->orderBy('title');
+                break;
+            case 'title|desc':
+                $query->orderByDesc('title')->orderBy('release_date');
+                break;
+            case 'title':
+                $query->orderBy('title')->orderBy('release_date');
+                break;
+            case 'release_date|desc':
+                $query->orderByDesc('release_date')->orderBy('title');
+                break;
+            case 'release_date':
+            default:
+                $query->orderBy('release_date')->orderBy('title');
+        }
+
+        $movies = $query->simplePaginate(24);
+
+        if ( ! is_null( request()->input('sort') ) ) {
+            $movies->appends([ 'sort' => $sort ]);
+        }
+
+        return view('movies.index', [ 'movies' => $movies, ]);
     }
 
     /**

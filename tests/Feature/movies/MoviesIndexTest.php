@@ -75,18 +75,51 @@ it('displays only purchased movies in order of purchase date desc then release d
         ]);
 });
 
-it('it does not display an add movie button when logged not in', function() {
+it('does not display an add movie button when logged not in', function() {
     get(route('movies.index'))
         ->assertOk()
         ->assertDontSeeText('Add Movie')
         ->assertDontSee(route('movies.create'));
 });
 
-it('it displays an add movie button when logged in', function() {
-    $user = loginAsUser();
+it('displays an add movie button when logged in', function() {
+    loginAsUser();
 
     get(route('movies.index'))
         ->assertOk()
         ->assertSeeText('Add Movie')
         ->assertSee(route('movies.create'));
+});
+
+it('displays sort options above the movie list', function() {
+    get(route('movies.index'))
+        ->assertOk()
+        ->assertSeeInOrder([
+            'Sort',
+            'Title A - Z',
+            'Release Date',
+            'Purchase Date'
+        ])
+        ->assertSeeHtmlInOrder([
+            'href="http://movie-inventory.test/movies?sort=title"',
+            'href="http://movie-inventory.test/movies?sort=release_date"',
+            'href="http://movie-inventory.test/movies?sort=purchase_date"'
+        ]);
+});
+
+it('displays correct sort direction when already sorting by title asc', function() {
+    get(route('movies.index', ['sort' => 'title']))
+        ->assertOk()
+        ->assertSeeInOrder([
+            'Sort',
+            'Title Z - A',
+            'Release Date',
+            'Purchase Date'
+        ])
+        ->assertSeeHtmlInOrder([
+            'href="http://movie-inventory.test/movies?sort=title%7Cdesc"',
+            'href="http://movie-inventory.test/movies?sort=release_date"',
+            'href="http://movie-inventory.test/movies?sort=purchase_date"'
+        ]);
+
 });

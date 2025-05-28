@@ -15,8 +15,7 @@ Route::controller(MoviesController::class)->group(function () {
     Route::post('/movies', 'store')->name('movies.store');
     Route::get('/movies/wishlist', 'wishlist')->name('movies.wishlist');
     Route::get('/movies/purchased', 'purchased')->name('movies.purchased');
-    Route::post('/movies/search', 'search')->name('movies.search');
-    Route::get('/movies/create', 'create')->name('movies.create');
+    Route::match(['get','post'],'/movies/create', 'create')->name('movies.create');
     Route::get('/movies/{movie:imdb_id}', 'show')->name('movies.show');
     Route::get('/movies/{movie:imdb_id}/edit', 'edit')->name('movies.edit');
     Route::patch('/movies/{movie:imdb_id}', 'update')->name('movies.update');

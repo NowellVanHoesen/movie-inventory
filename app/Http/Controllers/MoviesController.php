@@ -78,13 +78,10 @@ class MoviesController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('movies.create');
-    }
+        $data = [];
 
-    public function search(Request $request)
-    {
         if (! empty($request['query'])) {
             $attributes = $request->validate([
                 'query' => ['min:2'],
@@ -93,9 +90,12 @@ class MoviesController extends Controller
             $data['local_results'] = Movie::search($attributes['query'])->get();
 
             $data['search_results'] = $this->searchMovies($attributes['query']);
+
+            $data['search_term'] = $attributes['query'];
         } elseif (! empty($request['movie_id'])) {
             $attributes = $request->validate([
                 'movie_id' => ['integer'],
+                'search_term' => ['min:2'],
             ]);
 
             $results = $this->getMovieDetail($attributes['movie_id']);
@@ -111,8 +111,8 @@ class MoviesController extends Controller
             $data['media_types'] = $this->get_media_types();
 
             $data['movie'] = $results;
-        } else {
-            return redirect(route('movies.create'));
+
+            $data['search_term'] = $attributes['search_term'];
         }
 
         return view('movies.create', $data);

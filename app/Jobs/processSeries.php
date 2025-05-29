@@ -18,8 +18,6 @@ class processSeries implements ShouldQueue
 
     protected array $media_type;
 
-    protected array $season_numbers;
-
     protected string $purchase_date;
 
     /**
@@ -29,7 +27,6 @@ class processSeries implements ShouldQueue
     {
         $this->series_id = $args['series_id'];
         $this->media_type = $args['media_type'];
-        $this->season_numbers = $args['season_numbers'];
         $this->purchase_date = $args['purchase_date'];
     }
 

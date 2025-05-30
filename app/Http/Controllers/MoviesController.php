@@ -112,7 +112,7 @@ class MoviesController extends Controller
 
             $data['movie'] = $results;
 
-            $data['search_term'] = $attributes['search_term'];
+            $data['search_term'] = $attributes['search_term'] ?? '';
         }
 
         return view('movies.create', $data);

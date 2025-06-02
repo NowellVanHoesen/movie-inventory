@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\CastMember;
 use App\Models\Movie;
+use App\Traits\CastMemberHelpers;
 use App\Traits\InteractsWithTMDB;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +13,7 @@ use Illuminate\Queue\Attributes\WithoutRelations;
 
 class processMovieCastMembers implements ShouldBeUnique, ShouldQueue
 {
-    use InteractsWithTMDB, Queueable;
+    use InteractsWithTMDB, CastMemberHelpers, Queueable;
 
     public $deleteWhenMissingModels = true;
 
@@ -36,18 +37,11 @@ class processMovieCastMembers implements ShouldBeUnique, ShouldQueue
         $credits = $this->getMovieCast($this->movie->id);
 
         foreach ($credits->cast as $cast_member) {
-            $member = CastMember::firstOrCreate(
-                ['id' => $cast_member->id],
-                [
-                    'name' => $cast_member->name,
-                    'original_name' => $cast_member->original_name,
-                    'profile_path' => $cast_member->profile_path ?: '',
-                ]
-            );
-
             if ( $this->movie->cast_members()->where('cast_member_id', $cast_member->id)->exists() ) {
                 continue;
             }
+
+            $member = $this->getCastMember($cast_member);
 
             $this->movie->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }

@@ -17,7 +17,10 @@
 				<a href="{{ route('season.show', [$series, $season]) }}" class="grid gap-2 grid-cols-[94px_minmax(106px,1fr)] border rounded-lg max-w-75 bg-white/70 mb-auto">
 					<img src="{{ is_null( $season->poster_path ) ? env('POSTER_PLACEHOLDER') : "https://image.tmdb.org/t/p/w92" . $season->poster_path }}" class="rounded-l-lg max-w-23" />
 					<div class="p-2">
-						<p>{{ $series->name }}: {{ $season->name }} ({{ date( 'Y', strtotime( $season->air_date ) ) }})</p>
+						<p>
+							{{ $series->name }}: {{ $season->name }}
+							@if ( ! is_null( $season->air_date ) ) ({{ date( 'Y', strtotime( $season->air_date ) ) }}) @endif
+						</p>
 						<p>Episodes: {{ count( $season->episodes ) }}</p>
 					</div>
 				</a>

@@ -5,12 +5,13 @@ namespace App\Jobs;
 use App\Models\Movie;
 use App\Models\MovieCollection;
 use App\Traits\InteractsWithTMDB;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Attributes\WithoutRelations;
 use Illuminate\Support\Arr;
 
-class processMovieCollection implements ShouldQueue
+class processMovieCollection implements ShouldBeUnique, ShouldQueue
 {
     use InteractsWithTMDB, Queueable;
 
@@ -45,5 +46,9 @@ class processMovieCollection implements ShouldQueue
 
         Movie::whereIn('id', $movie_ids)
             ->update(['collection_id' => $movieCollection->id]);
+    }
+
+    public function uniqueId() {
+        return $this->collection_id;
     }
 }

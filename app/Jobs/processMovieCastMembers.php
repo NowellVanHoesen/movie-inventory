@@ -14,6 +14,8 @@ class processMovieCastMembers implements ShouldBeUnique, ShouldQueue
 {
     use InteractsWithTMDB, Queueable;
 
+    public $deleteWhenMissingModels = true;
+
     /**
      * Create a new job instance.
      */
@@ -49,5 +51,9 @@ class processMovieCastMembers implements ShouldBeUnique, ShouldQueue
 
             $this->movie->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
+    }
+
+    public function uniqueId() {
+        return $this->movie->id;
     }
 }

@@ -194,7 +194,9 @@ class MoviesController extends Controller
     {
         $movie->media_types_display = $this->get_media_types_display($movie->media_types);
 
-        return view('movies.show', ['movie' => $movie]);
+        $movie_images = $this->getMovieImages($movie->id);
+
+        return view('movies.show', ['movie' => $movie, 'movie_images' => $movie_images]);
     }
 
     /**

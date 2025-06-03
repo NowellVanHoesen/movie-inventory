@@ -24,4 +24,5 @@
 			</div>
 		</div>
 	</div>
+	@include('movies.partials.display-images', ['images' => $collection_images]);
 </x-movies-layout>

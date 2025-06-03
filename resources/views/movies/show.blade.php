@@ -38,4 +38,5 @@
 			</ul>
 		</div>
 	</div>
+	@include('movies.partials.display-images', ['images' => $movie_images])
 </x-movies-layout>

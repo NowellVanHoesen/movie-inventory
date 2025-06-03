@@ -22,7 +22,7 @@ trait InteractsWithTMDB
         return $this->sendTMDBRequest(
             "collection/{$collection_id}",
             [
-                'language' => 'en-US',
+                'language' => 'en-US'
             ]
         );
     }
@@ -34,6 +34,18 @@ trait InteractsWithTMDB
             [
                 'language' => 'en-US',
             ]
+        );
+    }
+
+    private function getMovieImages(int $movie_id) {
+        return $this->sendTMDBRequest(
+            "movie/{$movie_id}/images"
+        );
+    }
+
+    private function getCollectionImages(int $collection_id) {
+        return $this->sendTMDBRequest(
+            "collection/{$collection_id}/images"
         );
     }
 

@@ -28,24 +28,27 @@
                 @csrf
 
                 <x-form-hidden-input name="movie_id" value="{{ $movie->id }}" />
-                <x-form-field>
-                    <x-form-label for="purchase_date" value="Date Purchased" class="text-gray-900" />
-                    <x-form-input type="date" name="purchase_date" id="purchase_date" />
-                </x-form-field>
-                <x-form-label class="text-gray-900" value="Media Type" />
 
-                <div class="grid grid-cols-3">
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="col-span-2">
+                        <x-form-label for="purchase_date" value="Date Purchased" class="text-gray-900" />
+                    </div>
+                    <div class="col-span-2">
+                        <x-form-label class="text-gray-900" value="Media Type" />
+                    </div>
+                    <div class="col-span-2">
+                        <x-form-input type="date" name="purchase_date" id="purchase_date" />
+                    </div>
+
                     @foreach ($media_types as $type => $sub_types )
                         <div>
                             <span class="text-sm font-bold">{{ $type }}</span>
                             <ul>
                                 @foreach ($sub_types as $type_id => $sub_type )
                                     <li>
-                                        <x-form-field>
-                                            <x-form-label class="text-gray-900 flex place-items-center">
-                                                <x-form-checkbox name="media_type[]" :value="$type_id" /> {{ $sub_type }}
-                                            </x-form-label>
-                                        </x-form-field>
+                                        <x-form-label class="text-gray-900 flex place-items-center">
+                                            <x-form-checkbox name="media_type[]" :value="$type_id" /> {{ $sub_type }}
+                                        </x-form-label>
                                     </li>
                                 @endforeach
                             </ul>

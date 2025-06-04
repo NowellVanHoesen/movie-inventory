@@ -59,4 +59,8 @@ class processEpisodeCastMembers implements ShouldQueue
             }
         }
     }
+
+    public function uniqueId() {
+        return "episode-{$this->episode_id}-cast";
+    }
 }

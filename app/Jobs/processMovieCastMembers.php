@@ -48,6 +48,6 @@ class processMovieCastMembers implements ShouldBeUnique, ShouldQueue
     }
 
     public function uniqueId() {
-        return $this->movie->id;
+        return "movie-{$this->movie->id}-cast";
     }
 }

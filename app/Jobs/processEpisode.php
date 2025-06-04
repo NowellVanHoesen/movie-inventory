@@ -60,4 +60,8 @@ class processEpisode implements ShouldQueue
             'episode_number' => $this->episode_number
         ]);
     }
+
+    public function uniqueId() {
+        return "{$this->series_id}-{$this->season_id}-{$this->episode_number}-detail";
+    }
 }

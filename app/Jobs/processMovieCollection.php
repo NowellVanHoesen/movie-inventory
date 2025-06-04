@@ -49,6 +49,6 @@ class processMovieCollection implements ShouldBeUnique, ShouldQueue
     }
 
     public function uniqueId() {
-        return $this->collection_id;
+        return "collection-{$this->collection_id}";
     }
 }

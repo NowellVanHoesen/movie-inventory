@@ -54,4 +54,8 @@ class processSeries implements ShouldQueue
             Bus::batch( $season_batch )
         ])->dispatch();
     }
+
+    public function uniqueId() {
+        return "series-{$this->series_id}";
+    }
 }

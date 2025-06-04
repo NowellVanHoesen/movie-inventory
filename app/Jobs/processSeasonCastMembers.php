@@ -48,4 +48,8 @@ class processSeasonCastMembers implements ShouldQueue
             $season->cast_members()->attach($member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
     }
+
+    public function uniqueId() {
+        return "season-{$this->series_id}-{$this->season_number}-cast";
+    }
 }

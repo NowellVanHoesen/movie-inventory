@@ -41,4 +41,8 @@ class processSeriesCastMembers implements ShouldQueue
             $series->cast_members()->attach($member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
         }
     }
+
+    public function uniqueId() {
+        return "series-{$this->series_id}-cast";
+    }
 }

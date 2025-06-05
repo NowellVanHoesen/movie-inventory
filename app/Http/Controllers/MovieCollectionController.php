@@ -23,13 +23,9 @@ class MovieCollectionController extends Controller
             return $movie->release_date;
         });
 
-        $collection_images = $this->getCollectionImages($id);
-
-
         return view('movies.collections.show', [
             'collection' => $collection,
             'collection_details' => $collection_details,
-            'collection_images' => $collection_images
         ]);
     }
 }

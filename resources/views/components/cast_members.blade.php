@@ -1,4 +1,4 @@
-<p>Cast</p>
+<p class="text-2xl font-bold">Cast</p>
 <ul class="mt-4">
 	@foreach ($cast as $cast_member)
 		@continue( str_contains( $cast_member->pivot->character, 'uncredited' ) )

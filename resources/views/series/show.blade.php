@@ -11,17 +11,17 @@
 		<div class="bg-white/80 mt-6 p-6 rounded-xl row-span-2 mb-auto">
 			<x-cast_members :cast="$series->cast_members" />
 		</div>
-		<div class="grid grid-cols-2 gap-4">
-			<p class="col-span-2">Seasons</p>
+		<p class="text-2xl font-bold">Seasons</p>
+		<div class="flex flex-none flex-wrap gap-4 justify-between">
 			@foreach ( $series->seasons as $season )
-				<a href="{{ route('season.show', [$series, $season]) }}" class="grid gap-2 grid-cols-[94px_minmax(106px,1fr)] border rounded-lg max-w-75 bg-white/70 mb-auto">
-					<img src="{{ is_null( $season->poster_path ) ? env('POSTER_PLACEHOLDER') : "https://image.tmdb.org/t/p/w92" . $season->poster_path }}" class="rounded-l-lg max-w-23" />
-					<div class="p-2">
-						<p>
-							{{ $series->name }}: {{ $season->name }}
-							@if ( ! is_null( $season->air_date ) ) ({{ date( 'Y', strtotime( $season->air_date ) ) }}) @endif
-						</p>
-						<p>Episodes: {{ count( $season->episodes ) }}</p>
+				<a href="{{ route('season.show', [$series, $season]) }}" class="group relative rounded-lg">
+					<img src="{{ is_null( $season->poster_path ) ? env('POSTER_PLACEHOLDER') : "https://image.tmdb.org/t/p/w92" . $season->poster_path }}" class="rounded-lg border" />
+					<div class="p-2 leading-none absolute bottom-0 left-0 right-0 bg-white/75 rounded-b-lg invisible group-hover:visible">
+						<p>{{ $season->name }}</p>
+						<p>Ep: {{ count( $season->episodes ) }}</p>
+						@if ( ! is_null( $season->air_date ) )
+							<p>({{ date( 'Y', strtotime( $season->air_date ) ) }})</p>
+						@endif
 					</div>
 				</a>
 			@endforeach

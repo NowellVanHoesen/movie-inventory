@@ -13,68 +13,6 @@ it('has movies index page', function () {
     ->assertOk();
 });
 
-it('displays both purchased and wishlist movies in order of release date desc then title asc', function () {
-    $this->seed(MoviesSeeder::class);
-
-    get(route('movies.index'))
-        ->assertOk()
-        ->assertSeeText([
-            'The Bourne Identity',
-            'The Bourne Supremacy',
-            'The Bourne Ultimatum',
-            'Bourne Legacy',
-            'Jason Bourne',
-            'Coming to America',
-            'Coming 2 America'
-        ])
-        ->assertSeeInOrder([
-            'Coming 2 America',
-            'Jason Bourne',
-            'Bourne Legacy',
-            'The Bourne Ultimatum',
-            'The Bourne Supremacy',
-            'The Bourne Identity',
-            'Coming to America',
-        ]);
-});
-
-it('displays only wishlist movies in order of release date desc then title asc', function () {
-    $this->seed(MoviesSeeder::class);
-
-    get(route('movies.wishlist'))
-        ->assertOk()
-        ->assertDontSeeText([
-            'The Bourne Identity',
-            'The Bourne Supremacy',
-            'The Bourne Ultimatum',
-            'Bourne Legacy',
-            'Jason Bourne',
-        ])
-        ->assertSeeInOrder([
-            'Gladiator II',
-            'Coming 2 America'
-        ]);
-});
-
-it('displays only purchased movies in order of purchase date desc then release date desc', function () {
-    $this->seed(MoviesSeeder::class);
-
-    get(route('movies.purchased'))
-        ->assertOk()
-        ->assertDontSeeText([
-            'Coming 2 America',
-            'Gladiator II'
-        ])
-        ->assertSeeInOrder([
-            'Coming to America',
-            'The Bourne Ultimatum',
-            'The Bourne Supremacy',
-            'The Bourne Identity',
-            'Jason Bourne',
-            'Bourne Legacy',
-        ]);
-});
-
 it('does not display an add movie button when logged not in', function() {
     get(route('movies.index'))
         ->assertOk()
@@ -107,14 +45,79 @@ it('displays sort options above the movie list', function() {
         ]);
 });
 
+it('displays both purchased and wishlist movies in default order (release date desc then title asc)', function () {
+    $this->seed(MoviesSeeder::class);
+
+    get(route('movies.index'))
+        ->assertOk()
+        ->assertSee([
+            'Wild Robot',
+            'Ambush',
+            'My Days of Mercy',
+            'Gladiator II',
+            'The Forever Purge',
+            'American Pie',
+            'Dirty Angels'
+        ])
+        ->assertSeeInOrder([
+            'Into the Deep',
+            'Dirty Angels',
+            'Gladiator II',
+            'Wicked',
+            'The Beekeeper',
+            'Jurassic World Dominion',
+            'The First Purge',
+        ]);
+});
+
+it('displays only wishlist movies in default order (release date desc then title asc)', function () {
+    $this->seed(MoviesSeeder::class);
+
+    get(route('movies.wishlist'))
+        ->assertOk()
+        ->assertDontSeeText([
+            'The Bourne Identity',
+            'The Bourne Supremacy',
+            'The Bourne Ultimatum',
+            'Bourne Legacy',
+            'Jason Bourne',
+        ])
+        ->assertSeeInOrder([
+            'Gladiator II',
+            'Wicked',
+            'After We Fell'
+        ]);
+});
+
+it('displays only purchased movies in default order (purchase date desc then release date desc)', function () {
+    $this->seed(MoviesSeeder::class);
+
+    get(route('movies.purchased'))
+        ->assertOk()
+        ->assertDontSeeText([
+            'After We Fell',
+            'Gladiator II',
+            'Wicked'
+        ])
+        ->assertSeeInOrder([
+            'Into the Deep',
+            'Step Up 3',
+            'Totally Baked',
+            'Bolt',
+            'After Ever Happy',
+        ]);
+});
+
 it('displays correct sort direction when already sorting by title asc', function() {
+    $this->seed(MoviesSeeder::class);
+
     get(route('movies.index', ['sort' => 'title']))
         ->assertOk()
         ->assertSeeInOrder([
             'Sort',
             'Title Z - A',
             'Release Date',
-            'Purchase Date'
+            'Purchase Date',
         ])
         ->assertSeeHtmlInOrder([
             'href="http://movie-inventory.test/movies?sort=title%7Cdesc"',

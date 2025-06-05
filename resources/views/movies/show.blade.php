@@ -6,9 +6,9 @@
 	<x-slot:tagline>
 		{{ $movie->tagline }}
 	</x-slot:tagline>
-	<div class="bg-white/80 text-gray-900 mt-6 p-6 rounded-xl md:grid md:grid-cols-[150px_1fr] gap-4">
+	<div class="bg-white/80 text-gray-900 mt-6 p-6 rounded-xl md:grid md:grid-cols-[185px_1fr] gap-4">
 		<div>
-			<img src={{ "https://image.tmdb.org/t/p/w154/" . $movie->poster_path }} alt="{{ $movie->title }} movie poster">
+			<img src={{ "https://image.tmdb.org/t/p/w185/" . $movie->poster_path }} alt="{{ $movie->title }} movie poster">
 		</div>
 		<div>
 			<div class="sm:flex sm:justify-between sm:items-start">
@@ -37,5 +37,15 @@
 				@endforeach
 			</ul>
 		</div>
+	</div>
+	<div class="grid grid-cols-[repeat(auto-fill,minmax(154px,1fr))] place-items-center gap-5 mt-6 text-gray-900">
+		<p class="col-span-full text-2xl font-bold justify-self-start">Recommendations</p>
+		@foreach ($recommendations as $movie)
+			@if ($owned_recommendations->contains($movie->id))
+				@include('movies.partials.select-movie-link', [ 'movie' => $owned_recommendations->find($movie->id), 'size' => 'w154'])
+			@else
+				@include('movies.partials.select-movie-form', [ 'size' => 'w154' ])
+			@endif
+		@endforeach
 	</div>
 </x-movies-layout>

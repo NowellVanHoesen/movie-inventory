@@ -11,6 +11,7 @@ use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class MoviesController extends Controller
 {
@@ -194,7 +195,11 @@ class MoviesController extends Controller
     {
         $movie->media_types_display = $this->get_media_types_display($movie->media_types);
 
-        return view('movies.show', ['movie' => $movie]);
+        $recommendations = collect( $this->getMovieRecommendations( $movie->id )->results );
+
+        $owned_recommendations = Movie::whereIn( 'id', Arr::pluck($recommendations, 'id') )->get();
+
+        return view('movies.show', ['movie' => $movie, 'recommendations' => $recommendations, 'owned_recommendations' => $owned_recommendations]);
     }
 
     /**

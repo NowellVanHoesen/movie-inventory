@@ -49,6 +49,12 @@ trait InteractsWithTMDB
         );
     }
 
+    private function getMovieRecommendations(int $movie_id) {
+        return $this->sendTMDBRequest(
+            "movie/{$movie_id}/recommendations"
+        );
+    }
+
     private function searchMovies(string $query, int $page = 1)
     {
         return $this->sendTMDBRequest(

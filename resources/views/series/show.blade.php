@@ -12,7 +12,7 @@
 			<x-cast_members :cast="$series->cast_members" />
 		</div>
 		<p class="text-2xl font-bold">Seasons</p>
-		<div class="flex flex-none flex-wrap gap-4 justify-between">
+		<div class="flex flex-none flex-wrap gap-4">
 			@foreach ( $series->seasons as $season )
 				<a href="{{ route('season.show', [$series, $season]) }}" class="group relative rounded-lg">
 					<img src="{{ is_null( $season->poster_path ) ? env('POSTER_PLACEHOLDER') : "https://image.tmdb.org/t/p/w92" . $season->poster_path }}" class="rounded-lg border" />
@@ -26,5 +26,15 @@
 				</a>
 			@endforeach
 		</div>
+	</div>
+	<div class="grid grid-cols-[repeat(auto-fill,minmax(154px,1fr))] place-items-center gap-5 mt-6 text-gray-900">
+		<p class="col-span-full text-2xl font-bold justify-self-start">Recommendations</p>
+		@foreach ($recs as $series)
+			@if ($owned_recs->contains($series->id))
+				@include('series.partials.select-series-link', [ 'series' => $owned_recs->find($series->id), 'size' => 'w154'])
+			@else
+				@include('series.partials.select-series-form', [ 'size' => 'w154' ])
+			@endif
+		@endforeach
 	</div>
 </x-series-layout>

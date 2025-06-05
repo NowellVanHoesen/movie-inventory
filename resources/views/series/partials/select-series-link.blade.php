@@ -1,6 +1,10 @@
+@props([
+	'size' => 'w185'
+])
+
 <x-poster-link href="{{ route( 'series.show', [$series] ) }}" id="{{ $series->id }}">
 	<x-item-status-icon :purchased="! is_null( $series->purchase_date )" />
-	<x-item-poster :placeholder="is_null( $series->poster_path )" poster_path="{{ $series->poster_path }}" size="w185" />
+	<x-item-poster :placeholder="is_null( $series->poster_path )" poster_path="{{ $series->poster_path }}" size="{{ $size }}" />
 	<x-poster-overlay-detail
 		class="{{ is_null( $series->poster_path ) ? '' : 'invisible group-hover:visible' }} text-left"
 		title="{{ $series->name }}"

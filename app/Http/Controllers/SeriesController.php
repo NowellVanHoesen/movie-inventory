@@ -11,6 +11,7 @@ use App\Models\Series;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class SeriesController extends Controller
 {
@@ -135,7 +136,11 @@ class SeriesController extends Controller
     {
         $series->media_types_display = $this->get_media_types_display($series->media_types);
 
-        return view('series.show', ['series' => $series]);
+        $recs = collect( $this->getSeriesRecommendations($series->id)->results );
+
+        $owned_recs = Series::whereIn( 'id', Arr::pluck( $recs, 'id' ) )->get();
+
+        return view('series.show', ['series' => $series, 'recs' => $recs, 'owned_recs' => $owned_recs]);
     }
 
     /**

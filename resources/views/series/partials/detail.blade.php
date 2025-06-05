@@ -2,7 +2,11 @@
 	<img src={{ "https://image.tmdb.org/t/p/w185/" . $series->poster_path }} alt="{{ $series->name }} series poster" class="rounded-l-xl">
 
 	<div class="sm:flex sm:flex-col my-4">
-		<p class="text-2xl">{{ $series->name }}: <em class="text-base">{{ $series->tagline }}</em> <span class="ml-4 text-sm">{{ $series->certification->name }}</span></p>
+		<p class="text-2xl leading-none">
+			{{ $series->name }}
+			<span class="text-sm">({{ $series->certification->name }})</span>
+		</p>
+		<p><em class="text-base">{{ $series->tagline }}</em></p>
 		@if ( ! empty( $series->original_name ) && $series->original_name !== $series->name )
 			<p class="text-sm">{{ $series->original_name }}</p>
 		@endif

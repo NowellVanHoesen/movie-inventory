@@ -1,8 +1,6 @@
 @props(['search_results' => [], 'movie' => null])
 
 <x-movies-layout>
-    <x-slot:heading>Movies</x-slot:heading>
-
 	@include('movies.partials.search')
 
 	@if ($search_results)

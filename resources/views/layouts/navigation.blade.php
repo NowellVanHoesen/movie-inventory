@@ -12,26 +12,8 @@
         <!-- Primary Navigation Menu -->
         <x-nav aria-label="main" class="md:grow-1 md:space-x-4 md:flex">
             <x-nav-link href="/" :active="Route::is('home')">Home</x-nav-link>
-            <x-dropdown align="left">
-                <x-slot:trigger>
-                    <x-dropdown-trigger :active="Route::is('movies.*')">Movies</x-dropdown-trigger>
-                </x-slot:trigger>
-                <x-slot:content>
-                    <x-nav-alt-link href="/movies" :active="Route::is('movies.index')">All</x-nav-alt-link>
-                    <x-nav-alt-link href="/movies/purchased" :active="Route::is('movies.purchased')">Purchased</x-nav-alt-link>
-                    <x-nav-alt-link href="/movies/wishlist" :active="Route::is('movies.wishlist')">Wishlist</x-nav-alt-link>
-                    <x-nav-alt-link href="/movieCollection" :active="Route::is('movieCollection.index')">Collections</x-nav-alt-link>
-                </x-slot:content>
-            </x-dropdown>
-            <x-dropdown align="left">
-                <x-slot:trigger>
-                    <x-dropdown-trigger :active="Route::is('series.*')">Series</x-dropdown-trigger>
-                </x-slot:trigger>
-                <x-slot:content>
-                    <x-nav-alt-link href="/series" :active="Route::is('series.index')">All</x-nav-alt-link>
-                    <x-nav-alt-link href="/series/create" :active="Route::is('series.create')">Add</x-nav-alt-link>
-                </x-slot:content>
-            </x-dropdown>
+            <x-nav-link href="/movies" :active="Route::is('movies.*')">Movies</x-nav-link>
+            <x-nav-link href="/series" :active="Route::is('series.*')">Series</x-nav-link>
             <x-nav-link href="/about" :active="Route::is('about')">About</x-nav-link>
             <x-nav-link href="/contact" :active="Route::is('contact')">Contact</x-nav-link>
         </x-nav>

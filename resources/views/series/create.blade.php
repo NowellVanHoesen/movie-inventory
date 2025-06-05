@@ -1,5 +1,4 @@
 <x-series-layout>
-    <x-slot:heading>Series</x-slot:heading>
 	@include('series.partials.search')
 
 	@if ( ! empty( $search_results ) )

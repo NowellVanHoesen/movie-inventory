@@ -1,5 +1,5 @@
-<div class="grid grid-cols-[185px_1fr] gap-4 mt-6 bg-white/80 rounded-xl mb-auto">
-	<img src={{ "https://image.tmdb.org/t/p/w185/" . $series->poster_path }} alt="{{ $series->name }} series poster" class="rounded-l-xl">
+<div class="grid grid-cols-[185px_1fr] gap-4 mt-6 bg-white/80 rounded-xl mb-auto overflow-hidden">
+	<img src={{ "https://image.tmdb.org/t/p/w185/" . $series->poster_path }} alt="{{ $series->name }} series poster" class="tl-xl">
 
 	<div class="sm:flex sm:flex-col my-4">
 		<p class="text-2xl leading-none">

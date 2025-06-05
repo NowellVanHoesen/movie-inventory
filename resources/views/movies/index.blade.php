@@ -14,7 +14,6 @@
 	}
 @endphp
 <x-movies-layout>
-	<x-slot:heading>Movies</x-slot:heading>
 	<div class="space-x-4 text-right">
 		<strong>Sort:</strong>
 		<x-nav-link href="{{ route('movies.index', ['sort' => $title_sort]) }}">{{ $title_sort === 'title' ? 'Title A - Z' : 'Title Z - A' }}</x-nav-link>

@@ -11,9 +11,14 @@
             </div>
             <div class="flex justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 text-gray-50">
                 <div class="flex items-center">
-                    <div>
-                        <h1 class="text-3xl font-bold tracking-tight">{{ $heading }}</h1>
-                        <p class="text-sm">{{ $tagline ?? '' }}</p>
+                    <div class="flex items-center">
+                        <h1 class="text-3xl font-bold tracking-tight">Movies</h1>
+                        <x-nav aria-label="main" class="md:grow-1 md:space-x-4 md:flex">
+                            <x-nav-link href="/movies" :active="Route::is('movies.index')">All</x-nav-link>
+                            <x-nav-link href="/movies/purchased" :active="Route::is('movies.purchased')">Purchased</x-nav-link>
+                            <x-nav-link href="/movies/wishlist" :active="Route::is('movies.wishlist')">Wishlist</x-nav-link>
+                            <x-nav-link href="/movieCollection" :active="Route::is('movieCollection.index')">Collections</x-nav-link>
+                        </x-nav>
                     </div>
                 </div>
                 @auth

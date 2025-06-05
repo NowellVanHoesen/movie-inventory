@@ -12,7 +12,7 @@
             <div class="flex justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 text-gray-50">
                 <div class="flex items-center">
                     <div>
-                        <h1 class="text-3xl font-bold tracking-tight">{{ $heading }}</h1>
+                        <h1 class="text-3xl font-bold tracking-tight">Series</h1>
                         <p class="text-sm">{{ $tagline ?? '' }}</p>
                     </div>
                 </div>

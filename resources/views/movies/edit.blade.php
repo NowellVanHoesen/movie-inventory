@@ -1,16 +1,14 @@
 <x-movies-layout main_bg_style="background-image: linear-gradient( rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url(https://image.tmdb.org/t/p/original{{ $movie->backdrop_path }})">
-	<x-slot:heading>
-		{{ $movie->title }}
-		<span class="text-sm font-normal">( {{ $movie->certification->name }} ) {{ $movie->runtime }} min.</span>
-	</x-slot:heading>
-	<x-slot:tagline>
-		{{ $movie->tagline }}
-	</x-slot:tagline>
 	<div class="bg-white/80 text-gray-900 mt-6 p-6 rounded-xl md:grid md:grid-cols-[300px_1fr] gap-4">
 		<div>
 			<img src={{ "https://image.tmdb.org/t/p/w300/" . $movie->poster_path }} alt="{{ $movie->title }} movie poster">
 		</div>
 		<div>
+			<p>
+				{{ $movie->title }}
+				<span class="text-sm font-normal">( {{ $movie->certification->name }} ) {{ $movie->runtime }} min.</span>
+			</p>
+			<p><em>{{ $movie->tagline }}</em></p>
 			<div class="sm:flex sm:justify-between sm:items-start">
 				<div>
 					<p class="text-sm">{{ $movie->genres->pluck('name')->join(' | ') }}</p>

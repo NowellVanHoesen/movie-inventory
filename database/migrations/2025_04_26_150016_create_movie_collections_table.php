@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('movie_collections', function (Blueprint $table) {
             $table->engine('InnoDB');
-            $table->integer('id')->unsigned();
+            $table->integer('id')->unsigned()->primary();
             $table->string('name');
             $table->text('overview');
             $table->string('poster_path')->nullable();
             $table->string('backdrop_path')->nullable();
+            $table->string('slug')->unique();
         });
     }
 

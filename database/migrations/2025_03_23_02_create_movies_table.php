@@ -24,6 +24,7 @@ return new class extends Migration
             $table->date('purchase_date')->nullable();
             $table->string('poster_path')->nullable();
             $table->string('backdrop_path')->nullable();
+            $table->string('slug')->unique();
             $table->foreignId('certification_id')->constrained();
             $table->integer('runtime')->unsigned();
             $table->integer('collection_id')->unsigned()->nullable()->default(null);

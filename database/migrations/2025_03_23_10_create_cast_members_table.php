@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('original_name');
             $table->string('profile_path')->nullable();
+            $table->string('slug')->unique();
         });
 
         Schema::create('cast_member_movie', function (Blueprint $table) {

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('homepage');
             $table->string('poster_path')->nullable();
             $table->string('backdrop_path')->nullable();
+            $table->string('slug')->unique();
             $table->foreignId('certification_id')->constrained();
             $table->date('first_air_date');
             $table->date('purchase_date')->nullable();

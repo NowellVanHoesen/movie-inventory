@@ -1,15 +1,15 @@
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory cast_member_episode > ./database/sql-files/cast_member_episode.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory cast_member_movie > ./database/sql-files/cast_member_movie.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory cast_member_season > ./database/sql-files/cast_member_season.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory cast_member_series > ./database/sql-files/cast_member_series.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory cast_members > ./database/sql-files/cast_members.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory episodes > ./database/sql-files/episodes.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory genre_movie > ./database/sql-files/genre_movie.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory genre_series > ./database/sql-files/genre_series.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory media_type_movie > ./database/sql-files/media_type_movie.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory media_type_season > ./database/sql-files/media_type_season.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory media_type_series > ./database/sql-files/media_type_series.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory movie_collections > ./database/sql-files/movie_collections.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory movies > ./database/sql-files/movies.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory seasons > ./database/sql-files/seasons.sql
-mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact movie_inventory series > ./database/sql-files/series.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory cast_member_episode > ./database/sql-files/cast_member_episode.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory cast_member_movie > ./database/sql-files/cast_member_movie.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory cast_member_season > ./database/sql-files/cast_member_season.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory cast_member_series > ./database/sql-files/cast_member_series.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory cast_members > ./database/sql-files/cast_members.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory episodes > ./database/sql-files/episodes.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory genre_movie > ./database/sql-files/genre_movie.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory genre_series > ./database/sql-files/genre_series.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory media_type_movie > ./database/sql-files/media_type_movie.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory media_type_season > ./database/sql-files/media_type_season.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory media_type_series > ./database/sql-files/media_type_series.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory movie_collections > ./database/sql-files/movie_collections.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory movies > ./database/sql-files/movies.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory seasons > ./database/sql-files/seasons.sql
+mysqldump -u root --no-create-info --skip-comments --skip-add-locks --compact --complete-insert movie_inventory series > ./database/sql-files/series.sql

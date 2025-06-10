@@ -50,15 +50,37 @@ trait InteractsWithTMDB
     }
 
     private function getMovieRecommendations(int $movie_id) {
-        return $this->sendTMDBRequest(
+        $recs = $this->sendTMDBRequest(
             "movie/{$movie_id}/recommendations"
         );
+
+        $allRecs = collect( $recs->results );
+
+        if ( $recs->total_pages > 1 ) {
+            for ($page = 2; $page <= $recs->total_pages; $page++ ) {
+                $pagedRecs = $allRecs->merge( collect( $this->sendTMDBRequest( "movie/{$movie_id}/recommendations", [ 'page' => $page ] )->results ) );
+                $allRecs = $pagedRecs;
+            }
+        }
+
+        return $allRecs;
     }
 
     private function getSeriesRecommendations(int $series_id) {
-        return $this->sendTMDBRequest(
+        $recs = $this->sendTMDBRequest(
             "tv/{$series_id}/recommendations"
         );
+
+        $allRecs = collect( $recs->results );
+
+        if ( $recs->total_pages > 1 ) {
+            for ($page = 2; $page <= $recs->total_pages; $page++ ) {
+                $pagedRecs = $allRecs->merge( collect( $this->sendTMDBRequest( "tv/{$series_id}/recommendations", [ 'page' => $page ] )->results ) );
+                $allRecs = $pagedRecs;
+            }
+        }
+
+        return $allRecs;
     }
 
     private function searchMovies(string $query, int $page = 1)

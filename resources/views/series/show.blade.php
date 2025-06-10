@@ -5,7 +5,7 @@
 		<div class="bg-white/80 mt-6 p-6 rounded-xl row-span-2 mb-auto">
 			<x-cast_members :cast="$series->cast_members" />
 		</div>
-		<p class="text-2xl font-bold">Seasons</p>
+		<p class="bg-white/80 p-2 rounded-xl text-2xl font-bold">Seasons</p>
 		<div class="flex flex-none flex-wrap gap-4">
 			@foreach ( $series->seasons as $season )
 				<a href="{{ route('season.show', [$series, $season]) }}" class="group relative rounded-lg">
@@ -22,7 +22,7 @@
 		</div>
 	</div>
 	<div class="grid grid-cols-[repeat(auto-fill,minmax(154px,1fr))] place-items-center gap-5 mt-6 text-gray-900">
-		<p class="col-span-full text-2xl font-bold justify-self-start">Recommendations</p>
+		<p class="bg-white/80 p-2 rounded-xl col-span-full text-2xl font-bold justify-self-start w-full">Recommendations</p>
 		@foreach ($recs as $series)
 			@if ($owned_recs->contains($series->id))
 				@include('series.partials.select-series-link', [ 'series' => $owned_recs->find($series->id), 'size' => 'w154'])

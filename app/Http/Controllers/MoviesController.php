@@ -195,7 +195,7 @@ class MoviesController extends Controller
     {
         $movie->media_types_display = $this->get_media_types_display($movie->media_types);
 
-        $recommendations = collect( $this->getMovieRecommendations( $movie->id )->results );
+        $recommendations = $this->getMovieRecommendations( $movie->id );
 
         $owned_recommendations = Movie::whereIn( 'id', Arr::pluck($recommendations, 'id') )->get();
 

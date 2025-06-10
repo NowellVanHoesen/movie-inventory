@@ -136,7 +136,7 @@ class SeriesController extends Controller
     {
         $series->media_types_display = $this->get_media_types_display($series->media_types);
 
-        $recs = collect( $this->getSeriesRecommendations($series->id)->results );
+        $recs = $this->getSeriesRecommendations($series->id);
 
         $owned_recs = Series::whereIn( 'id', Arr::pluck( $recs, 'id' ) )->get();
 

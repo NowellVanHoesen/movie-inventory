@@ -16,7 +16,7 @@
 			</div>
 			<p class="mt-4">{{ $movie->overview }}</p>
 			<div class="m-4">
-				<form method="POST" action="{{ route('movies.update', [ 'movie' => $movie->imdb_id ] ) }}">
+				<form method="POST" action="{{ route('movies.update', $movie) }}">
 					@csrf
 					@method('PATCH')
 					<x-form-hidden-input name="movie_id" value="{{ $movie->id }}" />

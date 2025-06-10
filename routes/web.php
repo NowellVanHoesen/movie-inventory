@@ -16,15 +16,15 @@ Route::controller(MoviesController::class)->group(function () {
     Route::get('/movies/wishlist', 'wishlist')->name('movies.wishlist');
     Route::get('/movies/purchased', 'purchased')->name('movies.purchased');
     Route::match(['get','post'],'/movies/create', 'create')->name('movies.create');
-    Route::get('/movies/{movie:imdb_id}', 'show')->name('movies.show');
-    Route::get('/movies/{movie:imdb_id}/edit', 'edit')->name('movies.edit');
-    Route::patch('/movies/{movie:imdb_id}', 'update')->name('movies.update');
-    Route::delete('/movies/{movie:imdb_id}', 'destroy')->name('movies.destroy');
+    Route::get('/movies/{movie}', 'show')->name('movies.show');
+    Route::get('/movies/{movie}/edit', 'edit')->name('movies.edit');
+    Route::patch('/movies/{movie}', 'update')->name('movies.update');
+    Route::delete('/movies/{movie}', 'destroy')->name('movies.destroy');
 });
 
 Route::controller(MovieCollectionController::class)->group(function () {
     Route::get('/movieCollection', 'index')->name('movieCollection.index');
-    Route::get('/movieCollection/{id}', 'show')->name('movieCollection.show');
+    Route::get('/movieCollection/{collection}', 'show')->name('movieCollection.show');
 });
 
 Route::controller(SeriesController::class)->group(function () {

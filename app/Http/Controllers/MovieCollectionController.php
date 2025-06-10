@@ -15,10 +15,9 @@ class MovieCollectionController extends Controller
         return view('movies.collections.index', ['collections' => MovieCollection::orderBy('name', 'asc')->simplePaginate(24)]);
     }
 
-    public function show(int $id)
+    public function show(MovieCollection $collection)
     {
-        $collection = MovieCollection::where('id', $id)->first();
-        $collection_details = $this->getMovieCollection($id);
+        $collection_details = $this->getMovieCollection($collection->id);
         $collection_details->parts = Arr::sort($collection_details->parts, function($movie) {
             return $movie->release_date;
         });

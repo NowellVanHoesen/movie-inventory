@@ -62,7 +62,7 @@ class SeriesController extends Controller
 
             $data['series_detail'] = $series_detail;
 
-            $data['search_term'] = $attributes['search_term'];
+            $data['search_term'] = $attributes['search_term'] ?? '';
         }
 
         return view('series.create', $data);
@@ -126,7 +126,7 @@ class SeriesController extends Controller
             'purchase_date' => $attributes['purchase_date'],
         ]);
 
-        return redirect('/series/'.$series->id);
+        return redirect()->route('series.show', $series);
     }
 
     /**

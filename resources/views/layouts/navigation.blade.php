@@ -11,11 +11,11 @@
     <div :class="{ 'block': mobileOpen, 'hidden': !mobileOpen }" class="md:z-10 absolute top-full left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:w-full px-2 rounded-b-lg md:rounded-none drop-shadow-lg md:shadow-none bg-gray-900 md:bg-transparent divide-y-2 divide-gray-700 md:divide-none">
         <!-- Primary Navigation Menu -->
         <x-nav aria-label="main" class="md:grow-1 md:space-x-4 md:flex">
-            <x-nav-link href="/" :active="Route::is('home')">Home</x-nav-link>
-            <x-nav-link href="/movies" :active="Route::is('movies.*')">Movies</x-nav-link>
-            <x-nav-link href="/series" :active="Route::is('series.*')">Series</x-nav-link>
-            <x-nav-link href="/about" :active="Route::is('about')">About</x-nav-link>
-            <x-nav-link href="/contact" :active="Route::is('contact')">Contact</x-nav-link>
+            <x-nav-link href="{{ route('home') }}" :active="Route::is('home')">Home</x-nav-link>
+            <x-nav-link href="{{ route('movies.index') }}" :active="Route::is('movies.*')">Movies</x-nav-link>
+            <x-nav-link href="{{ route('series.index') }}" :active="Route::is('series.*')">Series</x-nav-link>
+            <x-nav-link href="{{ route('about') }}" :active="Route::is('about')">About</x-nav-link>
+            <x-nav-link href="{{ route('contact') }}" :active="Route::is('contact')">Contact</x-nav-link>
         </x-nav>
         <!-- Settings Dropdown -->
         <x-nav aria-label="profile" class="grow-0 flex flex-row space-x-4 justify-end">
@@ -34,21 +34,21 @@
                         </button>
                     </x-slot>
                     <x-slot:content>
-                        <x-nav-alt-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">Dashboard</x-nav-alt-link>
-                        <x-nav-alt-link :href="route('profile.edit')">Profile</x-nav-alt-link>
+                        <x-nav-alt-link href="{{ route('dashboard') }}" :active="Route::is('dashboard')">Dashboard</x-nav-alt-link>
+                        <x-nav-alt-link href="{{ route('profile.edit') }}">Profile</x-nav-alt-link>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <x-nav-alt-link :href="route('logout')"
+                            <x-nav-alt-link href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                             this.closest('form').submit();">Log Out</x-nav-alt-link>
                         </form>
                     </x-slot>
                 </x-dropdown>
             @else
-                <x-nav-link :href="route('login')" :active="request()->routeIs('login')">Log in</x-nav-link>
+                <x-nav-link href="{{ route('login') }}" :active="Route::is('login')">Log in</x-nav-link>
                 @if (Route::has('register'))
-                    <x-nav-link :href="route('register')" :active="request()->routeIs('register')">Register</x-nav-link>
+                    <x-nav-link href="{{ route('register') }}" :active="Route::is('register')">Register</x-nav-link>
                 @endif
             @endauth
         </x-nav>

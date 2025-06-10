@@ -185,7 +185,7 @@ class MoviesController extends Controller
 
         processMovieCastMembers::dispatch($movie);
 
-        return redirect('/movies/'.$movie_detail->imdb_id);
+        return redirect()->route('movies.show', $movie);
     }
 
     /**
@@ -243,7 +243,7 @@ class MoviesController extends Controller
             }
         }
 
-        return redirect('/movies/'.$movie->imdb_id);
+        return redirect()->route('movies.show', $movie);
     }
 
     /**

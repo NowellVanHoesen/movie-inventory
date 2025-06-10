@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Series extends Model
 {
-    /** @use HasFactory<\Database\Factories\SeriesFactory> */
-    use HasFactory;
+    use HasSlug;
 
     protected $guarded = [];
 
@@ -47,5 +47,17 @@ class Series extends Model
     public function cast_members()
     {
         return $this->belongsToMany(CastMember::class, table: 'cast_member_series', foreignPivotKey: 'series_id')->withPivot('character', 'order')->orderByPivot('order', 'asc');
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

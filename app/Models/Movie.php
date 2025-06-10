@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Movie extends Model
 {
-    /** @use HasFactory<\Database\Factories\MoviesFactory> */
-    use HasFactory;
+    use HasSlug;
 
     protected $guarded = [];
 
@@ -60,5 +60,17 @@ class Movie extends Model
     public function collection()
     {
         return $this->belongsTo(MovieCollection::class);
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

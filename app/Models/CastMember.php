@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class CastMember extends Model
 {
-    /** @use HasFactory<\Database\Factories\CastMemberFactory> */
-    use HasFactory;
+    use HasSlug;
 
     protected $fillable = ['id', 'name', 'original_name', 'profile_path'];
 
@@ -34,5 +35,17 @@ class CastMember extends Model
     public function episodes()
     {
         return $this->belongsToMany(Episode::class);
+    }
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('name')
+            ->saveSlugsTo('slug');
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 }

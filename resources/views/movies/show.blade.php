@@ -4,14 +4,15 @@
 			<img src={{ "https://image.tmdb.org/t/p/w185/" . $movie->poster_path }} alt="{{ $movie->title }} movie poster">
 		</div>
 		<div>
-			<p>
-				{{ $movie->title }}
-				<span class="text-sm font-normal">( {{ $movie->certification->name }} ) {{ $movie->runtime }} min.</span>
-			</p>
-			<p><em>{{ $movie->tagline }}</em></p>
 			<div class="sm:flex sm:justify-between sm:items-start">
 				<div>
-					<p class="text-sm">{{ $movie->genres->pluck('name')->join(' | ') }}</p>
+					<p class="text-2xl">
+						{{ $movie->title }}
+						<span class="text-sm font-normal">( {{ $movie->certification->name }} ) {{ $movie->runtime }} min.</span>
+					</p>
+					<p><em>{{ $movie->tagline }}</em></p>
+					<p class="text-sm mb-2">{{ $movie->genres->pluck('name')->join(' | ') }}</p>
+					@if ( is_null($movie->purchase_date) )<p class="text-sm font-normal text-[#3e4b62]">wishlist</p>@endif
 					@foreach ($movie->media_types_display as $parent => $media_types)
 						<p class="text-sm"><strong>{{ $parent }}</strong>: {{ implode(' | ', $media_types) }}</p>
 					@endforeach

@@ -13,13 +13,11 @@
 		<p class="text-sm mb-2">
 			{{ $series->genres->pluck('name')->join(' | ') }}
 		</p>
+		@if ( is_null($series->purchase_date) )<p class="text-sm font-normal text-[#3e4b62]">wishlist</p>@endif
 		@foreach ($series->media_types_display as $parent => $media_types)
 			<p class="text-sm"><strong>{{ $parent }}</strong>: {{ implode(' | ', $media_types) }}</p>
 		@endforeach
 		<p class="text-sm"><strong>First Air Date</strong>: {{ $series->first_air_date }}</p>
-		@if ( ! empty( $series->purchase_date ) )
-			<p class="text-sm"><strong>Purchase Date</strong>: {{ $series->purchase_date }}</p>
-		@endif
 		<p class="mt-4">{{ $series->overview }}</p>
 	</div>
 </div>

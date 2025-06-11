@@ -9,6 +9,5 @@
 		class="{{ is_null( $movie->poster_path ) ? '' : 'invisible group-hover:visible' }} text-left"
 		title="{{ $movie->title }}"
 		release_year="{{ date( 'Y', strtotime( $movie->release_date )) }}"
-		certification="({{ $movie->certification->name }})"
 	/>
 </x-poster-link>

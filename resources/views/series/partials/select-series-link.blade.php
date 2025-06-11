@@ -9,6 +9,5 @@
 		class="{{ is_null( $series->poster_path ) ? '' : 'invisible group-hover:visible' }} text-left"
 		title="{{ $series->name }}"
 		release_year="{{ $series->first_air_date ? date( 'Y-m-d', strtotime( $series->first_air_date )) : 'TBA' }}"
-		certification="({{ $series->certification->name }})"
 	/>
 </x-poster-link>

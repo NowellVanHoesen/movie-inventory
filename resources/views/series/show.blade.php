@@ -9,7 +9,7 @@
 		<div class="flex flex-none flex-wrap gap-4">
 			@foreach ( $series->seasons as $season )
 				<a href="{{ route('season.show', [$series, $season]) }}" class="group relative rounded-lg">
-					<img src="{{ is_null( $season->poster_path ) ? env('POSTER_PLACEHOLDER') : "https://image.tmdb.org/t/p/w92" . $season->poster_path }}" class="rounded-lg border" />
+					<img src="{{ is_null( $season->poster_path ) ? config('tmdb.placeholder.poster') : "https://image.tmdb.org/t/p/w92" . $season->poster_path }}" class="rounded-lg border" />
 					<div class="p-2 leading-none absolute bottom-0 left-0 right-0 bg-white/75 rounded-b-lg invisible group-hover:visible">
 						<p>{{ $season->name }}</p>
 						<p>Ep: {{ count( $season->episodes ) }}</p>

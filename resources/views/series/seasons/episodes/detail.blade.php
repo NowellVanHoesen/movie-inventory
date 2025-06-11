@@ -1,5 +1,5 @@
 <div class="grid gap-2 grid-cols-[300px_1fr] rounded-lg bg-white/80 mt-2 mb-auto">
-	<img src="{{ is_null( $episode->still_path ) ? env('STILL_PLACEHOLDER') : "https://image.tmdb.org/t/p/w300" . $episode->still_path }}" class="rounded-tl-lg" />
+	<img src="{{ is_null( $episode->still_path ) ? config('tmdb.placeholder.still') : "https://image.tmdb.org/t/p/w300" . $episode->still_path }}" class="rounded-tl-lg" />
 	<div class="p-2">
 		<p class="text-lg">
 			<span class="text-2xl">{{ $series->name }}</span>: {{ $season->name }},

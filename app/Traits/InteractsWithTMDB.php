@@ -179,9 +179,9 @@ trait InteractsWithTMDB
         }
 
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer '.env('TMDB_AUTH_KEY'),
+            'Authorization' => 'Bearer ' . config('tmdb.api.auth_key'),
             'accept' => 'application/json',
-        ])->withQueryParameters($queryParams)->get(env('TMDB_BASE_URL').'/'.env('TMDB_API_VERSION').'/'.$endpoint);
+        ])->withQueryParameters($queryParams)->get(config('tmdb.api.base_url').'/'.config('tmdb.api.version').'/'.$endpoint);
 
         return $response->object();
 

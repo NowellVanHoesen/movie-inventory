@@ -17,7 +17,7 @@
 						<p class="text-sm"><strong>{{ $parent }}</strong>: {{ implode(' | ', $media_types) }}</p>
 					@endforeach
 					@if ( ! is_null( $movie->collection_id) )
-						<p><a href="{{ route('movieCollection.show', $movie->collection_id ) }}">{{ $movie->collection->name }}</a></p>
+						<p><a href="{{ route('movieCollection.show', $movie->collection ) }}">{{ $movie->collection->name }}</a></p>
 					@endif
 				</div>
 				@auth

@@ -3,12 +3,14 @@
 use App\Http\Controllers\MovieCollectionController;
 use App\Http\Controllers\MoviesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeriesController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
 Route::view('/about', 'about')->name('about');
 Route::view('/contact', 'contact')->name('contact');
+Route::get('/search', SearchController::class)->name('search');
 
 Route::controller(MoviesController::class)->group(function () {
     Route::get('/movies', 'index')->name('movies.index');

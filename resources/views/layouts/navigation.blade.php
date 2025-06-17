@@ -17,6 +17,16 @@
             <x-nav-link href="{{ route('about') }}" :active="Route::is('about')">About</x-nav-link>
             <x-nav-link href="{{ route('contact') }}" :active="Route::is('contact')">Contact</x-nav-link>
         </x-nav>
+        <div class="ml-6 px-2 flex flex-1 justify-end">
+            <form method="GET" action="{{ route('search') }}" class="">
+                @csrf
+                <div class="grid grid-cols-[repeat(1,minmax(0,1fr))] max-w-128 lg:max-w-80 w-full shadow-sm rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                    <input name="search" type="search" value="{{ request('search', '') }}" placeholder="Search" aria-label="Search" class="outline-none py-1.5 pl-10 pr-3 border-0 w-full block row-start-1 col-start-1 bg-gray-50 text-gray-900 placeholder:text-gray-400 rounded-md focus:ring-0 sm:text-sm sm:leading-6" />
+                    <i class="fa-solid fa-magnifying-glass text-[#99a1af] self-center row-start-1 col-start-1 block align-middle leading-[24px] w-5 h-5 ml-3 pointer-events-none"></i>
+                </div>
+                <x-form-button class="hidden"></x-form-button>
+            </form>
+        </div>
         <!-- Settings Dropdown -->
         <x-nav aria-label="profile" class="grow-0 flex flex-row space-x-4 justify-end">
             @auth

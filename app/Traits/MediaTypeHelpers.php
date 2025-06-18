@@ -32,13 +32,15 @@ trait MediaTypeHelpers
             return $media_types_display;
         }
 
+        $media_types_collection = MediaType::all();
+
         foreach ($media_types as $type) {
             $tmp_media_type_arr = [$type->name];
 
             $current_parent_id = $type->parent_id;
 
             while ($current_parent_id !== 0) {
-                $media_type_parent = MediaType::find($current_parent_id);
+                $media_type_parent = $media_types_collection->firstWhere( 'id', $current_parent_id);
                 $tmp_media_type_arr = [$media_type_parent->name => $tmp_media_type_arr];
                 $current_parent_id = $media_type_parent->parent_id;
             }

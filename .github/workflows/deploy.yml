@@ -1,0 +1,22 @@
+name: Movie Inventory Deploy
+
+on:
+    release:
+        types: [ published, edited ]
+
+jobs:
+    deploy-to-host:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: ssh into server to run deploy script
+              uses: appleboy/ssh-action@master
+              with:
+                host: ${{ secrets.SG_DEPLOY_HOST }}
+                username: ${{ secrets.SG_DEPLOY_USER }}
+                key: ${{ secrets.SG_DEPLOY_RSA_PRIVATE }}
+                passphrase: ${{ secrets.SG_DEPLOY_RSA_PASSWORD}}
+                port: ${{ secrets.SG_DEPLOY_PORT}}
+                script: |
+                    cd ~/www/movies.nvweb.dev
+                    ./.github/workflows/deploy.sh

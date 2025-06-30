@@ -18,11 +18,11 @@ Route::controller(MoviesController::class)->group(function () {
     Route::post('/movies', 'store')->name('movies.store');
     Route::get('/movies/wishlist', 'wishlist')->name('movies.wishlist');
     Route::get('/movies/purchased', 'purchased')->name('movies.purchased');
-    Route::match(['get','post'],'/movies/create', 'create')->name('movies.create');
+    Route::match(['get','post'],'/movies/create', 'create')->middleware(['auth'])->name('movies.create');
     Route::get('/movies/{movie}', 'show')->name('movies.show');
-    Route::get('/movies/{movie}/edit', 'edit')->name('movies.edit');
-    Route::patch('/movies/{movie}', 'update')->name('movies.update');
-    Route::delete('/movies/{movie}', 'destroy')->name('movies.destroy');
+    Route::get('/movies/{movie}/edit', 'edit')->middleware(['auth'])->name('movies.edit');
+    Route::patch('/movies/{movie}', 'update')->middleware(['auth'])->name('movies.update');
+    Route::delete('/movies/{movie}', 'destroy')->middleware(['auth'])->name('movies.destroy');
 });
 
 Route::controller(MovieCollectionController::class)->group(function () {
@@ -33,7 +33,7 @@ Route::controller(MovieCollectionController::class)->group(function () {
 Route::controller(SeriesController::class)->group(function () {
     Route::get('/series', 'index')->name('series.index');
     Route::post('/series', 'store')->name('series.store');
-    Route::match(['get', 'post'], '/series/create', 'create')->name('series.create');
+    Route::match(['get', 'post'], '/series/create', 'create')->middleware(['auth'])->name('series.create');
     Route::get('/series/{series}', 'show')->name('series.show');
     Route::get('/series/{series}/season/{season:season_number}', 'showSeason')->name('season.show');
     Route::get('/series/{series}/season/{season:season_number}/episode/{episode:episode_number}', 'showEpisode')->name('episode.show');

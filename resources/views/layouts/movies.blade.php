@@ -11,9 +11,9 @@
             </div>
             <div class="flex justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 text-gray-50">
                 <div class="flex items-center">
-                    <div class="flex items-center">
-                        <h1 class="text-3xl font-bold tracking-tight">Movies</h1>
-                        <x-nav aria-label="main" class="md:grow-1 md:space-x-4 md:flex">
+                    <div class="flex flex-wrap md:flex-nowrap items-center">
+                        <h1 class="text-3xl font-bold tracking-tight basis-full md:basis-auto">Movies</h1>
+                        <x-nav aria-label="main" class="grow-1 md:space-x-4 flex flex-wrap md:flex-nowrap">
                             <x-nav-link href="{{ route('movies.index') }}" :active="Route::is('movies.index')">All</x-nav-link>
                             <x-nav-link href="{{ route('movies.purchased') }}" :active="Route::is('movies.purchased')">Purchased</x-nav-link>
                             <x-nav-link href="{{ route('movies.wishlist') }}" :active="Route::is('movies.wishlist')">Wishlist</x-nav-link>

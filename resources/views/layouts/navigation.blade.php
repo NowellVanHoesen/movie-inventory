@@ -8,7 +8,7 @@
         <span class="sr-only">Open main menu</span>
         <i :class="{ 'fa-xmark': mobileOpen, 'fa-bars': !mobileOpen }" class="fa-solid fa-xl"></i>
     </button>
-    <div :class="{ 'block': mobileOpen, 'hidden': !mobileOpen }" class="md:z-10 absolute top-full left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:w-full px-2 rounded-b-lg md:rounded-none drop-shadow-lg md:shadow-none bg-gray-900 md:bg-transparent divide-y-2 divide-gray-700 md:divide-none">
+    <div :class="{ 'block': mobileOpen, 'hidden': !mobileOpen }" class="z-15 absolute top-full left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:w-full px-2 rounded-b-lg md:rounded-none drop-shadow-lg md:shadow-none bg-gray-900 md:bg-transparent">
         <!-- Primary Navigation Menu -->
         <x-nav aria-label="main" class="md:grow-1 md:space-x-4 md:flex">
             <x-nav-link href="{{ route('home') }}" :active="Route::is('home')">Home</x-nav-link>
@@ -17,10 +17,10 @@
             <x-nav-link href="{{ route('about') }}" :active="Route::is('about')">About</x-nav-link>
             <x-nav-link href="{{ route('contact') }}" :active="Route::is('contact')">Contact</x-nav-link>
         </x-nav>
-        <div class="ml-6 px-2 flex flex-1 justify-end">
-            <form method="GET" action="{{ route('search') }}" class="">
+        <div class="md:ml-6 my-2 px-2 flex flex-1 md:justify-end">
+            <form method="GET" action="{{ route('search') }}" class="w-full">
                 @csrf
-                <div class="grid grid-cols-[repeat(1,minmax(0,1fr))] max-w-128 lg:max-w-80 w-full shadow-sm rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                <div class="grid grid-cols-[repeat(1,minmax(0,1fr))] md:max-w-80 max-w-full w-full min-w-45 shadow-sm rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input name="search" type="search" value="{{ request('search', '') }}" placeholder="Search" aria-label="Search" class="outline-none py-1.5 pl-10 pr-3 border-0 w-full block row-start-1 col-start-1 bg-gray-50 text-gray-900 placeholder:text-gray-400 rounded-md focus:ring-0 sm:text-sm sm:leading-6" />
                     <i class="fa-solid fa-magnifying-glass text-[#99a1af] self-center row-start-1 col-start-1 block align-middle leading-[24px] w-5 h-5 ml-3 pointer-events-none"></i>
                 </div>

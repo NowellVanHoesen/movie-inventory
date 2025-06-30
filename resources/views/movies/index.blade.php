@@ -14,8 +14,8 @@
 	}
 @endphp
 <x-movies-layout>
-	<div class="space-x-4 text-right">
-		<strong>Sort:</strong>
+	<div class="md:space-x-4 space-x-0 flex justify-start md:items-center md:justify-end flex-wrap md:flex-nowrap">
+		<strong class="basis-full md:basis-auto">Sort:</strong>
 		<x-nav-link href="{{ route('movies.index', ['sort' => $title_sort]) }}">{{ $title_sort === 'title' ? 'Title A - Z' : 'Title Z - A' }}</x-nav-link>
 		<x-nav-link href="{{ route('movies.index', ['sort' => $release_date_sort]) }}">{{ $release_date_sort === 'release_date' ? 'Release Date' : 'Release Date desc' }}</x-nav-link>
 		<x-nav-link href="{{ route('movies.index', ['sort' => $purchase_date_sort]) }}">{{ $purchase_date_sort === 'purchase_date' ? 'Purchase Date' : 'Purchase Date desc' }}</x-nav-link>

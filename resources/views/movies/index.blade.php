@@ -20,7 +20,7 @@
 		<x-nav-link href="{{ route('movies.index', ['sort' => $release_date_sort]) }}">{{ $release_date_sort === 'release_date' ? 'Release Date' : 'Release Date desc' }}</x-nav-link>
 		<x-nav-link href="{{ route('movies.index', ['sort' => $purchase_date_sort]) }}">{{ $purchase_date_sort === 'purchase_date' ? 'Purchase Date' : 'Purchase Date desc' }}</x-nav-link>
 	</div>
-	<div class="grid grid-cols-[repeat(auto-fill,minmax(154px,1fr))] place-items-center gap-2 mt-6">
+	<div class="grid grid-cols-[repeat(auto-fill,minmax(154px,1fr))] place-items-center gap-1 sm:gap-2 mt-6">
 		@each('movies.partials.select-movie-link', $movies, 'movie')
 	</div>
 	<div class="mt-4">{{ $movies->links() }}</div>

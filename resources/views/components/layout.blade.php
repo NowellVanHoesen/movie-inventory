@@ -13,7 +13,7 @@
             </div>
         </header>
         <main class="flex-1 grow mb-auto text-gray-50 bg-[#3e4b62] bg-cover bg-no-repeat bg-top bg-fixed">
-            <div class="mx-auto max-w-7xl p-6 lg:px-8">
+            <div class="mx-auto max-w-7xl p-2 lg:px-6">
                 {{ $slot }}
             </div>
         </main>

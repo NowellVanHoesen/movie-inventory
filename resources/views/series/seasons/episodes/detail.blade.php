@@ -1,4 +1,4 @@
-<div class="grid gap-2 grid-cols-[300px_1fr] rounded-lg bg-white/80 mt-2 mb-auto">
+<div class="grid gap-2 lg:grid-cols-[300px_1fr] rounded-lg bg-white/80 mt-2 mb-auto">
 	<img src="{{ is_null( $episode->still_path ) ? config('tmdb.placeholder.still') : "https://image.tmdb.org/t/p/w300" . $episode->still_path }}" class="rounded-tl-lg" />
 	<div class="p-2">
 		<p class="text-lg">
@@ -14,5 +14,5 @@
 		</p>
 		<p></p>
 	</div>
-	<p class="mt-4 col-span-2 pb-2 px-3">{{ $episode->overview }}</p>
+	<p class="mt-4 lg:col-span-2 pb-2 px-3">{{ $episode->overview }}</p>
 </div>

@@ -1,7 +1,7 @@
-<div class="grid grid-cols-[185px_1fr] gap-4 mt-6 bg-white/80 rounded-xl mb-auto overflow-hidden">
+<div class="grid grid-cols-1 md:grid-cols-[185px_1fr] gap-4 mt-6 bg-white/80 rounded-xl mb-auto overflow-hidden">
 	<img src={{ "https://image.tmdb.org/t/p/w185/" . $series->poster_path }} alt="{{ $series->name }} series poster" class="tl-xl">
 
-	<div class="sm:flex sm:flex-col my-4">
+	<div class="sm:flex sm:flex-col m-4 md:ml-0">
 		<p class="text-2xl leading-none">
 			{{ $series->name }}
 			<span class="text-sm">({{ $series->certification->name }})</span>

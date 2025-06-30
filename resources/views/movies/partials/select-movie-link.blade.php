@@ -1,5 +1,5 @@
 @props([
-	'size' => 'w185'
+	'size' => 'w154'
 ])
 
 <x-poster-link href="{{ route('movies.show', $movie) }}" id="{{ $movie->slug }}">

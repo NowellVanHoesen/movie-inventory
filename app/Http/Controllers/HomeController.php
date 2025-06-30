@@ -12,8 +12,8 @@ class HomeController extends Controller
      */
     public function __invoke()
     {
-        $movies = Movie::orderByDesc('purchase_date')->limit(12)->get();
-        $series = Series::orderByDesc('purchase_date')->limit(6)->get();
+        $movies = Movie::orderByDesc('purchase_date')->limit(14)->get();
+        $series = Series::orderByDesc('purchase_date')->limit(7)->get();
 
         return view('home', [
             'movies' => $movies,

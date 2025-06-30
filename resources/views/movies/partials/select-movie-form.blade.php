@@ -1,5 +1,5 @@
 @props([
-	'size' => 'w185'
+	'size' => 'w154'
 ])
 
 <x-poster-button action="{{ route('movies.create') }}">

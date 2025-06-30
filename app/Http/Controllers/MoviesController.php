@@ -47,7 +47,7 @@ class MoviesController extends Controller
                 $query->orderBy('release_date')->orderBy('title');
         }
 
-        $movies = $query->simplePaginate(24);
+        $movies = $query->simplePaginate(14);
 
         if ( ! is_null( request()->input('sort') ) ) {
             $movies->appends([ 'sort' => $sort ]);
@@ -62,7 +62,7 @@ class MoviesController extends Controller
     public function wishlist()
     {
         return view('movies.index', [
-            'movies' => Movie::wishlist()->orderByDesc('release_date')->orderBy('title')->simplePaginate(24),
+            'movies' => Movie::wishlist()->orderByDesc('release_date')->orderBy('title')->simplePaginate(14),
         ]);
     }
 
@@ -72,7 +72,7 @@ class MoviesController extends Controller
     public function purchased()
     {
         return view('movies.index', [
-            'movies' => Movie::purchased()->orderByDesc('purchase_date')->orderByDesc('release_date')->simplePaginate(24),
+            'movies' => Movie::purchased()->orderByDesc('purchase_date')->orderByDesc('release_date')->simplePaginate(14),
         ]);
     }
 

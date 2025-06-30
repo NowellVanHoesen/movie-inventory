@@ -10,12 +10,12 @@
 		<div>
 			<p>{{ $collection->name }}</p>
 			<p class="mt-4">{{ $collection->overview }}</p>
-			<div class="grid grid-cols-[repeat(auto-fill,minmax(185px,1fr))] gap-3 mt-6 leading-none">
+			<div class="grid grid-cols-[repeat(auto-fill,minmax(92px,1fr))] gap-3 mt-6 leading-none">
 				@foreach ($collection_details->parts as $movie)
 					@if ($collection->movies->contains($movie->id))
-						@include('movies.partials.select-movie-link', [ 'movie' => $collection->movies->find($movie->id)])
+						@include('movies.partials.select-movie-link', [ 'movie' => $collection->movies->find($movie->id), 'size' => 'w92'])
 					@else
-						@include('movies.partials.select-movie-form')
+						@include('movies.partials.select-movie-form', ['size' => 'w92'])
 					@endif
 				@endforeach
 			</div>

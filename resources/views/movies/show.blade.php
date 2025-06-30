@@ -44,14 +44,16 @@
 			</div>
 		</div>
 	</div>
+	@if (count($recommendations))
 	<div class="grid grid-cols-[repeat(auto-fill,minmax(154px,1fr))] place-items-center gap-5 mt-6 text-gray-900">
 		<p class="bg-white/80 p-2 rounded-xl col-span-full text-2xl font-bold justify-self-start w-full">Recommendations</p>
 		@foreach ($recommendations as $movie)
 			@if ($owned_recommendations->contains($movie->id))
-				@include('movies.partials.select-movie-link', [ 'movie' => $owned_recommendations->find($movie->id), 'size' => 'w154'])
+				@include('movies.partials.select-movie-link', [ 'movie' => $owned_recommendations->find($movie->id) ])
 			@else
-				@include('movies.partials.select-movie-form', [ 'size' => 'w154' ])
+				@include('movies.partials.select-movie-form')
 			@endif
 		@endforeach
 	</div>
+	@endif
 </x-movies-layout>

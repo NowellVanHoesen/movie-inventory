@@ -8,7 +8,7 @@
 			@endif
 		</div>
 		<div>
-			<p>{{ $collection->name }}</p>
+			<h2 class="text-2xl">{{ $collection->name }}</h2>
 			<p class="mt-4">{{ $collection->overview }}</p>
 			<div class="grid grid-cols-[repeat(auto-fill,minmax(92px,1fr))] gap-3 mt-6 leading-none">
 				@foreach ($collection_details->parts as $movie)

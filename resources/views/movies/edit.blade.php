@@ -4,10 +4,10 @@
 			<img src={{ "https://image.tmdb.org/t/p/w300/" . $movie->poster_path }} alt="{{ $movie->title }} movie poster">
 		</div>
 		<div>
-			<p>
+			<h2 class="text-2xl">
 				{{ $movie->title }}
 				<span class="text-sm font-normal">( {{ $movie->certification->name }} ) {{ $movie->runtime }} min.</span>
-			</p>
+			</h2>
 			<p><em>{{ $movie->tagline }}</em></p>
 			<div class="sm:flex sm:justify-between sm:items-start">
 				<div>
@@ -25,7 +25,7 @@
 						<x-form-input type="date" name="purchase_date" id="purchase_date" value="{{ $movie->purchase_date }}" />
 					</x-form-field>
 					<x-form-label class="text-gray-900" value="Media Type" />
-					<div class="grid grid-cols-3">
+					<div class="grid md:grid-cols-3 grid-cols-2">
 						@foreach ($media_types as $type => $sub_types )
 							<div>
 								<span class="text-sm font-bold">{{ $type }}</span>

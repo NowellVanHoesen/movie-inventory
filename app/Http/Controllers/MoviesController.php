@@ -88,7 +88,7 @@ class MoviesController extends Controller
                 'query' => ['min:2'],
             ]);
 
-            $data['local_results'] = Movie::search($attributes['query'])->get();
+            $data['local_results'] = Movie::where('title_normalized', 'like', '%' . $attributes['query'] . '%')->get();
 
             $data['search_results'] = $this->searchMovies($attributes['query']);
 

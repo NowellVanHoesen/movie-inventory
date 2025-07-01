@@ -19,9 +19,9 @@ class SearchController extends Controller
         $series_results = collect();
 
         if ($request->search) {
-            $movies_results = Movie::where('title', 'like', '%' . $request->search . '%')->orderByDesc('purchase_date')->limit(12)->get();
-            $collections_results = MovieCollection::where('name', 'like', '%' . $request->search . '%')->orderBy('name')->limit(12)->get();
-            $series_results = Series::where('name', 'like', '%' . $request->search . '%')->orderByDesc('first_air_date')->limit(12)->get();
+            $movies_results = Movie::where('title_normalized', 'like', '%' . $request->search . '%')->orderByDesc('purchase_date')->limit(14)->get();
+            $collections_results = MovieCollection::where('name_normalized', 'like', '%' . $request->search . '%')->orderBy('name')->limit(14)->get();
+            $series_results = Series::where('name_normalized', 'like', '%' . $request->search . '%')->orderByDesc('first_air_date')->limit(14)->get();
         }
 
         return view('search', [

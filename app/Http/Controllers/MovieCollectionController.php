@@ -12,7 +12,7 @@ class MovieCollectionController extends Controller
 
     public function index()
     {
-        return view('movies.collections.index', ['collections' => MovieCollection::orderBy('name', 'asc')->simplePaginate(24)]);
+        return view('movies.collections.index', ['collections' => MovieCollection::orderBy('name', 'asc')->simplePaginate(14)]);
     }
 
     public function show(MovieCollection $collection)

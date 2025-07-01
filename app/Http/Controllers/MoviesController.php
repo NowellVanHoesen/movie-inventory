@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Jobs\processMovieCastMembers;
 use App\Jobs\processMovieCollection;
 use App\Models\Certification;
-use App\Models\MediaType;
 use App\Models\Movie;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
@@ -85,18 +84,24 @@ class MoviesController extends Controller
 
         if (! empty($request['query'])) {
             $attributes = $request->validate([
-                'query' => ['min:2'],
+                'query' => 'min:2',
+                'year' => 'sometimes|max:4'
             ]);
 
             $data['local_results'] = Movie::where('title_normalized', 'like', '%' . $attributes['query'] . '%')->get();
 
-            $data['search_results'] = $this->searchMovies($attributes['query']);
+            $data['search_results'] = $this->searchMovies(
+                $attributes['query'],
+                $attributes['year'] ? $attributes['year'] : null
+            );
 
             $data['search_term'] = $attributes['query'];
+            $data['search_year'] = $attributes['year'];
         } elseif (! empty($request['movie_id'])) {
             $attributes = $request->validate([
-                'movie_id' => ['integer'],
-                'search_term' => ['min:2'],
+                'movie_id' => 'integer',
+                'search_term' => 'min:2',
+                'search_year' => 'sometimes|max:4',
             ]);
 
             $results = $this->getMovieDetail($attributes['movie_id']);

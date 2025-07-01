@@ -83,16 +83,22 @@ trait InteractsWithTMDB
         return $allRecs;
     }
 
-    private function searchMovies(string $query, int $page = 1)
+    private function searchMovies(string $query, ?string $year)
     {
+        $args = [
+            'query' => $query,
+            'include_adult' => 'true',
+            'language' => 'en-US',
+            'page' => 1,
+        ];
+
+        if ( $year ) {
+            $args['year'] = $year;
+        }
+
         return $this->sendTMDBRequest(
             'search/movie',
-            [
-                'query' => $query,
-                'include_adult' => true,
-                'language' => 'en-US',
-                'page' => $page,
-            ]
+            $args
         );
     }
 

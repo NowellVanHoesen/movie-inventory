@@ -19,12 +19,4 @@ return new class extends Migration
             $table->string('imdb_id', 10)->unique()->nullable()->change();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        //
-    }
 };

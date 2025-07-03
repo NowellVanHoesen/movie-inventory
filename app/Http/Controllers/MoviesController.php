@@ -30,7 +30,7 @@ class MoviesController extends Controller
                 $query->orderByDesc('purchase_date')->orderBy('title');
                 break;
             case 'purchase_date':
-                $query->orderBy('purchase_date')->orderBy('title');
+                $query->orderByRaw('purchase_date is null')->orderBy('purchase_date')->orderBy('title');
                 break;
             case 'title|desc':
                 $query->orderByDesc('title')->orderBy('release_date');

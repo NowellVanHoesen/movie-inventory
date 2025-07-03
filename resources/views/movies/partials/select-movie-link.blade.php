@@ -8,6 +8,6 @@
 	<x-poster-overlay-detail
 		class="{{ is_null( $movie->poster_path ) ? '' : 'invisible group-hover:visible' }} text-left"
 		title="{{ $movie->title }}"
-		release_year="{{ date( 'Y', strtotime( $movie->release_date )) }}"
+		release_year="{{ $movie->release_date ? date( 'Y', strtotime( $movie->release_date )) : 'TBA' }}"
 	/>
 </x-poster-link>

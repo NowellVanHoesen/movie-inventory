@@ -37,7 +37,7 @@ class SeriesController extends Controller
                 'query' => ['min:2'],
             ]);
 
-            $data['local_results'] = Series::where('title_normalized', 'like', '%' . $attributes['query'] . '%')->get();
+            $data['local_results'] = Series::where('name_normalized', 'like', '%' . $attributes['query'] . '%')->get();
 
             $data['search_results'] = $this->searchSeries($attributes['query']);
 

@@ -161,7 +161,7 @@ class MoviesController extends Controller
 
         $movie = Movie::create([
             'id' => $movie_detail->id,
-            'imdb_id' => $movie_detail->imdb_id,
+            'imdb_id' => $movie_detail->imdb_id ?: null,
             'title' => $movie_detail->title,
             'original_title' => $movie_detail->original_title,
             'tagline' => $movie_detail->tagline,

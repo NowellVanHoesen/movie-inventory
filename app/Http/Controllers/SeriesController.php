@@ -22,7 +22,7 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        return view('series.index', ['series' => Series::orderBy('name', 'asc')->simplePaginate(24)]);
+        return view('series.index', ['series' => Series::orderBy('name', 'asc')->simplePaginate(14)]);
     }
 
     /**

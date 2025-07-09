@@ -11,13 +11,13 @@
 						<span class="text-sm font-normal">( {{ $movie->certification->name }} ) {{ $movie->runtime }} min.</span>
 					</h2>
 					<p><em>{{ $movie->tagline }}</em></p>
-					<p class="text-sm mb-2">{{ $movie->genres->pluck('name')->join(' | ') }}</p>
+					<p class="text-sm">{{ $movie->genres->pluck('name')->join(' | ') }}</p>
 					@if ( is_null($movie->purchase_date) )<p class="text-sm font-normal text-[#3e4b62]">wishlist</p>@endif
 					@foreach ($movie->media_types_display as $parent => $media_types)
-						<p class="text-sm"><strong>{{ $parent }}</strong>: {{ implode(' | ', $media_types) }}</p>
+						<p class="text-sm mt-2"><strong>{{ $parent }}</strong>: {{ implode(' | ', $media_types) }}</p>
 					@endforeach
 					@if ( ! is_null( $movie->collection_id) )
-						<p><a href="{{ route('movieCollection.show', $movie->collection ) }}">{{ $movie->collection->name }}</a></p>
+						<p class="mt-2"><a href="{{ route('movieCollection.show', $movie->collection ) }}" class="text-blue-600 hover:underline focus:underline">{{ $movie->collection->name }}</a></p>
 					@endif
 				</div>
 				@auth
@@ -26,21 +26,7 @@
 			</div>
 			<p class="mt-4">{{ $movie->overview }}</p>
 			<div class="mt-4" x-data="{ showAll: false, castToShow: 20 }">
-				<div class="flex items-center justify-between">
-					<h2 class="text-2xl">Cast Members</h2>
-					<button @click="showAll = !showAll" class="relative cursor-pointer px-4 py-2 text-sm font-medium text-gray-300 bg-[#3e4b62] border border-gray-300 leading-5 rounded-md hover:bg-gray-800 hover:text-white focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 transition ease-in-out duration-150">
-						<span x-text="showAll ? 'Show Less' : 'Show All'"></span>
-					</button>
-				</div>
-				<ul class="mt-4 columns-1 gap-4 lg:columns-2">
-					@foreach ($movie->cast_members as $index => $cast_member)
-						@continue( str_contains( $cast_member->pivot->character, 'uncredited' ) )
-						<li class="flex w-full" x-show="showAll || {{ $index }} < castToShow">
-							{{ $cast_member->name }}
-							<span class="text-right flex flex-1 before:border-b-gray-500 before:border-b-2 before:border-dotted before:content-[''] before:flex-1 before:mx-1 before:mb-[0.3rem]">{{ $cast_member->pivot->character }}</span>
-						</li>
-					@endforeach
-				</ul>
+				<x-cast_members :cast="$movie->cast_members" display_limit="20" multi_cols="true" />
 			</div>
 		</div>
 	</div>

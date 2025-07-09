@@ -53,10 +53,10 @@ it('displays both purchased and wishlist movies in default order (release date d
         ->assertSee([
             'Wild Robot',
             'Ambush',
-            'My Days of Mercy',
+            'Into the Deep',
             'Gladiator II',
             'The Forever Purge',
-            'American Pie',
+            'Last Seen Alive',
             'Dirty Angels'
         ])
         ->assertSeeInOrder([
@@ -64,9 +64,9 @@ it('displays both purchased and wishlist movies in default order (release date d
             'Dirty Angels',
             'Gladiator II',
             'Wicked',
+            'Knox Goes Away',
             'The Beekeeper',
             'Jurassic World Dominion',
-            'The First Purge',
         ]);
 });
 
@@ -103,8 +103,8 @@ it('displays only purchased movies in default order (purchase date desc then rel
             'Into the Deep',
             'Step Up 3',
             'Totally Baked',
-            'Bolt',
-            'After Ever Happy',
+            'My Days of Mercy',
+            'Twin Peaks: Fire Walk with Me',
         ]);
 });
 

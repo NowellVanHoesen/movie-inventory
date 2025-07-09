@@ -3,6 +3,7 @@
 use function Pest\Laravel\get;
 
 it('has movies.create page', function () {
+    loginAsUser();
     get(route('movies.create'))
         ->assertOk();
 });

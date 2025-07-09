@@ -45,7 +45,7 @@ it('does not display a link to edit the displayed movie when not logged in', fun
 it('displays a link to edit the displayed movie when logged in', function() {
     $this->seed(MoviesSeeder::class);
     $movie = Movie::where('imdb_id', 'tt1194173')->first();
-    $user = loginAsUser();
+    loginAsUser();
 
     get(route('movies.show', $movie))
         ->assertOk()

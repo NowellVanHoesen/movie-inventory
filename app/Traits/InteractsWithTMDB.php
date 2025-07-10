@@ -108,7 +108,7 @@ trait InteractsWithTMDB
             'search/tv',
             [
                 'query' => $query,
-                'include_adult' => true,
+                'include_adult' => 'true',
                 'language' => 'en-US',
                 'page' => $page,
             ]

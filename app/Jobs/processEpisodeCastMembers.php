@@ -42,7 +42,7 @@ class processEpisodeCastMembers implements ShouldQueue
         $cast = $this->getEpisodeCast($this->series_id, $this->season_number, $this->episode_number);
 
         foreach ($cast->cast as $cast_member) {
-            if ( $episode->cast_members()->where('cast_member_id', $cast_member->id)->exists() ) {
+            if ( $episode->cast_members()->wherePivot('cast_member_id', $cast_member->id)->exists() ) {
                 continue;
             }
 
@@ -53,6 +53,10 @@ class processEpisodeCastMembers implements ShouldQueue
 
         if (! empty($cast->guest_stars)) {
             foreach ($cast->guest_stars as $cast_member) {
+                if ( $episode->cast_members()->wherePivot('cast_member_id', $cast_member->id)->exists() ) {
+                    continue;
+                }
+
                 $member = $this->getCastMember($cast_member);
 
                 $episode->cast_members()->attach($member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);

@@ -21,8 +21,8 @@
 					@endif
 				</div>
 				@auth
-					<div class="place-content-center"><a href="{{ route('movies.edit', $movie) }}" class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-300 bg-[#3e4b62] border border-gray-300 leading-5 rounded-md hover:bg-gray-800 hover:text-white focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 transition ease-in-out duration-150">Edit</a></div>
 					<div class="flex items-center gap-8">
+						<div class="place-content-center"><a href="{{ route('movies.edit', $movie) }}" class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-[#3e4b62] border border-transparent rounded-md hover:bg-[#333c50] focus:bg-[#333c50] focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 transition ease-in-out duration-150">Edit</a></div>
 						<x-danger-button form="delete-movie" onclick="event.preventDefault(); if (confirm('Are you sure you want to delete this movie?')) { document.getElementById('delete-movie').submit(); }">
 							{{ __('Delete') }}
 						</x-danger-button>

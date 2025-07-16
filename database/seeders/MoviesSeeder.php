@@ -2,10 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Movie;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 
 class MoviesSeeder extends Seeder
 {

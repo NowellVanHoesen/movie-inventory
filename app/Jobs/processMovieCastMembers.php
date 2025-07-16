@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Models\CastMember;
 use App\Models\Movie;
 use App\Traits\CastMemberHelpers;
 use App\Traits\InteractsWithTMDB;
@@ -36,15 +35,7 @@ class processMovieCastMembers implements ShouldBeUnique, ShouldQueue
     {
         $credits = $this->getMovieCast($this->movie->id);
 
-        foreach ($credits->cast as $cast_member) {
-            if ( $this->movie->cast_members()->where('cast_member_id', $cast_member->id)->exists() ) {
-                continue;
-            }
-
-            $member = $this->getCastMember($cast_member);
-
-            $this->movie->cast_members()->attach($cast_member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
-        }
+        $this->attachCastMemberToModel( $this->movie, $credits->cast );
     }
 
     public function uniqueId() {

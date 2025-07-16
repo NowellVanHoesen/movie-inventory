@@ -31,15 +31,7 @@ class processSeriesCastMembers implements ShouldQueue
         // get and attach Series cast members
         $series_cast = $this->getSeriesCast($this->series_id);
 
-        foreach ($series_cast->cast as $cast_member) {
-            if ( $series->cast_members()->where('cast_member_id', $cast_member->id)->exists() ) {
-                continue;
-            }
-
-            $member = $this->getCastMember($cast_member);
-
-            $series->cast_members()->attach($member->id, ['character' => $cast_member->character, 'order' => $cast_member->order]);
-        }
+        $this->attachCastMemberToModel( $series, $series_cast->cast );
     }
 
     public function uniqueId() {

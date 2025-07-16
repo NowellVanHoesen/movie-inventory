@@ -256,6 +256,8 @@ class MoviesController extends Controller
      */
     public function destroy(Movie $movie)
     {
-        //
+        $movie->delete();
+
+        return redirect()->route('movies.index')->with('status', 'Movie deleted successfully.');
     }
 }

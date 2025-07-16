@@ -84,8 +84,8 @@ class MoviesController extends Controller
 
         if (! empty($request['query'])) {
             $attributes = $request->validate([
-                'query' => 'min:2',
-                'year' => 'sometimes|max:4'
+                'query' => ['min:2'],
+                'year' => ['sometimes', 'max:4']
             ]);
 
             $data['local_results'] = Movie::where('title_normalized', 'like', '%' . $attributes['query'] . '%')->get();
@@ -99,9 +99,9 @@ class MoviesController extends Controller
             $data['search_year'] = $attributes['year'];
         } elseif (! empty($request['movie_id'])) {
             $attributes = $request->validate([
-                'movie_id' => 'integer',
-                'search_term' => 'min:2',
-                'search_year' => 'sometimes|max:4',
+                'movie_id' => ['integer'],
+                'search_term' => ['min:2'],
+                'search_year' => ['sometimes', 'max:4'],
             ]);
 
             $results = $this->getMovieDetail($attributes['movie_id']);

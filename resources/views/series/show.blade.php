@@ -1,4 +1,4 @@
-<x-series-layout main_bg_style="background-image: linear-gradient( rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url(https://image.tmdb.org/t/p/original{{ $series->backdrop_path }})">
+<x-series-layout page_title="{{ $page_title ?? 'Movie Inventory - Series Detail' }}" main_bg_style="background-image: linear-gradient( rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url(https://image.tmdb.org/t/p/original{{ $series->backdrop_path }})">
 	<div class="grid grid-cols-1 lg:grid-cols-[1fr_calc(50%-93px)] gap-4 text-gray-900">
 		@include( 'series.partials.detail' )
 		{{-- @include( 'series.seasons.detail' ) --}}

@@ -24,10 +24,8 @@ class SearchController extends Controller
             $series_results = Series::where('name_normalized', 'like', '%' . $request->search . '%')->orderByDesc('first_air_date')->limit(14)->get();
         }
 
-        return view('search', [
-            'movies_results' => $movies_results,
-            'collections_results' => $collections_results,
-            'series_results' => $series_results,
-        ]);
+        $page_title = 'Search Results for: ' . $request->search;
+
+        return view('search', compact('movies_results', 'collections_results', 'series_results', 'page_title'));
     }
 }

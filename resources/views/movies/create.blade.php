@@ -1,6 +1,6 @@
 @props(['search_results' => [], 'movie' => null])
 
-<x-movies-layout>
+<x-movies-layout page_title="{{ $page_title ?? 'Movie Inventory' }}">
 	@include('movies.partials.search')
 
 	@if ($search_results)

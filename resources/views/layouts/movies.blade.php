@@ -1,8 +1,8 @@
-@props([ 'main_bg_style' => '' ])
+@props([ 'main_bg_style' => '', 'page_title' => 'Movie Inventory - Movies' ])
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-gray-100">
 
-    <x-head page_title="Movie Inventory" />
+    <x-head page_title="{{ $page_title }}" />
 
     <body class="h-screen flex flex-col">
         <header class="bg-[#333C50] shadow-sm z-10">

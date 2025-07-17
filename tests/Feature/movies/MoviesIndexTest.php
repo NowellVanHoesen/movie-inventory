@@ -73,7 +73,7 @@ it('displays both purchased and wishlist movies in default order (release date d
 it('displays only wishlist movies in default order (release date desc then title asc)', function () {
     $this->seed(MoviesSeeder::class);
 
-    get(route('movies.wishlist'))
+    get(route('movies.index', ['wishlist']))
         ->assertOk()
         ->assertDontSeeText([
             'The Bourne Identity',
@@ -92,7 +92,7 @@ it('displays only wishlist movies in default order (release date desc then title
 it('displays only purchased movies in default order (purchase date desc then release date desc)', function () {
     $this->seed(MoviesSeeder::class);
 
-    get(route('movies.purchased'))
+    get(route('movies.index', ['purchased']))
         ->assertOk()
         ->assertDontSeeText([
             'After We Fell',

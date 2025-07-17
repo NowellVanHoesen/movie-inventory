@@ -22,13 +22,19 @@ class MoviesController extends Controller
     public function index()
     {
         $query = Movie::query();
-        if (request()->has('purchased')) {
-            $query->purchased();
-        } elseif (request()->has('wishlist')) {
-            $query->wishlist();
-        }
+
+        $pageTitleSuffix = 'Movie List';
 
         $sort = request()->input('sort', 'release_date|desc');
+
+        if (request()->has('purchased')) {
+            $query->purchased();
+            $pageTitleSuffix = 'Purchased Movies';
+            $sort = 'purchase_date|desc';
+        } elseif (request()->has('wishlist')) {
+            $query->wishlist();
+            $pageTitleSuffix = 'Movie Wishlist';
+        }
 
         switch ($sort) {
             case 'purchase_date|desc':
@@ -53,11 +59,9 @@ class MoviesController extends Controller
 
         $movies = $query->simplePaginate(14);
 
-        if ( request()->has('sort') ) {
-            $movies->appends([ 'sort' => $sort ]);
-        }
+        $page_title = config('app.name') . ' - ' . $pageTitleSuffix;
 
-        return view('movies.index', [ 'movies' => $movies, ]);
+        return view('movies.index', compact('page_title', 'movies'));
     }
 
     /**
@@ -106,7 +110,9 @@ class MoviesController extends Controller
             $data['search_term'] = $attributes['search_term'] ?? '';
         }
 
-        return view('movies.create', $data);
+        $page_title = config('app.name') . ' - Add Movie';
+
+        return view('movies.create', compact('data','page_title'));
     }
 
     /**
@@ -189,7 +195,9 @@ class MoviesController extends Controller
 
         $owned_recommendations = Movie::whereIn( 'id', Arr::pluck($recommendations, 'id') )->get();
 
-        return view('movies.show', ['movie' => $movie, 'recommendations' => $recommendations, 'owned_recommendations' => $owned_recommendations]);
+        $page_title = config('app.name') . ' - Movie: ' . $movie->title;
+
+        return view('movies.show', compact('movie', 'recommendations', 'owned_recommendations', 'page_title'));
     }
 
     /**
@@ -197,7 +205,11 @@ class MoviesController extends Controller
      */
     public function edit(Movie $movie)
     {
-        return view('movies.edit', ['movie' => $movie, 'media_types' => $this->get_media_types()]);
+        $media_types = $this->get_media_types();
+
+        $page_title = config('app.name') . ' - Edit Movie: ' . $movie->title;
+
+        return view('movies.edit', compact('movie', 'media_types', 'page_title'));
     }
 
     /**

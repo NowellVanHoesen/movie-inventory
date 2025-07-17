@@ -1,5 +1,5 @@
-<x-layout>
-	<x-slot:heading>Search Results</x-slot:heading>
+<x-layout page_title="{{ $page_title ?? 'Movie Inventory' }}">
+	<x-slot:heading>{{ $page_title }}</x-slot:heading>
 
 	<h2 class="text-2xl">Movies</h2>
 	<div class="grid grid-cols-[repeat(auto-fill,minmax(154px,1fr))] place-items-center gap-5 mt-2">

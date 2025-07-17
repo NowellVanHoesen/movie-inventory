@@ -22,7 +22,11 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        return view('series.index', ['series' => Series::orderBy('name', 'asc')->simplePaginate(14)]);
+        $series = Series::orderBy('name', 'asc')->simplePaginate(14);
+
+        $page_title = config('app.name') . ' - Series List';
+
+        return view('series.index', compact('series', 'page_title'));
     }
 
     /**
@@ -30,23 +34,29 @@ class SeriesController extends Controller
      */
     public function create(Request $request)
     {
-        $data = [];
-
         if (! empty($request['query'])) {
             $attributes = $request->validate([
                 'query' => ['min:2'],
             ]);
 
-            $data['local_results'] = Series::where('name_normalized', 'like', '%' . $attributes['query'] . '%')->get();
+            $series_detail = null;
 
-            $data['search_results'] = $this->searchSeries($attributes['query']);
+            $media_types = null;
 
-            $data['search_term'] = $attributes['query'];
+            $local_results = Series::where('name_normalized', 'like', '%' . $attributes['query'] . '%')->get();
+
+            $search_results = $this->searchSeries($attributes['query']);
+
+            $search_term = $attributes['query'];
         } elseif (! empty($request['series_id'])) {
             $attributes = $request->validate([
                 'series_id' => ['integer'],
                 'search_term' => ['min:2'],
             ]);
+
+            $local_results = null;
+
+            $search_results = null;
 
             $series_detail = $this->getSeriesDetail($attributes['series_id']);
 
@@ -58,14 +68,23 @@ class SeriesController extends Controller
 
             $series_detail->genres = $genres;
 
-            $data['media_types'] = $this->get_media_types();
+            $media_types = $this->get_media_types();
 
-            $data['series_detail'] = $series_detail;
+            $series_detail = $series_detail;
 
-            $data['search_term'] = $attributes['search_term'] ?? '';
+            $search_term = $attributes['search_term'] ?? '';
         }
 
-        return view('series.create', $data);
+        $page_title = config('app.name') . ' - Add Series';
+
+        return view('series.create', compact(
+            'local_results',
+            'search_results',
+            'search_term',
+            'series_detail',
+            'media_types',
+            'page_title'
+        ));
     }
 
     /**
@@ -140,7 +159,9 @@ class SeriesController extends Controller
 
         $owned_recs = Series::whereIn( 'id', Arr::pluck( $recs, 'id' ) )->get();
 
-        return view('series.show', ['series' => $series, 'recs' => $recs, 'owned_recs' => $owned_recs]);
+        $page_title = config('app.name') . ' - Series: ' . $series->name;
+
+        return view('series.show', compact('series', 'recs', 'owned_recs', 'page_title'));
     }
 
     /**
@@ -171,13 +192,17 @@ class SeriesController extends Controller
     {
         $series->media_types_display = $this->get_media_types_display($series->media_types);
 
-        return view('series.seasons.show', ['series' => $series, 'season' => $season]);
+        $page_title = config('app.name') . ' - Series: ' . $series->name . ' - Season ' . $season->season_number;
+
+        return view('series.seasons.show', compact('series', 'season', 'page_title'));
     }
 
     public function showEpisode(Series $series, Season $season, Episode $episode)
     {
         $series->media_types_display = $this->get_media_types_display($series->media_types);
 
-        return view('series.seasons.episodes.show', ['series' => $series, 'season' => $season, 'episode' => $episode]);
+        $page_title = config('app.name') . ' - Series: ' . $series->name . ' - Season ' . $season->season_number . ' - Episode ' . $episode->episode_number;
+
+        return view('series.seasons.episodes.show', compact('series', 'season', 'episode', 'page_title'));
     }
 }

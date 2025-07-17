@@ -1,4 +1,4 @@
-<x-movies-layout main_bg_style="background-image: linear-gradient( rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url(https://image.tmdb.org/t/p/original{{ $collection->backdrop_path }})">
+<x-movies-layout page_title="{{ $page_title ?? 'Movie Inventory' }}" main_bg_style="background-image: linear-gradient( rgba(255,255,255,0.5), rgba(255,255,255,0.5)), url(https://image.tmdb.org/t/p/original{{ $collection->backdrop_path }})">
 	<div class="bg-white/80 text-gray-900 mt-6 p-6 rounded-xl md:grid md:grid-cols-[300px_1fr] gap-4">
 		<div>
 			@if ( is_null( $collection->poster_path ) )

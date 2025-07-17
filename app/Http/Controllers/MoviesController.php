@@ -30,7 +30,7 @@ class MoviesController extends Controller
         if (request()->has('purchased')) {
             $query->purchased();
             $pageTitleSuffix = 'Purchased Movies';
-            $sort = 'purchase_date|desc';
+            $sort = request()->input('sort', 'purchase_date|desc');
         } elseif (request()->has('wishlist')) {
             $query->wishlist();
             $pageTitleSuffix = 'Movie Wishlist';

@@ -21,7 +21,7 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $query = Movie::query();
+        $query = Movie::select('title', 'slug', 'release_date', 'purchase_date', 'poster_path');
 
         $pageTitleSuffix = 'Movie List';
 
@@ -38,23 +38,23 @@ class MoviesController extends Controller
 
         switch ($sort) {
             case 'purchase_date|desc':
-                $query->orderByDesc('purchase_date')->orderBy('title');
+                $query->orderByDesc('purchase_date')->orderBy('title_sortable');
                 break;
             case 'purchase_date':
-                $query->orderByRaw('purchase_date is null')->orderBy('purchase_date')->orderBy('title');
+                $query->orderByRaw('purchase_date is null')->orderBy('purchase_date')->orderBy('title_sortable');
                 break;
             case 'title|desc':
-                $query->orderByDesc('title')->orderBy('release_date');
+                $query->orderByDesc('title_sortable')->orderBy('release_date');
                 break;
             case 'title':
-                $query->orderBy('title')->orderBy('release_date');
+                $query->orderBy('title_sortable')->orderBy('release_date');
                 break;
             case 'release_date|desc':
-                $query->orderByDesc('release_date')->orderBy('title');
+                $query->orderByDesc('release_date')->orderBy('title_sortable');
                 break;
             case 'release_date':
             default:
-                $query->orderBy('release_date')->orderBy('title');
+                $query->orderBy('release_date')->orderBy('title_sortable');
         }
 
         $movies = $query->simplePaginate(14);

@@ -22,7 +22,7 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        $series = Series::orderBy('name', 'asc')->simplePaginate(14);
+        $series = Series::orderBy('name_sortable', 'asc')->simplePaginate(14);
 
         $page_title = config('app.name') . ' - Series List';
 

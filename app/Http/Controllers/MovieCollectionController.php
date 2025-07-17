@@ -12,7 +12,7 @@ class MovieCollectionController extends Controller
 
     public function index()
     {
-        $collections = MovieCollection::orderBy('name', 'asc')->simplePaginate(14);
+        $collections = MovieCollection::orderBy('name_sortable', 'asc')->simplePaginate(14);
 
         $page_title = config('app.name') . ' - Movie Collections';
 

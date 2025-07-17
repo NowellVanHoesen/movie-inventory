@@ -14,9 +14,9 @@
                     <div class="flex flex-wrap md:flex-nowrap items-center">
                         <h1 class="text-3xl font-bold tracking-tight basis-full md:basis-auto">Movies</h1>
                         <x-nav aria-label="main" class="grow-1 md:space-x-4 flex flex-wrap md:flex-nowrap">
-                            <x-nav-link href="{{ route('movies.index') }}" :active="Route::is('movies.index')">All</x-nav-link>
-                            <x-nav-link href="{{ route('movies.purchased') }}" :active="Route::is('movies.purchased')">Purchased</x-nav-link>
-                            <x-nav-link href="{{ route('movies.wishlist') }}" :active="Route::is('movies.wishlist')">Wishlist</x-nav-link>
+                            <x-nav-link href="{{ route('movies.index') }}" :active="Route::is('movies.index') && request()->missing(['wishlist']) && request()->missing(['purchased'])">All</x-nav-link>
+                            <x-nav-link href="{{ route('movies.index', ['purchased']) }}" :active="request()->has('purchased')">Purchased</x-nav-link>
+                            <x-nav-link href="{{ route('movies.index', ['wishlist']) }}" :active="request()->has('wishlist')">Wishlist</x-nav-link>
                             <x-nav-link href="{{ route('movieCollection.index') }}" :active="Route::is('movieCollection.index')">Collections</x-nav-link>
                         </x-nav>
                     </div>

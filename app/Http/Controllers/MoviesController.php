@@ -22,6 +22,11 @@ class MoviesController extends Controller
     public function index()
     {
         $query = Movie::query();
+        if (request()->has('purchased')) {
+            $query->purchased();
+        } elseif (request()->has('wishlist')) {
+            $query->wishlist();
+        }
 
         $sort = request()->input('sort', 'release_date|desc');
 
@@ -48,7 +53,7 @@ class MoviesController extends Controller
 
         $movies = $query->simplePaginate(14);
 
-        if ( ! is_null( request()->input('sort') ) ) {
+        if ( request()->has('sort') ) {
             $movies->appends([ 'sort' => $sort ]);
         }
 
@@ -56,27 +61,7 @@ class MoviesController extends Controller
     }
 
     /**
-     * Display a listing of wishlist movies.
-     */
-    public function wishlist()
-    {
-        return view('movies.index', [
-            'movies' => Movie::wishlist()->orderByDesc('release_date')->orderBy('title')->simplePaginate(14),
-        ]);
-    }
-
-    /**
-     * Display a listing of purchased movies.
-     */
-    public function purchased()
-    {
-        return view('movies.index', [
-            'movies' => Movie::purchased()->orderByDesc('purchase_date')->orderByDesc('release_date')->simplePaginate(14),
-        ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
+     * Show the form for adding a movie.
      */
     public function create(Request $request)
     {

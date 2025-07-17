@@ -110,9 +110,9 @@ class MoviesController extends Controller
             $data['search_term'] = $attributes['search_term'] ?? '';
         }
 
-        $page_title = config('app.name') . ' - Add Movie';
+        $data['page_title'] = config('app.name') . ' - Add Movie';
 
-        return view('movies.create', compact('data','page_title'));
+        return view('movies.create', $data);
     }
 
     /**

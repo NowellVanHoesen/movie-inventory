@@ -34,29 +34,23 @@ class SeriesController extends Controller
      */
     public function create(Request $request)
     {
+        $data = [];
+
         if (! empty($request['query'])) {
             $attributes = $request->validate([
                 'query' => ['min:2'],
             ]);
 
-            $series_detail = null;
+            $data['local_results'] = Series::where('name_normalized', 'like', '%' . $attributes['query'] . '%')->get();
 
-            $media_types = null;
+            $data['search_results'] = $this->searchSeries($attributes['query']);
 
-            $local_results = Series::where('name_normalized', 'like', '%' . $attributes['query'] . '%')->get();
-
-            $search_results = $this->searchSeries($attributes['query']);
-
-            $search_term = $attributes['query'];
+            $data['search_term'] = $attributes['query'];
         } elseif (! empty($request['series_id'])) {
             $attributes = $request->validate([
                 'series_id' => ['integer'],
                 'search_term' => ['min:2'],
             ]);
-
-            $local_results = null;
-
-            $search_results = null;
 
             $series_detail = $this->getSeriesDetail($attributes['series_id']);
 
@@ -68,23 +62,16 @@ class SeriesController extends Controller
 
             $series_detail->genres = $genres;
 
-            $media_types = $this->get_media_types();
+            $data['media_types'] = $this->get_media_types();
 
-            $series_detail = $series_detail;
+            $data['series_detail'] = $series_detail;
 
-            $search_term = $attributes['search_term'] ?? '';
+            $data['search_term'] = $attributes['search_term'] ?? '';
         }
 
-        $page_title = config('app.name') . ' - Add Series';
+        $data['page_title'] = config('app.name') . ' - Add Series';
 
-        return view('series.create', compact(
-            'local_results',
-            'search_results',
-            'search_term',
-            'series_detail',
-            'media_types',
-            'page_title'
-        ));
+        return view('series.create', $data);
     }
 
     /**

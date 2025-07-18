@@ -16,8 +16,6 @@ Route::get('/search', SearchController::class)->name('search');
 Route::controller(MoviesController::class)->group(function () {
     Route::get('/movies', 'index')->name('movies.index');
     Route::post('/movies', 'store')->name('movies.store');
-    Route::get('/movies/wishlist', 'wishlist')->name('movies.wishlist');
-    Route::get('/movies/purchased', 'purchased')->name('movies.purchased');
     Route::match(['get','post'],'/movies/create', 'create')->middleware(['auth'])->name('movies.create');
     Route::get('/movies/{movie}', 'show')->name('movies.show');
     Route::get('/movies/{movie}/edit', 'edit')->middleware(['auth'])->name('movies.edit');

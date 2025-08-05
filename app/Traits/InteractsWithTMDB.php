@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 trait InteractsWithTMDB
 {
@@ -58,7 +59,14 @@ trait InteractsWithTMDB
 
         if ( $recs->total_pages > 1 ) {
             for ($page = 2; $page <= $recs->total_pages; $page++ ) {
-                $pagedRecs = $allRecs->merge( collect( $this->sendTMDBRequest( "movie/{$movie_id}/recommendations", [ 'page' => $page ] )->results ) );
+                $results = $this->sendTMDBRequest( "movie/{$movie_id}/recommendations", [ 'page' => $page ] );
+
+                if ( !$results || !isset($results->results) ) {
+                    Log::error("Failed to fetch recommendations for movie ID {$movie_id} on page {$page}");
+                    continue;
+                }
+
+                $pagedRecs = $allRecs->merge( collect( $results->results ) );
                 $allRecs = $pagedRecs;
             }
         }
@@ -189,7 +197,12 @@ trait InteractsWithTMDB
             'accept' => 'application/json',
         ])->withQueryParameters($queryParams)->get(config('tmdb.api.base_url').'/'.config('tmdb.api.version').'/'.$endpoint);
 
-        return $response->object();
+        if ( $response->successful() ) {
+            return $response->object();
+        }
+
+        return null;
+
 
         // search movies: https://api.themoviedb.org/3/search/movie { query, include_adult, language, primary_release_year, page, region, year }
         // search TV(seasons): https://api.themoviedb.org/3/search/tv { query, first_air_date_year, include_adult, language, page, year }

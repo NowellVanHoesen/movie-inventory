@@ -1,4 +1,4 @@
-<x-castmember-layout page_title="{{ $pageTitle ?? 'Cast Member' }}" name="{{ $castMember->name }}">
+<x-cast-layout page_title="{{ $pageTitle ?? 'Cast Member' }}" name="{{ $castMember->name }}">
 	<div class="text-white-900 mt-6 p-6 rounded-xl">
 		<div class="md:grid md:grid-cols-[185px_1fr] gap-4">
 			<div>
@@ -26,4 +26,4 @@
 			</div>
 		</div>
 	</div>
-</x-castmember-layout>
+</x-cast-layout>

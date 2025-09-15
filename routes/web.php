@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CastMemberController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MovieCollectionController;
 use App\Http\Controllers\MoviesController;
@@ -35,6 +36,10 @@ Route::controller(SeriesController::class)->group(function () {
     Route::get('/series/{series}', 'show')->name('series.show');
     Route::get('/series/{series}/season/{season:season_number}', 'showSeason')->name('season.show');
     Route::get('/series/{series}/season/{season:season_number}/episode/{episode:episode_number}', 'showEpisode')->name('episode.show');
+});
+
+Route::controller(CastMemberController::class)->group(function () {
+    Route::get('/cast/{castMember}', 'show')->name('castMember.show');
 });
 
 Route::get('/dashboard', function () {

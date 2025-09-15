@@ -21,6 +21,11 @@ class Episode extends Model
         return $this->belongsTo(Season::class);
     }
 
+    public function series()
+    {
+        return $this->hasOneThrough(Series::class, Season::class, 'id', 'id', 'season_id', 'series_id');
+    }
+
     public function cast_members()
     {
         return $this->belongsToMany(CastMember::class, table: 'cast_member_episode', foreignPivotKey: 'episode_id')->withPivot('character', 'order')->orderByPivot('order', 'asc');

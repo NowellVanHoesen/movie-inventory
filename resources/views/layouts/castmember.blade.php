@@ -1,0 +1,29 @@
+@props([ 'main_bg_style' => '', 'page_title' => 'Movie Inventory - Cast', 'name' => '' ])
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full bg-gray-100">
+
+    <x-head page_title="{{ $page_title }}" />
+
+    <body class="h-screen flex flex-col">
+        <header class="bg-[#333C50] shadow-sm z-10">
+            <div class="relative bg-gray-800 text-gray-200 flex flex-row px-4 py-4 place-items-center md:justify-normal h-16">
+                @include('layouts.navigation')
+            </div>
+            <div class="flex justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 text-gray-50">
+                <div class="flex items-center">
+                    <div class="flex flex-wrap md:flex-nowrap items-center">
+                        <h1 class="text-3xl font-bold tracking-tight basis-full md:basis-auto">Cast Member: {{ $name }}</h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main class="flex-1 grow mb-auto text-gray-50 bg-[#3e4b62] bg-cover bg-no-repeat bg-top bg-fixed"
+            style="{{ $main_bg_style }}">
+            <div class="mx-auto max-w-7xl p-2 lg:px-6">
+                {{ $slot }}
+            </div>
+        </main>
+        <x-footer class="bg-gray-800" />
+    </body>
+
+</html>

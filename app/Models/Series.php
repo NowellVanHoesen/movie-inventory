@@ -29,6 +29,11 @@ class Series extends Model
         return $this->hasMany(Season::class)->orderBy('air_date', 'asc');
     }
 
+    public function episodes()
+    {
+        return $this->hasManyThrough(Episode::class, Season::class)->orderBy('air_date', 'asc');
+    }
+
     public function certification()
     {
         return $this->belongsTo(Certification::class);

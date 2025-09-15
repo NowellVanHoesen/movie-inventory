@@ -17,7 +17,7 @@
 			@continue( str_contains( $cast_member->pivot->character, 'uncredited' ) )
 
 			<li class="flex w-full" x-show="showAll || {{ $index }} < castToShow">
-				{{ $cast_member->name }}
+				<a href="{{ route('castMember.show', $cast_member) }}" class="text-indigo-600">{{ $cast_member->name }}</a>
 				<span class="text-right flex flex-1 before:border-b-gray-500 before:border-b-2 before:border-dotted before:content-[''] before:flex-1 before:mx-1 before:mb-[0.3rem]">{{ $cast_member->pivot->character }}</span>
 			</li>
 		@endforeach

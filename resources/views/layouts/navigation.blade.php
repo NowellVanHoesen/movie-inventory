@@ -14,8 +14,6 @@
             <x-nav-link href="{{ route('home') }}" :active="Route::is('home')">Home</x-nav-link>
             <x-nav-link href="{{ route('movies.index') }}" :active="Route::is('movies.*')">Movies</x-nav-link>
             <x-nav-link href="{{ route('series.index') }}" :active="Route::is('series.*')">Series</x-nav-link>
-            <x-nav-link href="{{ route('about') }}" :active="Route::is('about')">About</x-nav-link>
-            <x-nav-link href="{{ route('contact') }}" :active="Route::is('contact')">Contact</x-nav-link>
         </x-nav>
         <div class="md:ml-6 my-2 px-2 flex flex-1 md:justify-end">
             <form method="GET" action="{{ route('search') }}" class="w-full">

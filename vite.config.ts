@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
-import * as path from 'path';
+import path from 'path'
 
 export default defineConfig({
   plugins: [
@@ -16,7 +16,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '~fontawesome': path.resolve('./node_modules/@fortawesome/fontawesome-free'),
+      '~fontawesome': path.resolve(__dirname, 'node_modules/@fortawesome/fontawesome-free'),
     }
   },
 });

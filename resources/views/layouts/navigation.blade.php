@@ -1,4 +1,4 @@
-<div x-data="{ mobileOpen: false }" class="left-[-4px] w-full md:max-w-7xl md:mx-auto px-4 sm:px-6 lg:px-8 flex justify-between md:justify-normal">
+<div x-data="{ mobileOpen: false }" class="-left-1 w-full md:max-w-7xl md:mx-auto px-4 sm:px-6 lg:px-8 flex justify-between md:justify-normal">
     <!-- Logo -->
     <a href="{{ route('home') }}" class="place-self-center">
         <i class="fa-solid fa-clapperboard fa-2xl" title="Movie Inventory"></i>
@@ -10,7 +10,7 @@
     </button>
     <div :class="{ 'block': mobileOpen, 'hidden': !mobileOpen }" class="z-15 absolute top-full left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:w-full px-2 rounded-b-lg md:rounded-none drop-shadow-lg md:shadow-none bg-gray-900 md:bg-transparent">
         <!-- Primary Navigation Menu -->
-        <x-nav aria-label="main" class="md:grow-1 md:space-x-4 md:flex">
+        <x-nav aria-label="main" class="md:grow md:space-x-4 md:flex">
             <x-nav-link href="{{ route('home') }}" :active="Route::is('home')">Home</x-nav-link>
             <x-nav-link href="{{ route('movies.index') }}" :active="Route::is('movies.*')">Movies</x-nav-link>
             <x-nav-link href="{{ route('series.index') }}" :active="Route::is('series.*')">Series</x-nav-link>
@@ -20,9 +20,9 @@
         <div class="md:ml-6 my-2 px-2 flex flex-1 md:justify-end">
             <form method="GET" action="{{ route('search') }}" class="w-full">
                 @csrf
-                <div class="grid grid-cols-[repeat(1,minmax(0,1fr))] md:max-w-80 max-w-full w-full min-w-45 shadow-sm rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
+                <div class="grid grid-cols-1 md:max-w-80 max-w-full w-full min-w-45 shadow-sm rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
                     <input name="search" type="search" value="{{ request('search', '') }}" placeholder="Search" aria-label="Search" class="outline-none py-1.5 pl-10 pr-3 border-0 w-full block row-start-1 col-start-1 bg-gray-50 text-gray-900 placeholder:text-cold-steel-200 rounded-md focus:ring-0 sm:text-sm sm:leading-6" />
-                    <i class="fa-solid fa-magnifying-glass text-cold-steel-200 self-center row-start-1 col-start-1 block align-middle leading-[24px] w-5 h-5 ml-3 pointer-events-none"></i>
+                    <i class="fa-solid fa-magnifying-glass text-cold-steel-200 self-center row-start-1 col-start-1 block align-middle leading-6 w-5 h-5 ml-3 pointer-events-none"></i>
                 </div>
                 <x-form-button class="hidden"></x-form-button>
             </form>

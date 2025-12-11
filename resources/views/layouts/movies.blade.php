@@ -13,7 +13,7 @@
                 <div class="flex items-center">
                     <div class="flex flex-wrap md:flex-nowrap items-center">
                         <h1 class="text-3xl font-bold tracking-tight basis-full md:basis-auto">Movies</h1>
-                        <x-nav aria-label="main" class="grow-1 md:space-x-4 flex flex-wrap md:flex-nowrap">
+                        <x-nav aria-label="main" class="grow md:space-x-4 flex flex-wrap md:flex-nowrap">
                             <x-nav-link href="{{ route('movies.index') }}" :active="Route::is('movies.index') && request()->missing(['wishlist']) && request()->missing(['purchased'])">All</x-nav-link>
                             <x-nav-link href="{{ route('movies.index', ['purchased']) }}" :active="request()->has('purchased')">Purchased</x-nav-link>
                             <x-nav-link href="{{ route('movies.index', ['wishlist']) }}" :active="request()->has('wishlist')">Wishlist</x-nav-link>

@@ -2,3 +2,24 @@
 @import '~fontawesome/css/solid.min.css';
 @import "tailwindcss";
 @source "../views";
+
+@theme {
+	--color-cold-steel-50: #ECEDEF;
+	--color-cold-steel-100: #D8DBE0;
+	--color-cold-steel-200: #B2B7C0;
+	--color-cold-steel-300: #8B93A1;
+	--color-cold-steel-400: #656F81;
+	--color-cold-steel-500: #4B5668;
+	--color-cold-steel-600: #3e4b62;
+	--color-cold-steel-700: #333c50;
+	--color-cold-steel-800: #323C4E;
+	--color-cold-steel-900: #293040;
+	--color-green-check: #bada55;
+	--color-red-heart: #f5131a;
+}
+
+@layer base {
+	*:focus {
+		outline: 2px solid #1e3d83;
+	}
+}

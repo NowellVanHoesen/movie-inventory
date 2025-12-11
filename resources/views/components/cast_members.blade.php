@@ -7,7 +7,7 @@
 	<div class="flex items-center justify-between">
 		<h2 class="text-2xl">Cast Members</h2>
 		@if ( count( $cast ) > $display_limit )
-		<button @click="showAll = !showAll" class="cursor-pointer px-4 py-2 text-sm font-semibold text-white bg-[#3e4b62] border border-transparent rounded-md hover:bg-[#333c50] focus:bg-[#333c50] focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 transition ease-in-out duration-150">
+		<button @click="showAll = !showAll" class="cursor-pointer px-4 py-2 text-sm font-semibold text-white bg-cold-steel-600 border border-transparent rounded-md hover:bg-cold-steel-700 focus:bg-cold-steel-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 transition ease-in-out duration-150">
 			<span x-text="showAll ? 'Show Less' : 'Show All'"></span>
 		</button>
 		@endif

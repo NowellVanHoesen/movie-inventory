@@ -12,7 +12,7 @@
 					</h2>
 					<p><em>{{ $movie->tagline }}</em></p>
 					<p class="text-sm">{{ $movie->genres->pluck('name')->join(' | ') }}</p>
-					@if ( is_null($movie->purchase_date) )<p class="text-sm font-normal text-[#3e4b62]">wishlist</p>@endif
+					@if ( is_null($movie->purchase_date) )<p class="text-sm font-normal text-cold-steel-600">wishlist</p>@endif
 					@foreach ($movie->media_types_display as $parent => $media_types)
 						<p class="text-sm mt-2"><strong>{{ $parent }}</strong>: {{ implode(' | ', $media_types) }}</p>
 					@endforeach
@@ -22,7 +22,7 @@
 				</div>
 				@auth
 					<div class="flex items-center gap-8">
-						<div class="place-content-center"><a href="{{ route('movies.edit', $movie) }}" class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-[#3e4b62] border border-transparent rounded-md hover:bg-[#333c50] focus:bg-[#333c50] focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 transition ease-in-out duration-150">Edit</a></div>
+						<div class="place-content-center"><a href="{{ route('movies.edit', $movie) }}" class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-cold-steel-600 border border-transparent rounded-md hover:bg-cold-steel-700 focus:bg-cold-steel-700 focus:outline-none focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 transition ease-in-out duration-150">Edit</a></div>
 						<x-danger-button form="delete-movie" onclick="event.preventDefault(); if (confirm('Are you sure you want to delete this movie?')) { document.getElementById('delete-movie').submit(); }">
 							{{ __('Delete') }}
 						</x-danger-button>

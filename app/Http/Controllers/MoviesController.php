@@ -65,7 +65,18 @@ class MoviesController extends Controller
     }
 
     /**
-     * Show the form for adding a movie.
+     * Display the form for creating a new movie.
+     *
+     * Accepts an HTTP request which may include prefill data (e.g. query parameters)
+     * or contextual information. Prepares and returns the view used to render the
+     * movie creation form (loading any required supporting data such as genres,
+     * studios, etc.). May perform authorization checks and redirect if the user
+     * is not permitted to create movies.
+     *
+     * @param \Illuminate\Http\Request $request Incoming HTTP request with optional prefill/context data.
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse The view rendering the creation form, or a redirect on authorization/error conditions.
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException If the user is not authorized to create a movie.
      */
     public function create(Request $request)
     {

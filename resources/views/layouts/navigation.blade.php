@@ -21,8 +21,8 @@
             <form method="GET" action="{{ route('search') }}" class="w-full">
                 @csrf
                 <div class="grid grid-cols-[repeat(1,minmax(0,1fr))] md:max-w-80 max-w-full w-full min-w-45 shadow-sm rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600">
-                    <input name="search" type="search" value="{{ request('search', '') }}" placeholder="Search" aria-label="Search" class="outline-none py-1.5 pl-10 pr-3 border-0 w-full block row-start-1 col-start-1 bg-gray-50 text-gray-900 placeholder:text-gray-400 rounded-md focus:ring-0 sm:text-sm sm:leading-6" />
-                    <i class="fa-solid fa-magnifying-glass text-[#99a1af] self-center row-start-1 col-start-1 block align-middle leading-[24px] w-5 h-5 ml-3 pointer-events-none"></i>
+                    <input name="search" type="search" value="{{ request('search', '') }}" placeholder="Search" aria-label="Search" class="outline-none py-1.5 pl-10 pr-3 border-0 w-full block row-start-1 col-start-1 bg-gray-50 text-gray-900 placeholder:text-cold-steel-200 rounded-md focus:ring-0 sm:text-sm sm:leading-6" />
+                    <i class="fa-solid fa-magnifying-glass text-cold-steel-200 self-center row-start-1 col-start-1 block align-middle leading-[24px] w-5 h-5 ml-3 pointer-events-none"></i>
                 </div>
                 <x-form-button class="hidden"></x-form-button>
             </form>

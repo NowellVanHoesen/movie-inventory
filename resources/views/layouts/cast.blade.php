@@ -5,8 +5,8 @@
     <x-head page_title="{{ $page_title }}" />
 
     <body class="h-screen flex flex-col">
-        <header class="bg-[#333C50] shadow-sm z-10">
-            <div class="relative bg-gray-800 text-gray-200 flex flex-row px-4 py-4 place-items-center md:justify-normal h-16">
+        <header class="bg-cold-steel-700 shadow-sm z-10">
+            <div class="relative bg-cold-steel-800 text-gray-200 flex flex-row px-4 py-4 place-items-center md:justify-normal h-16">
                 @include('layouts.navigation')
             </div>
             <div class="flex justify-between mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8 text-gray-50">
@@ -17,13 +17,13 @@
                 </div>
             </div>
         </header>
-        <main class="flex-1 grow mb-auto text-gray-50 bg-[#3e4b62] bg-cover bg-no-repeat bg-top bg-fixed"
+        <main class="flex-1 grow mb-auto text-gray-50 bg-cold-steel-600 bg-cover bg-no-repeat bg-top bg-fixed"
             style="{{ $main_bg_style }}">
             <div class="mx-auto max-w-7xl p-2 lg:px-6">
                 {{ $slot }}
             </div>
         </main>
-        <x-footer class="bg-gray-800" />
+        <x-footer class="bg-cold-steel-800" />
     </body>
 
 </html>

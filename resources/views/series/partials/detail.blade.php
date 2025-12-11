@@ -13,7 +13,7 @@
 		<p class="text-sm mb-2">
 			{{ $series->genres->pluck('name')->join(' | ') }}
 		</p>
-		@if ( is_null($series->purchase_date) )<p class="text-sm font-normal text-[#3e4b62]">wishlist</p>@endif
+		@if ( is_null($series->purchase_date) )<p class="text-sm font-normal text-cold-steel-600">wishlist</p>@endif
 		@foreach ($series->media_types_display as $parent => $media_types)
 			<p class="text-sm"><strong>{{ $parent }}</strong>: {{ implode(' | ', $media_types) }}</p>
 		@endforeach

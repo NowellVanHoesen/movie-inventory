@@ -8,11 +8,12 @@
         <span class="sr-only">Open main menu</span>
         <i :class="{ 'fa-xmark': mobileOpen, 'fa-bars': !mobileOpen }" class="fa-solid fa-xl"></i>
     </button>
-    <div :class="{ 'block': mobileOpen, 'hidden': !mobileOpen }" class="z-15 absolute top-full left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:w-full px-2 rounded-b-lg md:rounded-none drop-shadow-lg md:shadow-none bg-gray-900 md:bg-transparent">
+    <div :class="{ 'block': mobileOpen, 'hidden': !mobileOpen }" class="z-15 absolute top-full left-0 right-0 md:relative md:flex md:flex-row md:items-center md:justify-between md:w-full px-2 rounded-b-lg md:rounded-none drop-shadow-lg md:shadow-none">
         <!-- Primary Navigation Menu -->
         <x-nav aria-label="main" class="md:grow md:space-x-4 md:flex">
             <x-nav-link href="{{ route('home') }}" :active="Route::is('home')">Home</x-nav-link>
             <x-nav-link href="{{ route('movies.index') }}" :active="Route::is('movies.*')">Movies</x-nav-link>
+            <x-nav-link href="{{ route('movieCollection.index') }}" :active="Route::is('movieCollection.*')">Movie Collections</x-nav-link>
             <x-nav-link href="{{ route('series.index') }}" :active="Route::is('series.*')">Series</x-nav-link>
         </x-nav>
         <div class="md:ml-6 my-2 px-2 flex flex-1 md:justify-end">

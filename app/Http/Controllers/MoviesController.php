@@ -57,7 +57,7 @@ class MoviesController extends Controller
                 $query->orderBy('release_date')->orderBy('title_sortable');
         }
 
-        $movies = $query->simplePaginate(14);
+        $movies = $query->simplePaginate(24);
 
         $page_title = config('app.name') . ' - ' . $pageTitleSuffix;
 

@@ -12,9 +12,11 @@
 */
 
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
+
 
 pest()->extend(Tests\TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -55,4 +57,10 @@ function loginAsUser(?User $user = null) {
     return $user;
 }
 
-pest()->printer()->compact();
+// pest()->extend()->beforeAll( function () {
+//     Http::fake([
+//         'api.themoviedb.org/*' => Http::response([], 200),
+//     ]);
+// })->group('tmdb');
+
+// pest()->printer()->compact();

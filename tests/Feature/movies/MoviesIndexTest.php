@@ -55,7 +55,6 @@ it('displays both purchased and wishlist movies in default order (release date d
             'Ambush',
             'Into the Deep',
             'Gladiator II',
-            'The Forever Purge',
             'Last Seen Alive',
             'Dirty Angels'
         ])

@@ -8,8 +8,16 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SeriesController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
-Route::get('/', HomeController::class)->name('home');
+// Route::get('/', HomeController::class)->name('home');
+Route::get('/', function () {
+    return inertia('Welcome', [
+        'page' => 'Welcome',
+        'greeting' => 'Hello'
+    ]);
+});
+
 Route::get('/search', SearchController::class)->name('search');
 
 Route::controller(MoviesController::class)->group(function () {

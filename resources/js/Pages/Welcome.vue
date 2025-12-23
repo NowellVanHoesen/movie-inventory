@@ -1,3 +1,10 @@
+<script setup>
+import Layout from '../layouts/Layout.vue';
+
+</script>
+
 <template>
-	<div>Welcome page. Hello from Vue and Inertia</div>
+	<Layout>
+		<div>Welcome page. Hello from Vue and Inertia</div>
+	</Layout>
 </template>

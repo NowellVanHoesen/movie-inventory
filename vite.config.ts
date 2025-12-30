@@ -36,6 +36,10 @@ export default defineConfig({
                 __dirname,
                 "node_modules/@fortawesome/fontawesome-free",
             ),
+            "@": path.resolve(
+                __dirname,
+                "resources/js"
+            ),
         },
     },
 });

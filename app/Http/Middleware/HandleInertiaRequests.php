@@ -42,6 +42,9 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $user,
             ],
+            'appName' => config('app.name'),
+            'placeholderPoster' => config('tmdb.placeholder.poster'),
+            'placeholderStill' => config('tmdb.placeholder.still'),
         ];
     }
 }

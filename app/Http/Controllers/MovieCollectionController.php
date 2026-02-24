@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MovieCollection;
 use App\Traits\InteractsWithTMDB;
 use Illuminate\Support\Arr;
+use Inertia\Inertia;
 
 class MovieCollectionController extends Controller
 {
@@ -12,11 +13,14 @@ class MovieCollectionController extends Controller
 
     public function index()
     {
-        $collections = MovieCollection::orderBy('name_sortable', 'asc')->simplePaginate(24);
+        $collections = MovieCollection::orderBy('name_sortable', 'asc')->paginate(24);
 
         $page_title = config('app.name') . ' - Movie Collections';
 
-        return view('movies.collections.index', compact('collections', 'page_title'));
+        return inertia('Movies/Collections/Index', [
+            'collections' => Inertia::scroll($collections->toResourceCollection()),
+            'page_title' => $page_title,
+        ]);
     }
 
     public function show(MovieCollection $collection)

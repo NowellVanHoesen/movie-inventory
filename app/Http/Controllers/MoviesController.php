@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Jobs\processMovieCastMembers;
 use App\Jobs\processMovieCollection;
 use App\Models\Certification;
+use App\Models\Genre;
 use App\Models\Movie;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 class MoviesController extends Controller
 {
@@ -21,47 +24,56 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $query = Movie::select('title', 'slug', 'release_date', 'purchase_date', 'poster_path');
+        $genres = Genre::has('movies')->select('name')->orderBy('name')->get();
+
+        $query = Movie::with(['certification', 'media_types']);
+
+        $query->when(request()->header('X-Filter-Genres'), function ($query, $header) {
+            $genreNames = is_array($header) ? $header : explode(',', $header);
+
+            $query->whereHas('genres', function ($genreQuery) use ($genreNames) {
+                $genreQuery->whereIn('name', $genreNames);
+            });
+        });
 
         $pageTitleSuffix = 'Movie List';
 
-        $sort = request()->input('sort', 'release_date|desc');
+        $sortCol = request()->header('X-Sort-Col', 'release_date');
+        $sortDir = request()->header('X-Sort-Dir', 'desc');
+        $secondarySort = 'title_sortable';
 
-        if (request()->has('purchased')) {
+        if (Route::is('movies.purchased')) {
             $query->purchased();
             $pageTitleSuffix = 'Purchased Movies';
-            $sort = request()->input('sort', 'purchase_date|desc');
-        } elseif (request()->has('wishlist')) {
+            $sortCol = request()->header('sortCol', 'purchase_date');
+        } elseif (Route::is('movies.wishlist')) {
             $query->wishlist();
             $pageTitleSuffix = 'Movie Wishlist';
         }
 
-        switch ($sort) {
-            case 'purchase_date|desc':
-                $query->orderByDesc('purchase_date')->orderBy('title_sortable');
-                break;
-            case 'purchase_date':
-                $query->orderByRaw('purchase_date is null')->orderBy('purchase_date')->orderBy('title_sortable');
-                break;
-            case 'title|desc':
-                $query->orderByDesc('title_sortable')->orderBy('release_date');
-                break;
-            case 'title':
-                $query->orderBy('title_sortable')->orderBy('release_date');
-                break;
-            case 'release_date|desc':
-                $query->orderByDesc('release_date')->orderBy('title_sortable');
-                break;
-            case 'release_date':
-            default:
-                $query->orderBy('release_date')->orderBy('title_sortable');
+        if ( $sortCol === 'title_sortable' ) {
+            $secondarySort = 'release_date';
         }
 
-        $movies = $query->simplePaginate(24);
+        if ( $sortDir === 'desc' ) {
+            $query->orderByDesc( $sortCol )->orderBy( $secondarySort );
+        } else {
+            if ( $sortCol === 'purchase_date' ) {
+                $query->orderByRaw('purchase_date is null');
+            }
+
+            $query->orderBy( $sortCol )->orderBy( $secondarySort );
+        }
+
+        $movies = $query->paginate(24);
 
         $page_title = config('app.name') . ' - ' . $pageTitleSuffix;
 
-        return view('movies.index', compact('page_title', 'movies'));
+        return inertia('Movies/Index', [
+            'movies' => Inertia::scroll(fn () => $movies->toResourceCollection()),
+            'page_title' => $page_title,
+            'genres' => $genres->toResourceCollection(),
+        ]);
     }
 
     /**
@@ -208,7 +220,14 @@ class MoviesController extends Controller
 
         $page_title = config('app.name') . ' - Movie: ' . $movie->title;
 
-        return view('movies.show', compact('movie', 'recommendations', 'owned_recommendations', 'page_title'));
+        $movie->load('collection', 'genres', 'cast_members');
+
+        return inertia('Movies/Show', [
+            'movie' => $movie->toResource(),
+            'recommendations' => $recommendations,
+            'owned_recommendations' => $owned_recommendations,
+            'page_title' => $page_title,
+        ]);
     }
 
     /**

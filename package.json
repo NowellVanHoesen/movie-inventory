@@ -17,7 +17,8 @@
         "prettier-plugin-blade": "^2.1.21",
         "prettier-plugin-tailwindcss": "^0.7.2",
         "tailwindcss": "^4.1.17",
-        "vite": "^7.2.7"
+        "vite": "^7.2.7",
+        "vite-plugin-vue-devtools": "^8.1.1"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^7.1.0",

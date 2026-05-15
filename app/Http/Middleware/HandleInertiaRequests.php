@@ -23,6 +23,10 @@ class HandleInertiaRequests extends Middleware
      */
     public function version(Request $request): ?string
     {
+        if ($request->wantsModal()) {
+            return null;
+        }
+
         return parent::version($request);
     }
 
@@ -35,6 +39,9 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        if ( $request->wantsModal() ) {
+            return [];
+        }
         $user = $request->user()?->toResource();
 
         return [

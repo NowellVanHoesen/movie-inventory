@@ -12,8 +12,7 @@ class HomeController extends Controller
      */
     public function __invoke()
     {
-        $movies = Movie::with(['genres','cast_members','collection'])
-            ->orderByDesc('purchase_date')
+        $movies = Movie::orderByDesc('purchase_date')
             ->limit(12)
             ->get();
         $series = Series::with(['genres','cast_members'])

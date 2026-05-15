@@ -14,6 +14,8 @@ class Movie extends Model
 
     protected $guarded = [];
 
+    protected $with = ['certification'];
+
     public $incrementing = false;
 
     public $timestamps = false;

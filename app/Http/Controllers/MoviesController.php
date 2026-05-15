@@ -26,7 +26,7 @@ class MoviesController extends Controller
     {
         $genres = Genre::has('movies')->select('name')->orderBy('name')->get();
 
-        $query = Movie::with(['certification', 'media_types']);
+        $query = Movie::with(['media_types']);
 
         $query->when(request()->header('X-Filter-Genres'), function ($query, $header) {
             $genreNames = is_array($header) ? $header : explode(',', $header);

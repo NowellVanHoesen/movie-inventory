@@ -1,38 +1,32 @@
 <script setup>
-import Modal from "./Modal.vue";
+import Modal from "../Components/Modal.vue";
 import { Link } from "@inertiajs/vue3";
-import CastMembers from "./CastMembers.vue";
+import CastMembers from "../Components/CastMembers.vue";
 import { computed } from "vue";
 
-defineProps({
-    show: {
-        type: Boolean,
-        required: true,
-    },
-    close: {
-        type: Function,
-        required: true,
-    },
-    movie: {
-        type: [Object, Boolean],
-        required: true,
-		default: false,
-    },
+const props = defineProps({
+    movie: Object,
 });
 
-const genres = computed(() => {
-	if (movie === false || !movie?.genres) {
-		return '';
-	}
+const emit = defineEmits(["close"]);
 
-	return movie?.genres?.map(genre => genre.name).join(' | ');
+const closeModal = () => {
+    emit("close");
+};
+
+const genres = computed(() => {
+    if (props.movie === false || !props.movie?.genres) {
+        return "";
+    }
+
+    return props.movie?.genres?.map((genre) => genre.name).join(" | ");
 });
 </script>
 
 <template>
-    <Modal :show="show" @close="close" :closeManually="false">
-        <div class="mt-6 gap-4 rounded-xl bg-white/80 p-6 text-gray-900 md:grid md:grid-cols-[185px_1fr]">
-            <div>
+    <Modal @close="closeModal">
+        <div class="gap-4 rounded-xl bg-white/80 p-6 text-gray-900 md:grid md:grid-cols-[185px_1fr]">
+            <div class="">
                 <img :src="`https://image.tmdb.org/t/p/w185/${movie.poster_path}`" :alt="`${movie.title} movie poster`" />
             </div>
             <div>
@@ -40,17 +34,19 @@ const genres = computed(() => {
                     <div>
                         <h2 class="text-2xl">
                             {{ movie.title }}
-                            <span class="text-sm font-normal">( {{ movie.certification }} ) {{ movie.runtime }} min.</span>
+                            <span class="text-sm font-normal"
+                                >( {{ movie.certification.name }} ) {{ movie.runtime }} min.</span
+                            >
                         </h2>
                         <p>
                             <em>{{ movie.tagline }}</em>
                         </p>
-                        <p class="text-sm">{{ movie.genres.map(name => genres.name) }}</p>
+                        <p v-if="genres" class="mt-2 text-sm">{{ genres }}</p>
                         <p v-if="movie.purchase_date === null" class="text-cold-steel-600 text-sm font-normal">wishlist</p>
-                        <p v-for="(parent, media_types) in movie.media_types_display" :key="parent" class="mt-2 text-sm">
+                        <p v-for="(mTypes, parent) in movie.media_types_display" :key="parent" class="mt-2 text-sm">
                             <strong>{{ parent }}</strong
                             >:
-                            {{ media_types.map((type) => type).join(" | ") }}
+                            {{ mTypes.map((type) => type).join(" | ") }}
                         </p>
                         <p v-if="movie.collection" class="mt-2">
                             <Link
@@ -88,7 +84,7 @@ const genres = computed(() => {
                 </div>
                 <p class="mt-4">{{ movie.overview }}</p>
                 <div class="mt-4">
-                    <CastMembers :cast="movie.cast_members" :display_limit="20" :multi_cols="true" />
+                    <CastMembers :cast="movie?.cast_members" :display_limit="20" :multi_cols="true" />
                 </div>
             </div>
         </div>

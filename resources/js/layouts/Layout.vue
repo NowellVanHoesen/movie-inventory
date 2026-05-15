@@ -1,6 +1,7 @@
 <script setup>
 import Footer from "../Pages/Components/Footer.vue";
 import Navigation from "../Pages/Components/Navigation.vue";
+import BaseModal from "../Pages/Components/BaseModal.vue";
 import { computed } from "vue";
 
 const props = defineProps({
@@ -16,6 +17,7 @@ const heading = computed(() => {
 </script>
 
 <template>
+    <BaseModal />
     <div class="flex h-screen flex-col">
         <Navigation />
         <main

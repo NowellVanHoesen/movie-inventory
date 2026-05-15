@@ -51,6 +51,7 @@ trait InteractsWithTMDB
     }
 
     private function getMovieRecommendations(int $movie_id) {
+        return collect([]);
         $recs = $this->sendTMDBRequest(
             "movie/{$movie_id}/recommendations"
         );
@@ -75,6 +76,7 @@ trait InteractsWithTMDB
     }
 
     private function getSeriesRecommendations(int $series_id) {
+        return collect([]);
         $recs = $this->sendTMDBRequest(
             "tv/{$series_id}/recommendations"
         );

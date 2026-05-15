@@ -214,20 +214,20 @@ class MoviesController extends Controller
     {
         $movie->media_types_display = $this->get_media_types_display($movie->media_types);
 
-        $recommendations = $this->getMovieRecommendations( $movie->id );
+        // $recommendations = $this->getMovieRecommendations( $movie->id );
 
-        $owned_recommendations = Movie::whereIn( 'id', Arr::pluck($recommendations, 'id') )->get();
+        // $owned_recommendations = Movie::whereIn( 'id', Arr::pluck($recommendations, 'id') )->get();
 
-        $page_title = config('app.name') . ' - Movie: ' . $movie->title;
+        // $page_title = config('app.name') . ' - Movie: ' . $movie->title;
 
         $movie->load('collection', 'genres', 'cast_members');
 
-        return inertia('Movies/Show', [
-            'movie' => $movie->toResource(),
-            'recommendations' => $recommendations,
-            'owned_recommendations' => $owned_recommendations,
-            'page_title' => $page_title,
-        ]);
+        return Inertia::modal('Movies/MovieModal', [
+            'movie' => $movie,
+            // 'recommendations' => $recommendations,
+            // 'owned_recommendations' => $owned_recommendations,
+            // 'page_title' => $page_title,
+        ], route('movies.index'));
     }
 
     /**

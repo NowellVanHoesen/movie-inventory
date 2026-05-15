@@ -15,11 +15,11 @@ const props = defineProps({
     },
     recommendations: {
         type: Array,
-        required: true,
+        required: false,
     },
     owned_recommendations: {
         type: Array,
-        required: true,
+        required: false,
     },
 });
 

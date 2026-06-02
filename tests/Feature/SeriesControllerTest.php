@@ -87,11 +87,5 @@ describe('SeriesController', function () {
         $response->assertSessionHasErrors(['series_id', 'media_type', 'season_numbers']);
     });
 
-    it('handles exception in getSeriesDetail', function () {
-        // Simulate getSeriesDetail throws exception
-        // ...mocking logic here...
-        // ...assertions for error response...
-    });
-
     // Add more edge case tests as needed
 });

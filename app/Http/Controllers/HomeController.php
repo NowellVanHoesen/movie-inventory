@@ -13,6 +13,7 @@ class HomeController extends Controller
     public function __invoke()
     {
         $movies = Movie::orderByDesc('purchase_date')
+            ->orderBy('title_sortable')
             ->limit(12)
             ->get();
         $series = Series::with(['genres','cast_members'])

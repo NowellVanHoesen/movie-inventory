@@ -44,7 +44,7 @@ if (!props.closeManually) {
 <template>
     <teleport to="body">
         <transition leave-active-class="transition duration-300" @after-leave="$emit('after-leave')">
-            <div v-show="show" id="modal-wrapper" class="fixed inset-0 flex size-full items-center justify-center z-75">
+            <div v-show="show" dusk="modal-wrapper" class="fixed inset-0 z-75 flex size-full items-center justify-center">
                 <transition
                     appear
                     enter-from-class="opacity-0"

@@ -1,7 +1,6 @@
 import { router } from "@inertiajs/vue3";
-import axios from "axios";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
-import { nextTick, ref } from "vue";
+import { ref } from "vue";
 
 const modal = ref(null);
 
@@ -10,24 +9,21 @@ const setModal = (data) => {
         return;
     }
 
-    resolvePageComponent(`./Pages/${data.component}.vue`, import.meta.glob("./Pages/**/*.vue")).then((component) => {
+    resolvePageComponent(
+        `./Pages/${data.component}.vue`,
+        import.meta.glob("./Pages/**/*.vue")
+    ).then((component) => {
         modal.value = data;
         modal.value.resolvedComponent = component;
-        nextTick(() => {
-            modal.value.show = true;
-        });
+        modal.value.show = true;
     });
 };
 
 const open = (href) => {
-    axios
-        .get(href, {
-            headers: {
-                "X-Inertia": true,
-                "X-Modal": true,
-            },
-        })
-        .then((response) => setModal(response.data));
+    router.visit(href, {
+        preserveState: true,
+        preserveScroll: true,
+    });
 };
 
 const close = () => {

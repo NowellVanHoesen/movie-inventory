@@ -2,7 +2,6 @@
 import ItemOverlayDetail from "./ItemOverlayDetail.vue";
 import ItemPoster from "./ItemPoster.vue";
 import ItemStatusIcon from "./ItemStatusIcon.vue";
-import { ref } from "vue";
 import { open } from "@/useModal.js";
 
 const props = defineProps({
@@ -19,12 +18,15 @@ const props = defineProps({
         required: true,
     },
 });
-
-const movieDetail = ref(props.movie);
 </script>
 
 <template>
-    <button type="button" class="group relative mb-auto block max-w-fit rounded-xl" @click="open(href)" :id="movie.slug">
+    <button
+        type="button"
+        class="group relative mb-auto block max-w-fit rounded-xl"
+        @click="open(href)"
+        :dusk="`movie-btn-${movie.slug}`"
+    >
         <ItemStatusIcon :purchased="movie.purchase_date !== null" />
         <ItemPoster
             :placeholder="movie.poster_path === null"

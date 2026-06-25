@@ -56,18 +56,19 @@ const applyFilters = () => {
 <template>
     <div>
         <button
-            class="absolute top-0 right-2 cursor-pointer rounded-b-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20"
+            class="absolute top-0 right-2 cursor-pointer rounded-b-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20 z-40"
             @click="showPanel = true"
+            v-if="!showPanel"
         >
             <i class="fa-solid fa-sliders"></i>
         </button>
         <Transition
-            enter-from-class="otransform -translate-y-2"
+            enter-from-class="transform -translate-y-full"
             enter-active-class="transition ease-out duration-300"
             enter-to-class="transform translate-y-0"
             leave-from-class="transform translate-y-0"
             leave-active-class="transition ease-in duration-200"
-            leave-to-class="transform -translate-y-2"
+            leave-to-class="transform -translate-y-full"
         >
             <div
                 v-if="showPanel"

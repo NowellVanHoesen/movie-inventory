@@ -15,7 +15,7 @@ const form = useForm({
 </script>
 
 <template>
-    <header class="bg-cold-steel-700 shadow-sm z-10">
+    <header class="bg-cold-steel-700 shadow-sm z-50">
         <div class="text-cold-steel-100 relative flex h-16 flex-row place-items-center px-4 py-4 md:justify-normal">
             <!-- TODO: fix menu toggle -->
             <div class="-left-1 flex w-full justify-between px-4 sm:px-6 md:mx-auto md:max-w-7xl md:justify-normal lg:px-8">

@@ -45,7 +45,7 @@ class MoviesController extends Controller
         if (Route::is('movies.purchased')) {
             $query->purchased();
             $pageTitleSuffix = 'Purchased Movies';
-            $sortCol = request()->header('sortCol', 'purchase_date');
+            $sortCol = request()->header('X-Sort-Col', 'purchase_date');
         } elseif (Route::is('movies.wishlist')) {
             $query->wishlist();
             $pageTitleSuffix = 'Movie Wishlist';

@@ -28,7 +28,7 @@ const hasMorePages = computed(() => !!nextPageUrl.value);
 
 const applyFilters = () => {
     router.get(
-        route("movies.index"),
+        page.url,
         {},
         {
             headers: {

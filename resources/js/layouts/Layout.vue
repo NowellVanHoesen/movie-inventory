@@ -1,6 +1,6 @@
 <script setup>
 import Footer from "../Pages/Components/Footer.vue";
-import Navigation from "../Pages/Components/Navigation.vue";
+import Header from "../Pages/Components/Header/Header.vue";
 import BaseModal from "../Pages/Components/BaseModal.vue";
 import { computed } from "vue";
 
@@ -19,7 +19,7 @@ const heading = computed(() => {
 <template>
     <BaseModal />
     <div class="flex h-screen flex-col">
-        <Navigation />
+        <Header />
         <main
             class="text-cold-steel-100 bg-cold-steel-600 relative mb-auto flex-1 grow bg-cover bg-fixed bg-top bg-no-repeat"
         >

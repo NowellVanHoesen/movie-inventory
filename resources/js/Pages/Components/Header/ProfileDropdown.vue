@@ -24,7 +24,7 @@ import { Form, Link } from "@inertiajs/vue3";
             leave-to-class="transform opacity-0 scale-95"
         >
             <MenuItems
-                class="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-gray-800 outline-1 -outline-offset-1 outline-white/10"
+                class="absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-gray-800 outline-1 -outline-offset-1 outline-white/10"
             >
                 <div class="py-1">
                     <MenuItem v-slot="{ active = route().current('dashboard') }">

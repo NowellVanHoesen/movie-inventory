@@ -1,5 +1,5 @@
 <script setup>
-import FormButton from "./FormButton.vue";
+import FormButton from "../FormButton.vue";
 import Nav from "./Nav.vue";
 import NavLink from "./NavLink.vue";
 import { Link, usePage } from "@inertiajs/vue3";
@@ -15,7 +15,7 @@ const form = useForm({
 </script>
 
 <template>
-    <header class="bg-cold-steel-700 shadow-sm z-50">
+    <header class="bg-cold-steel-700 z-50 shadow-sm">
         <div class="text-cold-steel-100 relative flex h-16 flex-row place-items-center px-4 py-4 md:justify-normal">
             <!-- TODO: fix menu toggle -->
             <div class="-left-1 flex w-full justify-between px-4 sm:px-6 md:mx-auto md:max-w-7xl md:justify-normal lg:px-8">
@@ -25,15 +25,15 @@ const form = useForm({
                 </Link>
                 <!-- Mobile menu button -->
                 <button
-                    class="h-10 w-10 rounded-lg p-2 text-gray-700 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-none md:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    class="rounded-lg p-2 hover:bg-cold-steel-900 focus:bg-cold-steel-900 focus:ring-2 focus:ring-gray-200 focus:outline-none dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-red-600 place-self-center md:hidden"
                     aria-controls="navbar-dropdown"
                     aria-expanded="false"
                 >
                     <span class="sr-only">Open main menu</span>
-                    <i class="fa-solid fa-xl"></i>
+                    <i class="fa-solid fa-bars fa-xl text-cold-steel-100 hover:text-cold-steel-50"></i>
                 </button>
                 <div
-                    class="absolute top-full right-0 left-0 z-15 rounded-b-lg px-2 drop-shadow-lg md:relative md:flex md:w-full md:flex-row md:items-center md:justify-between md:rounded-none md:shadow-none"
+                    class="top-full right-0 left-0 z-15 rounded-b-lg px-2 drop-shadow-lg md:relative md:flex md:w-full md:flex-row md:items-center md:justify-between md:rounded-none md:shadow-none"
                 >
                     <!-- Primary Navigation Menu -->
                     <Nav aria-label="main" class="md:flex md:grow md:space-x-4">
@@ -65,31 +65,9 @@ const form = useForm({
                         </form>
                     </div>
                     <Nav aria-label="profile" class="flex grow-0 flex-row justify-end space-x-4">
-                        <ProfileDropdown v-if="$page.props.auth.user">
-                            <NavLink :href="route('dashboard')" active="Route::is('dashboard')">Dashboard</NavLink>
-                            <NavLink :href="route('profile.edit')">Profile</NavLink>
-                            <form method="POST" action="route('logout')">
-                                <NavLink
-                                    :href="route('logout')"
-                                    onclick="
-                                        event.preventDefault();
-                                        this.closest('form').submit();
-                                    "
-                                >
-                                    Log Out
-                                </NavLink>
-                            </form>
-                        </ProfileDropdown>
+                        <ProfileDropdown v-if="$page.props.auth.user"></ProfileDropdown>
                         <NavLink v-if="!$page.props.auth.user" :href="route('login')" :active="route().current('login')">
                             Log in
-                        </NavLink>
-
-                        <NavLink
-                            v-if="route().has('register')"
-                            :href="route('register')"
-                            :active="route().current('register')"
-                        >
-                            Register
                         </NavLink>
                     </Nav>
                 </div>

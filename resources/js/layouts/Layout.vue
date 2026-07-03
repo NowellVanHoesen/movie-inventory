@@ -1,6 +1,6 @@
 <script setup>
 import Footer from "../Pages/Components/Footer.vue";
-import Header from "../Pages/Components/Header/Header.vue";
+import Header from "../Pages/Components/Header.vue";
 import BaseModal from "../Pages/Components/BaseModal.vue";
 import { computed } from "vue";
 

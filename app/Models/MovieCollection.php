@@ -12,6 +12,8 @@ class MovieCollection extends Model
 
     protected $guarded = [];
 
+    protected $with = ['movies'];
+
     public $incrementing = false;
 
     public $timestamps = false;

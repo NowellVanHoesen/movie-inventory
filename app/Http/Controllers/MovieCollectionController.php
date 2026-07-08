@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Movie;
 use App\Models\MovieCollection;
 use App\Traits\InteractsWithTMDB;
 use Illuminate\Support\Arr;
@@ -35,9 +36,14 @@ class MovieCollectionController extends Controller
             $collection_details->parts = [];
         }
 
-        $collection_details->parts = collect($collection_details->parts)->map(function ($movie) {
+        $movie_ids = array_column($collection_details->parts, 'id');
+
+        $movie_slugs = Movie::whereIn('id', $movie_ids)->pluck('slug','id');
+
+        $collection_details->parts = collect($collection_details->parts)->map(function ($movie) use ( $movie_slugs ) {
             return (object) [
                 'id' => $movie->id,
+                'slug' => $movie_slugs->get($movie->id, null),
                 'title' => $movie->title,
                 'release_date' => $movie->release_date,
                 'poster_path' => $movie->poster_path,

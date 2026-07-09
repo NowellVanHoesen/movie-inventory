@@ -97,7 +97,6 @@ trait InteractsWithTMDB
     {
         $args = [
             'query' => $query,
-            'include_adult' => 'true',
             'language' => 'en-US',
             'page' => 1,
         ];
@@ -118,7 +117,6 @@ trait InteractsWithTMDB
             'search/tv',
             [
                 'query' => $query,
-                'include_adult' => 'true',
                 'language' => 'en-US',
                 'page' => $page,
             ]

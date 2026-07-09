@@ -1,0 +1,6 @@
+{
+	"permissions": {
+		"allow": ["Read", "Glob", "Bash(git status)", "Bash(npm run *)"],
+		"deny": ["Read(**/.env*)", "Read(**/.ssh/**)", "Bash(sudo *)"]
+	}
+}

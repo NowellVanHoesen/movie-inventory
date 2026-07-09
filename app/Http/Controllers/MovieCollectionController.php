@@ -55,6 +55,10 @@ class MovieCollectionController extends Controller
 
 
 
-        return view('movies.collections.show', compact('collection', 'collection_details', 'page_title'));
+        return inertia('Movies/Collections/Show', [
+            'page_title' => $page_title,
+            'collection' => $collection,
+            'collection_details' => $collection_details
+        ]);
     }
 }

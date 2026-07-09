@@ -12,6 +12,7 @@ use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Inertia\Inertia;
 
 class SeriesController extends Controller
 {
@@ -22,11 +23,14 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        $series = Series::orderBy('name_sortable', 'asc')->simplePaginate(24);
+        $series = Series::orderBy('name_sortable', 'asc')->paginate(24);
 
         $page_title = config('app.name') . ' - Series List';
 
-        return view('series.index', compact('series', 'page_title'));
+        return inertia('Series/Index', [
+            'series' => Inertia::scroll(fn () => $series->toResourceCollection()),
+            'page_title' => $page_title,
+        ]);
     }
 
     /**
@@ -142,13 +146,18 @@ class SeriesController extends Controller
     {
         $series->media_types_display = $this->get_media_types_display($series->media_types);
 
-        $recs = $this->getSeriesRecommendations($series->id);
+        // $recs = $this->getSeriesRecommendations($series->id);
 
-        $owned_recs = Series::whereIn( 'id', Arr::pluck( $recs, 'id' ) )->get();
+        // $owned_recs = Series::whereIn( 'id', Arr::pluck( $recs, 'id' ) )->get();
+
+        $series->load('genres','cast_members','seasons');
 
         $page_title = config('app.name') . ' - Series: ' . $series->name;
 
-        return view('series.show', compact('series', 'recs', 'owned_recs', 'page_title'));
+        return inertia('Series/Show', [
+            'series' => $series,
+            'page_title' => $page_title,
+        ]);
     }
 
     /**

@@ -15,6 +15,8 @@ class Series extends Model
 
     public $incrementing = false;
 
+    protected $with = ['certification'];
+
     public $timestamps = false;
 
     #[Scope]

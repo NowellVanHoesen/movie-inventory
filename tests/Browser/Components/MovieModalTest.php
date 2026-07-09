@@ -1,7 +1,15 @@
 <?php
 
 use App\Models\Movie;
+use Database\Seeders\MoviesSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Browser;
+
+uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->seed(MoviesSeeder::class);
+});
 
 it('can open a modal and close it on home route', function () {
     $this->browse(function (Browser $browser) {

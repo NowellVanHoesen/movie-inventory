@@ -23,7 +23,8 @@ const props = defineProps({
 <template>
     <button
         type="button"
-        class="group relative mb-auto block max-w-fit rounded-xl"
+        class="group relative mb-auto block max-w-fit rounded-xl overflow-hidden"
+        :class=" size === w154 ? 'max-w-[156px]' : 'max-w-auto' "
         @click="open(href)"
         :dusk="`movie-btn-${movie.slug}`"
     >

@@ -22,8 +22,10 @@ const max_w = computed(() => {
             return "94px";
         case "w154":
             return "156px";
-        default:
+        case "w185":
             return "187px";
+        default:
+            return "300px";
     }
 });
 </script>
@@ -31,6 +33,6 @@ const max_w = computed(() => {
 <template>
     <img
         :src="placeholder ? $page.props.placeholderPoster : 'https://image.tmdb.org/t/p/' + size + poster_path"
-        :class="`border border-cold-steel-900 w-full rounded-xl max-w-[${max_w}]`"
+        :class="`border-cold-steel-900 w-full border max-w-[${max_w}]`"
     />
 </template>

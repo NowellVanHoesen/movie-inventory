@@ -31,7 +31,7 @@ defineProps({
 
         <h2 class="mt-6 text-2xl">Latest Series</h2>
         <div class="mt-4 grid grid-cols-[repeat(auto-fill,minmax(156px,1fr))] place-items-center gap-1 sm:gap-6">
-            <SeriesPoster v-for="show in series" :series="show" :key="show.id" />
+            <SeriesPoster v-for="show in series" :series="show" :key="show.slug" />
         </div>
     </Layout>
 </template>

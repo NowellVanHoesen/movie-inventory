@@ -6,7 +6,7 @@ import PosterLink from "./PosterLink.vue";
 defineProps({
     size: {
         type: String,
-        default: "w154",
+        default: "w185",
     },
     collection: {
         type: Object,

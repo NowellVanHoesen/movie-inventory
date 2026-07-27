@@ -18,7 +18,7 @@ const props = defineProps({
 <template>
 	<Layout :heading="page_title">
 		<InfiniteScroll
-			class="mt-6 grid grid-cols-[repeat(auto-fill,minmax(156px,1fr))] place-items-center gap-1 sm:gap-6"
+			class="mt-6 grid grid-cols-[repeat(auto-fill,minmax(187px,1fr))] place-items-center gap-4"
 			data="series"
 			:buffer="50"
 		>

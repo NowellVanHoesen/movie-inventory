@@ -4,7 +4,7 @@ import { computed } from "vue";
 const props = defineProps({
     size: {
         type: String,
-        default: "w154",
+        default: "w185",
     },
     poster_path: {
         type: String,

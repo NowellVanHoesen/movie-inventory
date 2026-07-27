@@ -7,7 +7,7 @@ import { open } from "@/useModal.js";
 const props = defineProps({
     size: {
         type: String,
-        default: "w154",
+        default: "w185",
     },
     movie: {
         type: Object,
@@ -23,8 +23,8 @@ const props = defineProps({
 <template>
     <button
         type="button"
-        class="group relative mb-auto block max-w-fit rounded-xl overflow-hidden"
-        :class=" size === w154 ? 'max-w-[156px]' : 'max-w-auto' "
+        class="group relative mb-auto block max-w-fit overflow-hidden rounded-xl"
+        :class="size === 'w185' ? 'max-w-[187px]' : 'max-w-auto'"
         @click="open(href)"
         :dusk="`movie-btn-${movie.slug}`"
     >

@@ -11,7 +11,7 @@ defineProps({
     },
     size: {
         type: String,
-        default: "w154",
+        default: "w185",
     },
 });
 </script>

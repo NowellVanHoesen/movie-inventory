@@ -29,21 +29,19 @@ const props = defineProps({
             <div>
                 <h2 class="text-2xl font-bold">{{ collection.name }}</h2>
                 <p class="mt-4">{{ collection.overview }}</p>
-                <div class="mt-4 grid grid-cols-[repeat(auto-fill,minmax(156px,1fr))] place-items-center gap-1 sm:gap-6">
+                <div class="mt-4 grid grid-cols-[repeat(auto-fill,minmax(156px,1fr))] place-items-center gap-4">
                     <template v-for="movie in collection_details.parts">
                         <MoviePoster
                             v-if="movie.slug"
                             :href="route('movies.show', movie)"
                             :movie="movie"
                             :key="movie.slug"
-                            size="w154"
                         />
                         <MoviePosterPlaceholder
                             v-else
                             :href="route('movies.create')"
                             :movie="movie"
                             :key="movie.id"
-                            size="w154"
                         />
                     </template>
                 </div>

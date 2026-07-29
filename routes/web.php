@@ -20,7 +20,6 @@ Route::controller(MoviesController::class)->group(function () {
     Route::get('/movies/purchased', 'index')->name('movies.purchased');
     Route::get('/movies/wishlist', 'index')->name('movies.wishlist');
     Route::get('/movies/{movie}', 'show')->name('movies.show');
-    Route::get('/movies/{movie}/edit', 'edit')->middleware(['auth'])->name('movies.edit');
     Route::patch('/movies/{movie}', 'update')->middleware(['auth'])->name('movies.update');
     Route::delete('/movies/{movie}', 'destroy')->middleware(['auth'])->name('movies.destroy');
 });

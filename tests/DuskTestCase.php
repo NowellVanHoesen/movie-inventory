@@ -13,6 +13,12 @@ use Tests\Browser;
 abstract class DuskTestCase extends BaseTestCase
 {
     /**
+     * Reference/lookup tables seeded once by their migrations (not by any per-test
+     * seeder), so DatabaseTruncation must leave them alone or their rows never come back.
+     */
+    protected array $exceptTables = ['certifications', 'genres', 'media_types'];
+
+    /**
      * Prepare for Dusk test execution.
      */
     #[BeforeClass]

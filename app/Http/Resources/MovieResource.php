@@ -30,7 +30,6 @@ class MovieResource extends JsonResource
             'cast_members' => CastMembersResource::collection($this->whenLoaded('cast_members')),
             'certification' => $this->certification->name,
             'collection' => new MovieCollectionResource($this->whenLoaded('collection')),
-            'edit_link' => route('movies.edit', $this->id),
             'delete_link' => route('movies.destroy', $this->id),
         ];
     }

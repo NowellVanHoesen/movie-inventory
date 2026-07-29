@@ -9,10 +9,7 @@ const setModal = (data) => {
         return;
     }
 
-    resolvePageComponent(
-        `./Pages/${data.component}.vue`,
-        import.meta.glob("./Pages/**/*.vue")
-    ).then((component) => {
+    resolvePageComponent(`./Pages/${data.component}.vue`, import.meta.glob("./Pages/**/*.vue")).then((component) => {
         modal.value = data;
         modal.value.resolvedComponent = component;
         modal.value.show = true;
@@ -23,6 +20,7 @@ const open = (href) => {
     router.visit(href, {
         preserveState: true,
         preserveScroll: true,
+        except: ["movies"],
     });
 };
 
@@ -34,7 +32,11 @@ const close = () => {
 
 const reset = () => {
     if (modal.value?.baseUrl && modal.value.baseUrl !== window.location.href) {
-        router.visit(modal.value.baseUrl);
+        router.visit(modal.value.baseUrl, {
+            preserveState: true,
+            preserveScroll: true,
+            except: ["movies"],
+        });
     }
 
     modal.value = null;

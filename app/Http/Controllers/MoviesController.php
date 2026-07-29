@@ -220,26 +220,15 @@ class MoviesController extends Controller
 
         // $page_title = config('app.name') . ' - Movie: ' . $movie->title;
 
-        $movie->load('collection', 'genres', 'cast_members');
+        $movie->load('collection', 'genres', 'cast_members', 'media_types');
 
         return Inertia::modal('Movies/MovieModal', [
             'movie' => $movie,
+            'media_type_options' => $this->get_media_types(),
             // 'recommendations' => $recommendations,
             // 'owned_recommendations' => $owned_recommendations,
             // 'page_title' => $page_title,
         ], route('movies.index'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Movie $movie)
-    {
-        $media_types = $this->get_media_types();
-
-        $page_title = config('app.name') . ' - Edit Movie: ' . $movie->title;
-
-        return view('movies.edit', compact('movie', 'media_types', 'page_title'));
     }
 
     /**
@@ -250,7 +239,8 @@ class MoviesController extends Controller
         $attributes = $request->validate([
             'movie_id' => ['integer'],
             'purchase_date' => ['nullable', 'date_format:Y-m-d'],
-            'media_type' => ['array'],
+            'media_type' => ['present', 'array'],
+            'media_type.*' => ['integer', 'exists:media_types,id'],
         ]);
 
         if ($attributes['purchase_date'] !== $movie->purchase_date) {

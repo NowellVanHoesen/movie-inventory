@@ -55,7 +55,7 @@ router.on("before", (event) => {
         <InfiniteScroll
             class="mt-6 grid grid-cols-[repeat(auto-fill,minmax(187px,1fr))] place-items-center gap-4"
             data="movies"
-            :buffer="50"
+            :buffer="300"
         >
             <MoviePoster v-for="movie in movies.data" :href="route('movies.show', movie)" :movie="movie" :key="movie.slug" />
         </InfiniteScroll>

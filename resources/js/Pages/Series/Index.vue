@@ -1,6 +1,7 @@
 <script setup>
 import Layout from '../../layouts/Layout.vue';
 import SeriesPoster from '../Components/SeriesPoster.vue';
+import BackToTop from '../Components/BackToTop.vue';
 import { InfiniteScroll, router, usePage } from '@inertiajs/vue3';
 
 const props = defineProps({
@@ -24,5 +25,6 @@ const props = defineProps({
 		>
 			<SeriesPoster v-for="show in series.data" :key="show.slug" :series="show" />
 		</InfiniteScroll>
+		<BackToTop />
 	</Layout>
 </template>

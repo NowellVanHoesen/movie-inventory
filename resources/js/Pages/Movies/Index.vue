@@ -2,6 +2,7 @@
 import Layout from "@/Layouts/Layout.vue";
 import MoviePoster from "../Components/MoviePoster.vue";
 import MovieFilterDropdown from "../Components/MovieFilterDropdown.vue";
+import BackToTop from "../Components/BackToTop.vue";
 import MovieModal from "./MovieModal.vue";
 import { InfiniteScroll, router, usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
@@ -59,5 +60,6 @@ router.on("before", (event) => {
         >
             <MoviePoster v-for="movie in movies.data" :href="route('movies.show', movie)" :movie="movie" :key="movie.slug" />
         </InfiniteScroll>
+        <BackToTop />
     </Layout>
 </template>

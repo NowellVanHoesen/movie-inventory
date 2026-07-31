@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref, onMounted, onUnmounted } from "vue";
-import { Link, usePage, useForm, Form } from "@inertiajs/vue3";
-import FormButton from "./FormButton.vue";
+import { Link, usePage, Form } from "@inertiajs/vue3";
+import SearchForm from "./SearchForm.vue";
 
 let isLoggedIn = computed(() => usePage().props.auth.user);
 
@@ -60,9 +60,6 @@ const isMobileMenuOpen = ref(false);
 const isProfileMenuOpen = ref(false);
 const activeDropdown = ref(null);
 const activeMobileMenu = ref(null);
-const form = useForm({
-    search: "",
-});
 
 const updateIsMobile = () => {
     isMobile.value = window.innerWidth < 768;
@@ -170,24 +167,7 @@ const toggleMobileSubMenu = (menuName) => {
                                 </div>
                             </template>
                         </nav>
-                        <form @submit.prevent="form.get(route('search'))" class="w-full flex-1 md:flex md:justify-end">
-                            <div
-                                class="m-4 md:my-auto grid md:w-full max-w-full min-w-45 grid-cols-1 rounded-md shadow-sm ring-1 ring-gray-300 ring-inset focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-inset md:max-w-80"
-                            >
-                                <input
-                                    name="search"
-                                    type="search"
-                                    v-model="form.search"
-                                    placeholder="Search the site..."
-                                    aria-label="Search"
-                                    class="placeholder:text-cold-steel-200 col-start-1 row-start-1 block w-full rounded-md border-0 bg-gray-50 py-1.5 pr-3 pl-10 text-gray-900 outline-none focus:ring-0 text-sm leading-6"
-                                />
-                                <i
-                                    class="fa-solid fa-magnifying-glass text-cold-steel-200 pointer-events-none col-start-1 row-start-1 ml-3 block h-5 w-5 self-center align-middle leading-6"
-                                ></i>
-                                <FormButton class="hidden"></FormButton>
-                            </div>
-                        </form>
+                        <SearchForm />
                         <nav
                             aria-label="profile"
                             class="md:grow-0 md:flex-row md:items-center md:justify-end md:space-x-4 md:ms-3 md:flex relative"

@@ -32,22 +32,11 @@ const applyFilters = () => {
         page.url,
         {},
         {
-            headers: {
-                "X-Filter-Genres": JSON.parse(sessionStorage.getItem("selectedGenres")) || [],
-                "X-Sort-Col": sessionStorage.getItem("sortCol") || "release_date",
-                "X-Sort-Dir": sessionStorage.getItem("sortDir") || "desc",
-            },
             reset: ["movies"],
             only: ["movies"],
         },
     );
 };
-
-router.on("before", (event) => {
-    event.detail.visit.headers["X-Filter-Genres"] = JSON.parse(sessionStorage.getItem("selectedGenres")) || [];
-    event.detail.visit.headers["X-Sort-Col"] = sessionStorage.getItem("sortCol") || "release_date";
-    event.detail.visit.headers["X-Sort-Dir"] = sessionStorage.getItem("sortDir") || "desc";
-});
 </script>
 
 <template>

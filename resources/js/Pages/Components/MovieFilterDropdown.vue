@@ -19,30 +19,46 @@ defineProps({
     },
 });
 
+const getCookie = (name) => {
+    const match = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+    return match ? decodeURIComponent(match[1]) : null;
+};
+
+// Deliberately a session cookie (no max-age): mirrors the previous
+// sessionStorage-based lifetime, but cookies also ride along on a full
+// browser refresh so the server can honor them on the initial page load.
+const setCookie = (name, value) => {
+    document.cookie = `${name}=${encodeURIComponent(value)}; path=/; SameSite=Lax`;
+};
+
+const removeCookie = (name) => {
+    document.cookie = `${name}=; path=/; max-age=0`;
+};
+
 const showPanel = ref(false);
-const selectedGenres = ref(JSON.parse(sessionStorage.getItem("selectedGenres")) || []);
-const sortCol = ref(sessionStorage.getItem("sortCol") || "release_date");
-const sortDir = ref(sessionStorage.getItem("sortDir") || "desc");
+const selectedGenres = ref(JSON.parse(getCookie("selectedGenres")) || []);
+const sortCol = ref(getCookie("sortCol") || "release_date");
+const sortDir = ref(getCookie("sortDir") || "desc");
 
 watch(selectedGenres, (newVal) => {
     if (newVal.length) {
-        sessionStorage.setItem("selectedGenres", JSON.stringify(newVal));
+        setCookie("selectedGenres", JSON.stringify(newVal));
     } else {
-        sessionStorage.removeItem("selectedGenres");
+        removeCookie("selectedGenres");
     }
 });
 
 watch(sortCol, (newCol) => {
-    sessionStorage.setItem("sortCol", newCol);
+    setCookie("sortCol", newCol);
 });
 
 watch(sortDir, (newDir) => {
-    sessionStorage.setItem("sortDir", newDir);
+    setCookie("sortDir", newDir);
 });
 
 const clearFilters = () => {
     selectedGenres.value = [];
-    sessionStorage.removeItem("selectedGenres");
+    removeCookie("selectedGenres");
 };
 
 const emit = defineEmits(["apply-filters"]);
@@ -56,7 +72,7 @@ const applyFilters = () => {
 <template>
     <div>
         <button
-            class="absolute top-0 right-2 cursor-pointer rounded-b-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20 z-40"
+            class="absolute top-0 right-2 z-40 cursor-pointer rounded-b-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20"
             @click="showPanel = true"
             v-if="!showPanel"
         >
@@ -90,7 +106,7 @@ const applyFilters = () => {
                                 v-for="genre in genres"
                                 :key="genre.name"
                                 :for="genre.name"
-                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 has-checked:border-blue-800 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:hover:border-blue-600"
+                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:border-blue-800 has-checked:hover:border-blue-600"
                             >
                                 <input
                                     type="checkbox"
@@ -115,7 +131,7 @@ const applyFilters = () => {
                         <div class="flex flex-wrap gap-3">
                             <label
                                 for="sort_title"
-                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 has-checked:border-blue-800 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:hover:border-blue-600"
+                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:border-blue-800 has-checked:hover:border-blue-600"
                             >
                                 <input
                                     type="radio"
@@ -127,7 +143,7 @@ const applyFilters = () => {
                             </label>
                             <label
                                 for="sort_release_date"
-                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 has-checked:border-blue-800 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:hover:border-blue-600"
+                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:border-blue-800 has-checked:hover:border-blue-600"
                             >
                                 <input
                                     type="radio"
@@ -139,7 +155,7 @@ const applyFilters = () => {
                             </label>
                             <label
                                 for="sort_purchase_date"
-                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 has-checked:border-blue-800 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:hover:border-blue-600"
+                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:border-blue-800 has-checked:hover:border-blue-600"
                             >
                                 <input
                                     type="radio"
@@ -154,7 +170,7 @@ const applyFilters = () => {
                         <div class="flex flex-wrap gap-3">
                             <label
                                 for="sort_ascending"
-                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 has-checked:border-blue-800 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:hover:border-blue-600"
+                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:border-blue-800 has-checked:hover:border-blue-600"
                             >
                                 <input
                                     type="radio"
@@ -166,7 +182,7 @@ const applyFilters = () => {
                             </label>
                             <label
                                 for="sort_descending"
-                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 has-checked:border-blue-800 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:hover:border-blue-600"
+                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:border-blue-800 has-checked:hover:border-blue-600"
                             >
                                 <input
                                     type="radio"

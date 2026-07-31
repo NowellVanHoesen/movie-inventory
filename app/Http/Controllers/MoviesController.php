@@ -28,24 +28,24 @@ class MoviesController extends Controller
 
         $query = Movie::with(['media_types']);
 
-        $query->when(request()->header('X-Filter-Genres'), function ($query, $header) {
-            $genreNames = is_array($header) ? $header : explode(',', $header);
+        $genreNames = json_decode(request()->cookie('selectedGenres', '[]'), true) ?: [];
 
+        if (! empty($genreNames)) {
             $query->whereHas('genres', function ($genreQuery) use ($genreNames) {
                 $genreQuery->whereIn('name', $genreNames);
             });
-        });
+        }
 
         $pageTitleSuffix = 'Movie List';
 
-        $sortCol = request()->header('X-Sort-Col', 'release_date');
-        $sortDir = request()->header('X-Sort-Dir', 'desc');
+        $sortCol = request()->cookie('sortCol', 'release_date');
+        $sortDir = request()->cookie('sortDir', 'desc');
         $secondarySort = 'title_sortable';
 
         if (Route::is('movies.purchased')) {
             $query->purchased();
             $pageTitleSuffix = 'Purchased Movies';
-            $sortCol = request()->header('X-Sort-Col', 'purchase_date');
+            $sortCol = request()->cookie('sortCol', 'purchase_date');
         } elseif (Route::is('movies.wishlist')) {
             $query->wishlist();
             $pageTitleSuffix = 'Movie Wishlist';

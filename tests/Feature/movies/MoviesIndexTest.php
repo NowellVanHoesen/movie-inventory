@@ -6,9 +6,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('has movies index page', function () {
+beforeEach(function () {
     $this->seed(MoviesSeeder::class);
+});
 
+it('has movies index page', function () {
     get(route('movies.index'))
     ->assertOk();
 });
@@ -29,25 +31,7 @@ it('displays an add movie button when logged in', function() {
         ->assertSee(route('movies.create'));
 });
 
-it('displays sort options above the movie list', function() {
-    get(route('movies.index'))
-        ->assertOk()
-        ->assertSeeInOrder([
-            'Sort',
-            'Title A - Z',
-            'Release Date',
-            'Purchase Date'
-        ])
-        ->assertSeeHtmlInOrder([
-            'href="http://movie-inventory.test/movies?sort=title"',
-            'href="http://movie-inventory.test/movies?sort=release_date"',
-            'href="http://movie-inventory.test/movies?sort=purchase_date"'
-        ]);
-});
-
 it('displays both purchased and wishlist movies in default order (release date desc then title asc)', function () {
-    $this->seed(MoviesSeeder::class);
-
     get(route('movies.index'))
         ->assertOk()
         ->assertSee([
@@ -70,9 +54,7 @@ it('displays both purchased and wishlist movies in default order (release date d
 });
 
 it('displays only wishlist movies in default order (release date desc then title asc)', function () {
-    $this->seed(MoviesSeeder::class);
-
-    get(route('movies.index', ['wishlist']))
+    get(route('movies.wishlist'))
         ->assertOk()
         ->assertDontSeeText([
             'The Bourne Identity',
@@ -88,10 +70,19 @@ it('displays only wishlist movies in default order (release date desc then title
         ]);
 });
 
-it('displays only purchased movies in default order (purchase date desc then release date desc)', function () {
-    $this->seed(MoviesSeeder::class);
+it('sorts by the sortCol/sortDir cookies, so preferences survive a hard refresh', function () {
+    $this->withUnencryptedCookies(['sortCol' => 'title_sortable', 'sortDir' => 'asc'])
+        ->get(route('movies.index'))
+        ->assertOk()
+        ->assertSeeInOrder([
+            'After',
+            'After Ever Happy',
+            'After We Fell',
+        ]);
+});
 
-    get(route('movies.index', ['purchased']))
+it('displays only purchased movies in default order (purchase date desc then release date desc)', function () {
+    get(route('movies.purchased'))
         ->assertOk()
         ->assertDontSeeText([
             'After We Fell',
@@ -105,23 +96,4 @@ it('displays only purchased movies in default order (purchase date desc then rel
             'My Days of Mercy',
             'Twin Peaks: Fire Walk with Me',
         ]);
-});
-
-it('displays correct sort direction when already sorting by title asc', function() {
-    $this->seed(MoviesSeeder::class);
-
-    get(route('movies.index', ['sort' => 'title']))
-        ->assertOk()
-        ->assertSeeInOrder([
-            'Sort',
-            'Title Z - A',
-            'Release Date',
-            'Purchase Date',
-        ])
-        ->assertSeeHtmlInOrder([
-            'href="http://movie-inventory.test/movies?sort=title%7Cdesc"',
-            'href="http://movie-inventory.test/movies?sort=release_date"',
-            'href="http://movie-inventory.test/movies?sort=purchase_date"'
-        ]);
-
 });

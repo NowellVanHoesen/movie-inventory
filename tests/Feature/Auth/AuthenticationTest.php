@@ -1,54 +1,58 @@
 <?php
 
-namespace Tests\Feature\Auth;
-
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class AuthenticationTest extends TestCase
-{
-    use RefreshDatabase;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
 
-    public function test_login_screen_can_be_rendered(): void
-    {
-        $response = $this->get('/login');
+it('renders the login modal over the resolved base page', function () {
+    get(route('login'))
+        ->assertOk()
+        ->assertInertia(fn ($page) => $page
+            ->where('_modal.component', 'Auth/Login')
+        );
+});
 
-        $response->assertStatus(200);
-    }
+it('authenticates users via the login screen', function () {
+    $user = User::factory()->create();
 
-    public function test_users_can_authenticate_using_the_login_screen(): void
-    {
-        $user = User::factory()->create();
+    $response = post(route('login'), [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
 
-        $response = $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
+    $this->assertAuthenticated();
+    $response->assertRedirect(route('home'));
+});
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
-    }
+it('does not authenticate with an invalid password', function () {
+    $user = User::factory()->create();
 
-    public function test_users_can_not_authenticate_with_invalid_password(): void
-    {
-        $user = User::factory()->create();
+    $response = post(route('login'), [
+        'email' => $user->email,
+        'password' => 'wrong-password',
+    ]);
 
-        $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'wrong-password',
-        ]);
+    $this->assertGuest();
+    $response->assertRedirect(route('login'));
+});
 
-        $this->assertGuest();
-    }
+it('logs out and stays on the page the user was on', function () {
+    $user = User::factory()->create();
 
-    public function test_users_can_logout(): void
-    {
-        $user = User::factory()->create();
+    $response = $this->actingAs($user)
+        ->withHeader('referer', route('movies.index'))
+        ->post(route('logout'));
 
-        $response = $this->actingAs($user)->post('/logout');
+    $this->assertGuest();
+    $response->assertRedirect(route('movies.index'));
+});
 
-        $this->assertGuest();
-        $response->assertRedirect('/');
-    }
-}
+it('logs out to the home page when there is nowhere to go back to', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->post(route('logout'));
+
+    $this->assertGuest();
+    $response->assertRedirect('/');
+});

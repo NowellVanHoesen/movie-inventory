@@ -7,16 +7,19 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
-     * Display the login view.
+     * Display the login modal.
      */
-    public function create(): View
+    public function create(Request $request): Response
     {
-        return view('auth.login');
+        return Inertia::modal('Auth/Login', [
+            'status' => $request->session()->get('status'),
+        ], route('home'));
     }
 
     /**
@@ -28,7 +31,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        if ($intendedUrl = $request->session()->pull('url.intended')) {
+            return redirect($intendedUrl);
+        }
+
+        return Inertia::backFromModal();
     }
 
     /**
@@ -42,6 +49,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->back();
     }
 }

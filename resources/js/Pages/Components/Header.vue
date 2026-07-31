@@ -2,6 +2,7 @@
 import { computed, ref, onMounted, onUnmounted } from "vue";
 import { Link, usePage, Form } from "@inertiajs/vue3";
 import SearchForm from "./SearchForm.vue";
+import { open } from "@/useModal.js";
 
 let isLoggedIn = computed(() => usePage().props.auth.user);
 
@@ -78,6 +79,17 @@ const toggleDropdown = (menuName) => {
 const toggleMobileSubMenu = (menuName) => {
     activeMobileMenu.value = activeMobileMenu.value === menuName ? null : menuName;
 };
+
+const closeAllMenus = () => {
+    isProfileMenuOpen.value = false;
+    isMobileMenuOpen.value = false;
+    activeDropdown.value = null;
+    activeMobileMenu.value = null;
+};
+
+// Deferred so the mobile menu (and the logout <Form> inside it) isn't
+// unmounted before the form's submit is actually dispatched.
+const closeAllMenusAfterSubmit = () => setTimeout(closeAllMenus, 0);
 </script>
 
 <template>
@@ -196,10 +208,10 @@ const toggleMobileSubMenu = (menuName) => {
                                             Dashboard
                                         </Link>
                                         <Link
-                                            :href="route('dashboard')"
+                                            :href="route('profile.edit')"
                                             class="hover:text-cold-steel-50 block px-4 py-2 text-sm hover:bg-white/10 focus:outline-none"
                                             :class="
-                                                route().current('profile-edit')
+                                                route().current('profile.edit')
                                                     ? 'text-cold-steel-50 bg-white/5'
                                                     : 'text-cold-steel-100'
                                             "
@@ -207,19 +219,20 @@ const toggleMobileSubMenu = (menuName) => {
                                             Profile
                                         </Link>
                                         <Form method="POST" :action="route('logout')">
-                                            <button type="submit" class="hover:text-cold-steel-50 block px-4 py-2 text-sm hover:bg-white/10 focus:outline-none md:w-full md:text-left">Log out</button>
+                                            <button @click="closeAllMenusAfterSubmit" type="submit" class="hover:text-cold-steel-50 block px-4 py-2 text-sm hover:bg-white/10 focus:outline-none md:w-full md:text-left">Log out</button>
                                         </Form>
                                     </div>
                                 </div>
                             </template>
                             <template v-else>
-                                <Link
-                                    :href="route('login')"
-                                    :active="route().current('login')"
+                                <button
+                                    type="button"
+                                    dusk="login-nav-btn"
+                                    @click="open(route('login'))"
                                     class="text-cold-steel-100 hover:bg-cold-steel-900 hover:text-cold-steel-50 focus:bg-cold-steel-900 mx-auto block rounded-md px-4 py-3 text-center text-sm font-medium whitespace-nowrap focus:inset-ring-blue-300 md:inline-block md:px-3 md:py-2"
-                                    :class="{ 'bg-cold-steel-900': route().current('login') }"
-                                    >Log in</Link
                                 >
+                                    Log in
+                                </button>
                             </template>
                         </nav>
                     </div>

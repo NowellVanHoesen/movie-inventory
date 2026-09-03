@@ -48,7 +48,7 @@ const castToShow = computed(() => {
         </div>
         <ul :class="{ 'columns-1 gap-4 lg:columns-2': multi_cols }" class="mt-4">
             <li class="flex w-full" v-for="cast_member in castToShow" :key="cast_member.slug">
-                <Link :href="route('castMember.show', cast_member)" class="text-indigo-600">{{ cast_member.name }}</Link>
+                <Link :href="route('castMember', cast_member)" class="text-indigo-600">{{ cast_member.name }}</Link>
                 <span
                     class="flex flex-1 text-right before:mx-1 before:mb-[0.3rem] before:flex-1 before:border-b-2 before:border-dotted before:border-b-gray-500 before:content-['']"
                     >{{ cast_member.pivot.character }}</span

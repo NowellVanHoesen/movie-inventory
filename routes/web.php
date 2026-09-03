@@ -38,9 +38,7 @@ Route::controller(SeriesController::class)->group(function () {
     Route::get('/series/{series}/season/{season:season_number}/episode/{episode:episode_number}', 'showEpisode')->name('episode.show');
 });
 
-Route::controller(CastMemberController::class)->group(function () {
-    Route::get('/cast/{castMember}', 'show')->name('castMember.show');
-});
+Route::get('/cast/{castMember}', CastMemberController::class)->name('castMember');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

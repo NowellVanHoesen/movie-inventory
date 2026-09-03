@@ -23,17 +23,17 @@ class CastMember extends Model
 
     public function series()
     {
-        return $this->belongsToMany(Series::class);
+        return $this->belongsToMany(Series::class)->withPivot('character', 'order');
     }
 
     public function seasons()
     {
-        return $this->belongsToMany(Season::class);
+        return $this->belongsToMany(Season::class)->withPivot('character', 'order');
     }
 
     public function episodes()
     {
-        return $this->belongsToMany(Episode::class);
+        return $this->belongsToMany(Episode::class)->withPivot('character', 'order');
     }
 
     public function getSlugOptions(): SlugOptions

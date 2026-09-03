@@ -28,9 +28,10 @@ class MovieResource extends JsonResource
             'poster_path' => $this->poster_path,
             'genres' => GenreResource::collection($this->whenLoaded('genres')),
             'cast_members' => CastMembersResource::collection($this->whenLoaded('cast_members')),
+            'character' => $this->when($this->getRawOriginal('pivot_character'), $this->getRawOriginal('pivot_character')),
             'certification' => $this->certification->name,
             'collection' => new MovieCollectionResource($this->whenLoaded('collection')),
-            'delete_link' => route('movies.destroy', $this->id),
+            // 'delete_link' => route('movies.destroy', $this->id),
         ];
     }
 }

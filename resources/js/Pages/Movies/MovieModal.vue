@@ -3,6 +3,7 @@ import Modal from "../Components/Modal.vue";
 import { Link, useForm } from "@inertiajs/vue3";
 import CastMembers from "../Components/CastMembers.vue";
 import FormButton from "../Components/FormButton.vue";
+import { modalBaseUrl } from "@/useModal.js";
 import { computed, ref } from "vue";
 
 const props = defineProps({
@@ -47,6 +48,11 @@ const submit = () => {
     form.patch(route("movies.update", props.movie.slug), {
         preserveScroll: true,
         except: ["movies"],
+        // Carry the modal's background URL through the update + redirect so the
+        // re-rendered modal lands on the right page instead of a Referer guess.
+        headers: {
+            "X-Modal-Base-Url": modalBaseUrl(),
+        },
         onSuccess: () => {
             isEditing.value = false;
         },
@@ -99,7 +105,9 @@ const submit = () => {
                         </p>
                         <p v-if="genres" class="mt-2 text-sm">{{ genres }}</p>
                         <template v-if="!isEditing">
-                            <p v-if="movie.purchase_date === null" class="text-cold-steel-600 text-sm font-normal">wishlist</p>
+                            <p v-if="movie.purchase_date === null" class="text-cold-steel-600 text-sm font-normal">
+                                wishlist
+                            </p>
                             <p v-for="(mTypes, parent) in movie.media_types_display" :key="parent" class="mt-2 text-sm">
                                 <strong> {{ parent }} </strong>:
                                 {{ mTypes.map((type) => type).join(" | ") }}
@@ -134,7 +142,9 @@ const submit = () => {
                                 v-model="form.purchase_date"
                                 class="border-cold-steel-300 mt-1 rounded-md border px-2 py-1 text-sm"
                             />
-                            <p v-if="form.errors.purchase_date" class="mt-1 text-sm text-red-600">{{ form.errors.purchase_date }}</p>
+                            <p v-if="form.errors.purchase_date" class="mt-1 text-sm text-red-600">
+                                {{ form.errors.purchase_date }}
+                            </p>
                         </div>
                         <div class="mt-4">
                             <span class="block text-sm font-bold">Media Type</span>
@@ -144,14 +154,21 @@ const submit = () => {
                                     <ul>
                                         <li v-for="(name, id) in subTypes" :key="id">
                                             <label class="flex items-center gap-1 text-sm">
-                                                <input type="checkbox" :value="Number(id)" :dusk="`media-type-${id}`" v-model="form.media_type" />
+                                                <input
+                                                    type="checkbox"
+                                                    :value="Number(id)"
+                                                    :dusk="`media-type-${id}`"
+                                                    v-model="form.media_type"
+                                                />
                                                 {{ name }}
                                             </label>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
-                            <p v-if="form.errors.media_type" class="mt-1 text-sm text-red-600">{{ form.errors.media_type }}</p>
+                            <p v-if="form.errors.media_type" class="mt-1 text-sm text-red-600">
+                                {{ form.errors.media_type }}
+                            </p>
                         </div>
                         <div class="mt-4 flex items-center gap-4">
                             <FormButton :disabled="form.processing" dusk="save-movie-btn">Save</FormButton>

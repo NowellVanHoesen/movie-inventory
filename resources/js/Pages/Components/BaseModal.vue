@@ -6,6 +6,8 @@ import axios from "axios";
 
 const page = usePage();
 
+let interceptorId = null;
+
 function addBaseUrlToRequest(config) {
     if (page.props._modal) {
         config.headers["X-Modal-Base-Url"] = page.props._modal.baseUrl;
@@ -18,10 +20,15 @@ watch(
     () => page.props._modal,
     (modal) => {
         if (modal) {
-            axios.interceptors.request.use(addBaseUrlToRequest);
+            if (interceptorId === null) {
+                interceptorId = axios.interceptors.request.use(addBaseUrlToRequest);
+            }
             setModal({ ...modal });
         } else {
-            axios.interceptors.request.eject(addBaseUrlToRequest);
+            if (interceptorId !== null) {
+                axios.interceptors.request.eject(interceptorId);
+                interceptorId = null;
+            }
             close();
         }
     },

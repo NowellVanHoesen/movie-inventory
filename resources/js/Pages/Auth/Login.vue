@@ -2,6 +2,7 @@
 import Modal from "../Components/Modal.vue";
 import FormButton from "../Components/FormButton.vue";
 import { useForm } from "@inertiajs/vue3";
+import { modalBaseUrl } from "@/useModal.js";
 
 defineProps({
     status: {
@@ -25,6 +26,10 @@ const closeModal = () => {
 const submit = () => {
     form.post(route("login"), {
         preserveScroll: true,
+        // Tells `Inertia::backFromModal()` which page to return to after login.
+        headers: {
+            "X-Modal-Base-Url": modalBaseUrl(),
+        },
         onSuccess: () => {
             emit("close");
         },

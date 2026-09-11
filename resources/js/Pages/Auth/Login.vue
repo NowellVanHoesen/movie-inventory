@@ -91,10 +91,7 @@ const submit = () => {
                         Remember me
                     </label>
 
-                    <a
-                        :href="route('password.request')"
-                        class="text-cold-steel-600 text-sm font-semibold hover:underline"
-                    >
+                    <a :href="route('password.request')" class="text-cold-steel-600 text-sm font-semibold hover:underline">
                         Forgot your password?
                     </a>
                 </div>

@@ -16,14 +16,21 @@ it('displays posters for collections for movies added to the app', function() {
 
 	get(route('movieCollection.index'))
 		->assertOk()
-		->assertSeeText([
+		// This page is rendered client-side by Vue from Inertia props (no SSR), so
+		// collection names and poster paths only show up in the initial page's
+		// embedded JSON, not as visible text or <img> tags in the raw HTML response.
+		// assertSee checks the raw response body (unlike assertSeeText, which strips
+		// tags/attributes and would miss data embedded in the data-page attribute).
+		->assertSee([
 			'Harry Potter Collection',
 			'Fallen Collection',
 			'John Wick Collection',
 		])
-		->assertSeeHtml([
-			'src="/images/dummy_200x300_ffffff_3e4b62_poster-not-provided.png"',
-			'src="https://image.tmdb.org/t/p/w154/yVO4Py2gZ2yFruiscOkEyrrtXFa.jpg"',
-			'src="https://image.tmdb.org/t/p/w154/qIm2nHXLpBBdMxi8dvfrnDkBUDh.jpg"',
+		// Slashes come back JSON-escaped (\/) inside the embedded page data, so
+		// match on the filename/hash alone rather than the leading path slash.
+		->assertSee([
+			'dummy_200x300_ffffff_3e4b62_poster-not-provided.png',
+			'yVO4Py2gZ2yFruiscOkEyrrtXFa.jpg',
+			'qIm2nHXLpBBdMxi8dvfrnDkBUDh.jpg',
 		], false);
 });

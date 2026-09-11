@@ -20,7 +20,11 @@ describe('SeriesController', function () {
 		$this->seed(SeriesSeeder::class);
         $response = $this->get(route('series.index'));
         $response->assertOk();
-        $response->assertViewHas('series');
+        $response->assertInertia(fn ($page) => $page
+            ->component('Series/Index')
+            ->has('series')
+            ->etc()
+        );
     });
 
     it('shows the create form with query', function () {
@@ -68,7 +72,11 @@ describe('SeriesController', function () {
         $series = Series::where('slug', 'the-flight-attendant')->firstOrFail();
         $response = $this->get(route('series.show', $series));
         $response->assertStatus(200);
-        $response->assertViewHas('series');
+        $response->assertInertia(fn ($page) => $page
+            ->component('Series/Show')
+            ->where('series.slug', $series->slug)
+            ->etc()
+        );
     });
 
     it('shows season and episode pages', function () {

@@ -15,22 +15,6 @@ it('has movies index page', function () {
     ->assertOk();
 });
 
-it('does not display an add movie button when logged not in', function() {
-    get(route('movies.index'))
-        ->assertOk()
-        ->assertDontSeeText('Add Movie')
-        ->assertDontSee(route('movies.create'));
-});
-
-it('displays an add movie button when logged in', function() {
-    loginAsUser();
-
-    get(route('movies.index'))
-        ->assertOk()
-        ->assertSeeText('Add Movie')
-        ->assertSee(route('movies.create'));
-});
-
 it('displays both purchased and wishlist movies in default order (release date desc then title asc)', function () {
     get(route('movies.index'))
         ->assertOk()

@@ -33,7 +33,7 @@ const navLinks = [
                 authRequired: false,
             },
             {
-                hrefRoute: "series.create",
+                hrefRoute: "movies.create",
                 name: "Add Movie",
                 authRequired: true,
             },
@@ -131,6 +131,7 @@ const closeAllMenusAfterSubmit = () => setTimeout(closeAllMenus, 0);
                                 <div v-else class="relative last:[&>*:first-child]:rounded-b-md">
                                     <button
                                         @click="toggleDropdown(item.name)"
+                                        :dusk="`nav-dropdown-${item.name}`"
                                         class="text-cold-steel-100 hover:text-cold-steel-50 flex w-full items-center justify-between px-6 py-4 whitespace-nowrap hover:bg-white/10 focus:ring-white/25 focus:ring md:inline-block focus:outline-none md:w-auto md:rounded-md md:px-3 md:py-2 "
                                         :class="[
                                             {
@@ -164,6 +165,7 @@ const closeAllMenusAfterSubmit = () => setTimeout(closeAllMenus, 0);
                                                     v-if="!subItem.authRequired || isLoggedIn"
                                                     :key="subItem.name"
                                                     :href="route(subItem.hrefRoute)"
+                                                    :dusk="`nav-link-${subItem.hrefRoute}`"
                                                     class="hover:text-cold-steel-50 block px-10 py-2 text-sm hover:bg-white/10 focus:outline-none md:px-4"
                                                     :class="
                                                         route().current(subItem.hrefRoute)

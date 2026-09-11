@@ -12,15 +12,17 @@ beforeEach(function () {
 
 it('can open a modal and close it on home route', function () {
     $this->browse(function (Browser $browser) {
-        $movie = Movie::where( 'slug', 'step-up-3d' )->firstOrFail();
-
         $browser
             ->loginAs( 1 )
             ->visit( route('home') )
-            ->waitFor( 'footer' )
-            ->press( '@movie-btn-step-up-3d' )
+            ->waitFor( '[dusk^=movie-btn-]' );
+
+        $slug = str($browser->attribute('[dusk^=movie-btn-]', 'dusk'))->after('movie-btn-')->toString();
+
+        $browser
+            ->press( "@movie-btn-{$slug}" )
             ->waitForText( 'Cast Members' )
-            ->assertUrlIs( route( 'movies.show', $movie ) )
+            ->assertUrlIs( route( 'movies.show', $slug ) )
             ->clickAtPoint( 25, 25 )
             ->waitUntilMissingModal()
             ->pause(100)
@@ -30,17 +32,17 @@ it('can open a modal and close it on home route', function () {
 
 it('can open a modal and close it on movies.index route', function () {
     $this->browse(function (Browser $browser) {
-        $movie = Movie::orderByDesc('release_date')
-            ->orderBy('title_sortable')
-            ->first();
-
         $browser
             ->loginAs( 1 )
             ->visit( route('movies.index') )
-            ->waitFor( "@movie-btn-{$movie->slug}" )
-            ->press( "@movie-btn-{$movie->slug}" )
+            ->waitFor( '[dusk^=movie-btn-]' );
+
+        $slug = str($browser->attribute('[dusk^=movie-btn-]', 'dusk'))->after('movie-btn-')->toString();
+
+        $browser
+            ->press( "@movie-btn-{$slug}" )
             ->waitForText( 'Cast Members' )
-            ->assertUrlIs( route( 'movies.show', $movie ) )
+            ->assertUrlIs( route( 'movies.show', $slug ) )
             ->clickAtPoint( 25, 25 )
             ->waitUntilMissingModal()
             ->pause(100)
@@ -50,19 +52,17 @@ it('can open a modal and close it on movies.index route', function () {
 
 it('does not shift the background page layout when opening or closing a modal', function () {
     $this->browse(function (Browser $browser) {
-        $movie = Movie::orderByDesc('release_date')
-            ->orderBy('title_sortable')
-            ->first();
-
         $browser
             ->loginAs(1)
             ->visit(route('movies.index'))
-            ->waitFor("@movie-btn-{$movie->slug}");
+            ->waitFor('[dusk^=movie-btn-]');
+
+        $slug = str($browser->attribute('[dusk^=movie-btn-]', 'dusk'))->after('movie-btn-')->toString();
 
         $rectBefore = $browser->script("return JSON.stringify(document.querySelector('[dusk^=movie-btn-]').getBoundingClientRect());")[0];
 
         $browser
-            ->press("@movie-btn-{$movie->slug}")
+            ->press("@movie-btn-{$slug}")
             ->waitForText('Cast Members');
 
         $rectDuring = $browser->script("return JSON.stringify(document.querySelector('[dusk^=movie-btn-]').getBoundingClientRect());")[0];
@@ -128,22 +128,25 @@ it('toggles the modal into an inline edit form and cancel discards unsaved chang
     $this->browse(function (Browser $browser) {
         $user = User::factory()->create();
         $movie = Movie::whereNotNull('purchase_date')->whereHas('media_types')->firstOrFail();
-        $mediaTypeId = $movie->media_types->first()->id;
 
         $browser
             ->loginAs($user)
             ->visit(route('movies.show', $movie))
             ->waitForText('Cast Members')
             ->assertUrlIs(route('movies.show', $movie))
-            ->press('@edit-movie-btn')
-            ->waitFor('@save-movie-btn')
+            ->clickViaJs('@edit-movie-btn')
+            ->waitFor('@save-movie-btn');
+
+        $mediaTypeId = str($browser->attribute('input[dusk^=media-type-]:checked', 'dusk'))->after('media-type-')->toString();
+
+        $browser
             ->assertChecked("@media-type-{$mediaTypeId}")
             ->uncheck("@media-type-{$mediaTypeId}")
             ->assertNotChecked("@media-type-{$mediaTypeId}")
             ->press('@cancel-edit-btn')
             ->waitForText('Cast Members')
             ->assertUrlIs(route('movies.show', $movie))
-            ->press('@edit-movie-btn')
+            ->clickViaJs('@edit-movie-btn')
             ->waitFor('@save-movie-btn')
             ->assertChecked("@media-type-{$mediaTypeId}");
     });
@@ -161,15 +164,16 @@ it('saves media type changes and returns to the read-only view', function () {
             ->loginAs($user)
             ->visit(route('movies.show', $movie))
             ->waitForText('Cast Members')
-            ->press('@edit-movie-btn')
+            ->clickViaJs('@edit-movie-btn')
             ->waitFor('@save-movie-btn')
             ->check("@media-type-{$newMediaType->id}")
             ->assertChecked("@media-type-{$newMediaType->id}")
             ->press('@save-movie-btn')
             ->waitForText('Cast Members')
-            ->assertUrlIs(route('movies.show', $movie));
-
-        expect($movie->refresh()->media_types->pluck('id'))->toContain($newMediaType->id);
+            ->assertUrlIs(route('movies.show', $movie))
+            ->clickViaJs('@edit-movie-btn')
+            ->waitFor('@save-movie-btn')
+            ->assertChecked("@media-type-{$newMediaType->id}");
     });
 });
 
@@ -183,7 +187,7 @@ it('can uncheck every media type and save without error', function () {
             ->loginAs($user)
             ->visit(route('movies.show', $movie))
             ->waitForText('Cast Members')
-            ->press('@edit-movie-btn')
+            ->clickViaJs('@edit-movie-btn')
             ->waitFor('@save-movie-btn');
 
         foreach ($mediaTypeIds as $id) {
@@ -193,9 +197,13 @@ it('can uncheck every media type and save without error', function () {
         $browser
             ->press('@save-movie-btn')
             ->waitForText('Cast Members')
-            ->assertUrlIs(route('movies.show', $movie));
+            ->assertUrlIs(route('movies.show', $movie))
+            ->clickViaJs('@edit-movie-btn')
+            ->waitFor('@save-movie-btn');
 
-        expect($movie->refresh()->media_types)->toBeEmpty();
+        foreach ($mediaTypeIds as $id) {
+            $browser->assertNotChecked("@media-type-{$id}");
+        }
     });
 });
 
@@ -226,7 +234,7 @@ it('does not reset the movie list after saving an edit on a movie loaded via inf
         $browser
             ->click("[dusk=\"{$lastDuskId}\"]")
             ->waitForText('Cast Members')
-            ->press('@edit-movie-btn')
+            ->clickViaJs('@edit-movie-btn')
             ->waitFor('@save-movie-btn')
             ->press('@save-movie-btn')
             ->waitForText('Cast Members')

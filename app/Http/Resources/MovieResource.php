@@ -2,8 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Http\Resources\CastMembersResource;
-use App\Http\Resources\GenreResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -20,10 +18,10 @@ class MovieResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
-            'description' => $this->description,
+            'overview' => $this->overview,
             'release_date' => $this->release_date,
             'purchase_date' => $this->purchase_date,
-            'release_year' => $this->release_date ? date( 'Y', strtotime( $this->release_date )) : 'TBD',
+            'release_year' => $this->release_date ? date('Y', strtotime($this->release_date)) : 'TBD',
             'runtime' => $this->runtime,
             'poster_path' => $this->poster_path,
             'genres' => GenreResource::collection($this->whenLoaded('genres')),

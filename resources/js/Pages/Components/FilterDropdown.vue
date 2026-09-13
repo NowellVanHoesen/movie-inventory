@@ -41,8 +41,20 @@ const removeCookie = (name) => {
     document.cookie = `${name}=; path=/; max-age=0`;
 };
 
+// The cookie is client-writable (it has to be — this component writes it from JS),
+// so a malformed or wrong-shaped value is entirely possible. Parsing it unguarded
+// throws during setup() and the page never mounts, so fall back to no selection.
+const readSelectedGenres = () => {
+    try {
+        const parsed = JSON.parse(getCookie(props.cookieNames.genres));
+        return Array.isArray(parsed) ? parsed : [];
+    } catch {
+        return [];
+    }
+};
+
 const showPanel = ref(false);
-const selectedGenres = ref(JSON.parse(getCookie(props.cookieNames.genres)) || []);
+const selectedGenres = ref(readSelectedGenres());
 const sortCol = ref(getCookie(props.cookieNames.sortCol) || props.defaultSortCol);
 const sortDir = ref(getCookie(props.cookieNames.sortDir) || props.defaultSortDir);
 

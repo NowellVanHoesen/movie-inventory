@@ -23,7 +23,7 @@ defineProps({
         <ItemOverlayDetail
             :class="'text-left' + (series.poster_path === null ? '' : ' invisible group-hover:visible group-focus:visible')"
             :title="series.name"
-            :release_year="series.first_air_date ? series.first_air_date : 'TBA'"
+            :release_year="series.release_year"
         />
     </PosterLink>
 </template>

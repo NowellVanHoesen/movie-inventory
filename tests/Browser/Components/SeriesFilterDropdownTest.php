@@ -27,6 +27,39 @@ function clearSeriesFilterCookies(Browser $browser): void
  * covered there, so it's intentionally not duplicated here without real data to
  * back it up.
  */
+/**
+ * Guards the resource layer, not the dropdown: every other test here asserts only on
+ * the `dusk` attribute (built from `slug`) and on element counts, so a SeriesResource
+ * that emitted the wrong column names rendered a page of blank titles while all of
+ * them still passed. Assert on text the user actually reads.
+ */
+it('renders a series card with its name and first air year', function () {
+    $this->browse(function (Browser $browser) {
+        $series = Series::orderBy('name_sortable')->orderBy('first_air_date')->firstOrFail();
+
+        $browser
+            ->loginAs(User::factory()->create())
+            ->visit(route('series.index'));
+
+        clearSeriesFilterCookies($browser);
+
+        $browser
+            ->visit(route('series.index'))
+            ->waitFor('@filter-toggle-btn')
+            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === 24');
+
+        // textContent rather than Dusk's assertSee: the overlay is `invisible` until
+        // hover whenever the series has a poster, and Selenium's getText() ignores
+        // text that isn't visually rendered.
+        $cardText = $browser->script(
+            "return document.querySelector('[dusk=\"series-btn-{$series->slug}\"]').textContent;"
+        )[0];
+
+        expect($cardText)->toContain($series->name);
+        expect($cardText)->toContain(date('Y', strtotime($series->first_air_date)));
+    });
+});
+
 it('opens and closes the filter panel', function () {
     $this->browse(function (Browser $browser) {
         $browser

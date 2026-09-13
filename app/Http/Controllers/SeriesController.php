@@ -21,11 +21,18 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        $genres = Genre::has('series')->select('name')->orderBy('name')->get();
-
         $query = Series::query();
 
         $genreNames = json_decode(request()->cookie('seriesSelectedGenres', '[]'), true) ?: [];
+
+        // These cookies sit in bootstrap/app.php's encryptCookies except-list so the
+        // filter component can write them from JS, which also makes them fully
+        // client-writable. Treat them as untrusted: a JSON scalar such as "nope"
+        // survives the ?: above and then throws inside whereIn, so require an actual
+        // array, keep only string genre names, and cap how many we'll match on.
+        $genreNames = is_array($genreNames)
+            ? array_slice(array_values(array_filter($genreNames, 'is_string')), 0, 50)
+            : [];
 
         if (! empty($genreNames)) {
             $query->whereHas('genres', function ($genreQuery) use ($genreNames) {
@@ -34,6 +41,14 @@ class SeriesController extends Controller
         }
 
         $sortCol = request()->cookie('seriesSortCol', 'name_sortable');
+
+        // Same reasoning: an unrecognized column would reach orderBy() and throw an
+        // unhandled "Column not found" 500 that the user can't clear from the UI,
+        // since the page they'd fix it on is the page that's failing.
+        if (! in_array($sortCol, ['name_sortable', 'first_air_date', 'purchase_date'], true)) {
+            $sortCol = 'name_sortable';
+        }
+
         $sortDir = request()->cookie('seriesSortDir', 'asc');
         $secondarySort = 'name_sortable';
 
@@ -58,7 +73,9 @@ class SeriesController extends Controller
         return inertia('Series/Index', [
             'series' => Inertia::scroll(fn () => $series->toResourceCollection()),
             'page_title' => $page_title,
-            'genres' => $genres->toResourceCollection(),
+            // A closure so Inertia skips the query entirely on the `only: ['series']`
+            // partial reloads that infinite scroll and the filter panel both issue.
+            'genres' => fn () => Genre::has('series')->select('name')->orderBy('name')->get()->toResourceCollection(),
         ]);
     }
 

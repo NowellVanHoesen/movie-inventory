@@ -16,13 +16,12 @@ class SeriesResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'name' => $this->name,
             'slug' => $this->slug,
-            'description' => $this->description,
-            'release_date' => $this->release_date,
+            'overview' => $this->overview,
+            'first_air_date' => $this->first_air_date,
             'purchase_date' => $this->purchase_date,
-            'release_year' => $this->release_date ? date( 'Y', strtotime( $this->release_date )) : 'TBD',
-            'runtime' => $this->runtime,
+            'release_year' => $this->first_air_date ? date('Y', strtotime($this->first_air_date)) : 'TBD',
             'poster_path' => $this->poster_path,
             'genres' => GenreResource::collection($this->whenLoaded('genres')),
             'cast_members' => CastMembersResource::collection($this->whenLoaded('cast_members')),

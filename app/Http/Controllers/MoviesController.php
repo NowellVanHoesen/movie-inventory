@@ -10,10 +10,13 @@ use App\Models\Movie;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
 use Carbon\Carbon;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class MoviesController extends Controller
 {
@@ -24,11 +27,18 @@ class MoviesController extends Controller
      */
     public function index()
     {
-        $genres = Genre::has('movies')->select('name')->orderBy('name')->get();
-
         $query = Movie::with(['media_types']);
 
         $genreNames = json_decode(request()->cookie('selectedGenres', '[]'), true) ?: [];
+
+        // These cookies sit in bootstrap/app.php's encryptCookies except-list so the
+        // filter component can write them from JS, which also makes them fully
+        // client-writable. Treat them as untrusted: a JSON scalar such as "nope"
+        // survives the ?: above and then throws inside whereIn, so require an actual
+        // array, keep only string genre names, and cap how many we'll match on.
+        $genreNames = is_array($genreNames)
+            ? array_slice(array_values(array_filter($genreNames, 'is_string')), 0, 50)
+            : [];
 
         if (! empty($genreNames)) {
             $query->whereHas('genres', function ($genreQuery) use ($genreNames) {
@@ -38,41 +48,52 @@ class MoviesController extends Controller
 
         $pageTitleSuffix = 'Movie List';
 
-        $sortCol = request()->cookie('sortCol', 'release_date');
+        $defaultSortCol = 'release_date';
         $sortDir = request()->cookie('sortDir', 'desc');
         $secondarySort = 'title_sortable';
 
         if (Route::is('movies.purchased')) {
             $query->purchased();
             $pageTitleSuffix = 'Purchased Movies';
-            $sortCol = request()->cookie('sortCol', 'purchase_date');
+            $defaultSortCol = 'purchase_date';
         } elseif (Route::is('movies.wishlist')) {
             $query->wishlist();
             $pageTitleSuffix = 'Movie Wishlist';
         }
 
-        if ( $sortCol === 'title_sortable' ) {
+        $sortCol = request()->cookie('sortCol', $defaultSortCol);
+
+        // Same reasoning: an unrecognized column would reach orderBy() and throw an
+        // unhandled "Column not found" 500 that the user can't clear from the UI,
+        // since the page they'd fix it on is the page that's failing.
+        if (! in_array($sortCol, ['title_sortable', 'release_date', 'purchase_date'], true)) {
+            $sortCol = $defaultSortCol;
+        }
+
+        if ($sortCol === 'title_sortable') {
             $secondarySort = 'release_date';
         }
 
-        if ( $sortDir === 'desc' ) {
-            $query->orderByDesc( $sortCol )->orderBy( $secondarySort );
+        if ($sortDir === 'desc') {
+            $query->orderByDesc($sortCol)->orderBy($secondarySort);
         } else {
-            if ( $sortCol === 'purchase_date' ) {
+            if ($sortCol === 'purchase_date') {
                 $query->orderByRaw('purchase_date is null');
             }
 
-            $query->orderBy( $sortCol )->orderBy( $secondarySort );
+            $query->orderBy($sortCol)->orderBy($secondarySort);
         }
 
         $movies = $query->paginate(24);
 
-        $page_title = config('app.name') . ' - ' . $pageTitleSuffix;
+        $page_title = config('app.name').' - '.$pageTitleSuffix;
 
         return inertia('Movies/Index', [
             'movies' => Inertia::scroll(fn () => $movies->toResourceCollection()),
             'page_title' => $page_title,
-            'genres' => $genres->toResourceCollection(),
+            // A closure so Inertia skips the query entirely on the `only: ['movies']`
+            // partial reloads that infinite scroll and the filter panel both issue.
+            'genres' => fn () => Genre::has('movies')->select('name')->orderBy('name')->get()->toResourceCollection(),
         ]);
     }
 
@@ -85,10 +106,10 @@ class MoviesController extends Controller
      * studios, etc.). May perform authorization checks and redirect if the user
      * is not permitted to create movies.
      *
-     * @param \Illuminate\Http\Request $request Incoming HTTP request with optional prefill/context data.
-     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse The Inertia response rendering the creation form, or a redirect on authorization/error conditions.
+     * @param  Request  $request  Incoming HTTP request with optional prefill/context data.
+     * @return Response|RedirectResponse The Inertia response rendering the creation form, or a redirect on authorization/error conditions.
      *
-     * @throws \Illuminate\Auth\Access\AuthorizationException If the user is not authorized to create a movie.
+     * @throws AuthorizationException If the user is not authorized to create a movie.
      */
     public function create(Request $request)
     {
@@ -97,11 +118,11 @@ class MoviesController extends Controller
         if (! empty($request['query'])) {
             $attributes = $request->validate([
                 'query' => ['min:2'],
-                'year' => ['sometimes', 'max:4']
+                'year' => ['sometimes', 'max:4'],
             ]);
 
             $localResults = Movie::with('certification')
-                ->where('title_normalized', 'like', '%' . $attributes['query'] . '%')
+                ->where('title_normalized', 'like', '%'.$attributes['query'].'%')
                 ->get();
 
             $data['local_results'] = $localResults->toResourceCollection();
@@ -137,7 +158,7 @@ class MoviesController extends Controller
             $data['search_term'] = $attributes['search_term'] ?? '';
         }
 
-        $data['page_title'] = config('app.name') . ' - Add Movie';
+        $data['page_title'] = config('app.name').' - Add Movie';
 
         return Inertia::render('Movies/Create', $data);
     }
@@ -164,11 +185,11 @@ class MoviesController extends Controller
             }
 
             foreach ($rDate->release_dates as $usReleaseDates) {
-                if ( ! in_array( $usReleaseDates->type, [3,4], true ) || empty($usReleaseDates->certification)) {
+                if (! in_array($usReleaseDates->type, [3, 4], true) || empty($usReleaseDates->certification)) {
                     continue;
                 }
 
-                $release_date = Carbon::create( $usReleaseDates->release_date )->toDateString();
+                $release_date = Carbon::create($usReleaseDates->release_date)->toDateString();
                 $certification_name = $usReleaseDates->certification;
 
                 break 2;

@@ -39,7 +39,7 @@ Route::controller(SeriesController::class)->group(function () {
 Route::get('/cast/{castMember}', CastMemberController::class)->name('castMember');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return inertia('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

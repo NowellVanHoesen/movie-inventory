@@ -17,7 +17,7 @@ defineProps({
 </script>
 
 <template>
-    <PosterLink :href="route('series.show', series)" :id="series.id">
+    <PosterLink :href="route('series.show', series)" :id="series.id" :dusk="`series-btn-${series.slug}`">
         <ItemStatusIcon :purchased="series.purchase_date !== null" />
         <ItemPoster :placeholder="series.poster_path == null" :poster_path="series.poster_path" :size="size" />
         <ItemOverlayDetail

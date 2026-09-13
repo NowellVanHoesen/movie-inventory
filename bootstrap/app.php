@@ -20,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'selectedGenres',
             'sortCol',
             'sortDir',
+            'seriesSelectedGenres',
+            'seriesSortCol',
+            'seriesSortDir',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\processSeries;
 use App\Models\Certification;
-use App\Models\MediaType;
+use App\Models\Genre;
 use App\Models\Series;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
@@ -21,13 +21,44 @@ class SeriesController extends Controller
      */
     public function index()
     {
-        $series = Series::orderBy('name_sortable', 'asc')->paginate(24);
+        $genres = Genre::has('series')->select('name')->orderBy('name')->get();
 
-        $page_title = config('app.name') . ' - Series List';
+        $query = Series::query();
+
+        $genreNames = json_decode(request()->cookie('seriesSelectedGenres', '[]'), true) ?: [];
+
+        if (! empty($genreNames)) {
+            $query->whereHas('genres', function ($genreQuery) use ($genreNames) {
+                $genreQuery->whereIn('name', $genreNames);
+            });
+        }
+
+        $sortCol = request()->cookie('seriesSortCol', 'name_sortable');
+        $sortDir = request()->cookie('seriesSortDir', 'asc');
+        $secondarySort = 'name_sortable';
+
+        if ($sortCol === 'name_sortable') {
+            $secondarySort = 'first_air_date';
+        }
+
+        if ($sortDir === 'desc') {
+            $query->orderByDesc($sortCol)->orderBy($secondarySort);
+        } else {
+            if ($sortCol === 'purchase_date') {
+                $query->orderByRaw('purchase_date is null');
+            }
+
+            $query->orderBy($sortCol)->orderBy($secondarySort);
+        }
+
+        $series = $query->paginate(24);
+
+        $page_title = config('app.name').' - Series List';
 
         return inertia('Series/Index', [
             'series' => Inertia::scroll(fn () => $series->toResourceCollection()),
             'page_title' => $page_title,
+            'genres' => $genres->toResourceCollection(),
         ]);
     }
 
@@ -43,7 +74,7 @@ class SeriesController extends Controller
                 'query' => ['min:2'],
             ]);
 
-            $data['local_results'] = Series::where('name_normalized', 'like', '%' . $attributes['query'] . '%')->get();
+            $data['local_results'] = Series::where('name_normalized', 'like', '%'.$attributes['query'].'%')->get();
 
             $data['search_results'] = $this->searchSeries($attributes['query']);
 
@@ -71,7 +102,7 @@ class SeriesController extends Controller
             $data['search_term'] = $attributes['search_term'] ?? '';
         }
 
-        $data['page_title'] = config('app.name') . ' - Add Series';
+        $data['page_title'] = config('app.name').' - Add Series';
 
         return Inertia::render('Series/Create', $data);
     }
@@ -148,9 +179,9 @@ class SeriesController extends Controller
 
         // $owned_recs = Series::whereIn( 'id', Arr::pluck( $recs, 'id' ) )->get();
 
-        $series->load('genres','cast_members','seasons');
+        $series->load('genres', 'cast_members', 'seasons');
 
-        $page_title = config('app.name') . ' - Series: ' . $series->name;
+        $page_title = config('app.name').' - Series: '.$series->name;
 
         return inertia('Series/Show', [
             'series' => $series,

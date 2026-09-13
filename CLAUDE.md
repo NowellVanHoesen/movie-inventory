@@ -78,14 +78,14 @@ All slug-using models implement `HasSlug` via Spatie Sluggable; route model bind
 **Layout**: `resources/js/layouts/Layout.vue` wraps all pages with Navigation and Footer.
 
 **Pages** live in `resources/js/Pages/`:
-- `Movies/Index.vue` — infinite scroll list with genre filtering and sorting (preferences persisted to sessionStorage)
+- `Movies/Index.vue` / `Series/Index.vue` — infinite scroll lists with genre filtering and sorting, via the shared `Components/FilterDropdown.vue` (preferences persisted to cookies, namespaced separately per page — see `MoviesController@index` / `SeriesController@index`)
 - `Movies/MovieModal.vue` — detail view rendered as an Inertia modal
 - `Home.vue`, `Welcome.vue`, `Movies/Show.vue`, `Movies/Collections/Index.vue`
 - Auth pages under `Pages/Auth/`
 
 **Modal system**: `BaseModal.vue` + `Modal.vue` — attached in the main layout. Movie detail routes open as modals without a full page reload. The `HandleInertiaRequests` middleware returns `null` for asset version on modal requests to prevent asset reloads.
 
-**Key components**: `MoviePoster.vue`, `SeriesPoster.vue`, `CastMembers.vue`, `MovieFilterDropdown.vue`, `ItemPoster.vue`
+**Key components**: `MoviePoster.vue`, `SeriesPoster.vue`, `CastMembers.vue`, `FilterDropdown.vue`, `ItemPoster.vue`
 
 ### CSS / Tailwind
 

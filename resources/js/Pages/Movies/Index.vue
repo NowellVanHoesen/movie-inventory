@@ -1,7 +1,7 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
 import MoviePoster from "../Components/MoviePoster.vue";
-import MovieFilterDropdown from "../Components/MovieFilterDropdown.vue";
+import FilterDropdown from "../Components/FilterDropdown.vue";
 import BackToTop from "../Components/BackToTop.vue";
 import MovieModal from "./MovieModal.vue";
 import { InfiniteScroll, router, usePage } from "@inertiajs/vue3";
@@ -41,7 +41,18 @@ const applyFilters = () => {
 
 <template>
     <Layout :heading="page_title">
-        <MovieFilterDropdown :genres="genres" @apply-filters="applyFilters" />
+        <FilterDropdown
+            :genres="genres"
+            :sort-options="[
+                { value: 'title_sortable', label: 'Title' },
+                { value: 'release_date', label: 'Release Date' },
+                { value: 'purchase_date', label: 'Purchase Date' },
+            ]"
+            default-sort-col="release_date"
+            default-sort-dir="desc"
+            :cookie-names="{ genres: 'selectedGenres', sortCol: 'sortCol', sortDir: 'sortDir' }"
+            @apply-filters="applyFilters"
+        />
         <InfiniteScroll
             class="mt-6 grid grid-cols-[repeat(auto-fill,minmax(187px,1fr))] place-items-center gap-4"
             data="movies"

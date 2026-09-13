@@ -1,21 +1,27 @@
 <script setup>
 import { ref, watch } from "vue";
 
-defineProps({
+const props = defineProps({
     genres: {
         type: Array,
         required: false,
         default: () => [],
     },
-    sortCol: {
-        type: String,
-        required: false,
-        default: "release_date",
+    sortOptions: {
+        type: Array,
+        required: true,
     },
-    sortDir: {
+    defaultSortCol: {
         type: String,
-        required: false,
+        required: true,
+    },
+    defaultSortDir: {
+        type: String,
         default: "desc",
+    },
+    cookieNames: {
+        type: Object,
+        required: true,
     },
 });
 
@@ -36,29 +42,29 @@ const removeCookie = (name) => {
 };
 
 const showPanel = ref(false);
-const selectedGenres = ref(JSON.parse(getCookie("selectedGenres")) || []);
-const sortCol = ref(getCookie("sortCol") || "release_date");
-const sortDir = ref(getCookie("sortDir") || "desc");
+const selectedGenres = ref(JSON.parse(getCookie(props.cookieNames.genres)) || []);
+const sortCol = ref(getCookie(props.cookieNames.sortCol) || props.defaultSortCol);
+const sortDir = ref(getCookie(props.cookieNames.sortDir) || props.defaultSortDir);
 
 watch(selectedGenres, (newVal) => {
     if (newVal.length) {
-        setCookie("selectedGenres", JSON.stringify(newVal));
+        setCookie(props.cookieNames.genres, JSON.stringify(newVal));
     } else {
-        removeCookie("selectedGenres");
+        removeCookie(props.cookieNames.genres);
     }
 });
 
 watch(sortCol, (newCol) => {
-    setCookie("sortCol", newCol);
+    setCookie(props.cookieNames.sortCol, newCol);
 });
 
 watch(sortDir, (newDir) => {
-    setCookie("sortDir", newDir);
+    setCookie(props.cookieNames.sortDir, newDir);
 });
 
 const clearFilters = () => {
     selectedGenres.value = [];
-    removeCookie("selectedGenres");
+    removeCookie(props.cookieNames.genres);
 };
 
 const emit = defineEmits(["apply-filters"]);
@@ -134,43 +140,19 @@ const applyFilters = () => {
                         <h4 class="text mb-1 font-medium text-white">Column</h4>
                         <div class="flex flex-wrap gap-3">
                             <label
-                                for="sort_title"
+                                v-for="option in sortOptions"
+                                :key="option.value"
+                                :for="`sort_${option.value}`"
                                 class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:border-blue-800 has-checked:hover:border-blue-600"
                             >
                                 <input
                                     type="radio"
-                                    value="title_sortable"
-                                    id="sort_title"
+                                    :value="option.value"
+                                    :id="`sort_${option.value}`"
                                     v-model="sortCol"
                                     class="hidden"
-                                    dusk="sort-col-title_sortable"
-                                />Title
-                            </label>
-                            <label
-                                for="sort_release_date"
-                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:border-blue-800 has-checked:hover:border-blue-600"
-                            >
-                                <input
-                                    type="radio"
-                                    value="release_date"
-                                    id="sort_release_date"
-                                    v-model="sortCol"
-                                    class="hidden"
-                                    dusk="sort-col-release_date"
-                                />Release Date
-                            </label>
-                            <label
-                                for="sort_purchase_date"
-                                class="text-cold-steel-300 hover:text-cold-steel-100 has-checked:text-cold-steel-100 inline-block cursor-pointer rounded-md border border-transparent bg-transparent px-2 py-1 text-sm font-medium hover:border-blue-600 has-checked:border-blue-800 has-checked:hover:border-blue-600"
-                            >
-                                <input
-                                    type="radio"
-                                    value="purchase_date"
-                                    id="sort_purchase_date"
-                                    v-model="sortCol"
-                                    class="hidden"
-                                    dusk="sort-col-purchase_date"
-                                />Purchase Date
+                                    :dusk="`sort-col-${option.value}`"
+                                />{{ option.label }}
                             </label>
                         </div>
                         <h4 class="text mt-2 mb-1 font-medium text-white">Direction</h4>

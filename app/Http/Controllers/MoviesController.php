@@ -80,13 +80,13 @@ class MoviesController extends Controller
      * Display the form for creating a new movie.
      *
      * Accepts an HTTP request which may include prefill data (e.g. query parameters)
-     * or contextual information. Prepares and returns the view used to render the
-     * movie creation form (loading any required supporting data such as genres,
+     * or contextual information. Prepares and returns the Inertia page used to render
+     * the movie creation form (loading any required supporting data such as genres,
      * studios, etc.). May perform authorization checks and redirect if the user
      * is not permitted to create movies.
      *
      * @param \Illuminate\Http\Request $request Incoming HTTP request with optional prefill/context data.
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse The view rendering the creation form, or a redirect on authorization/error conditions.
+     * @return \Inertia\Response|\Illuminate\Http\RedirectResponse The Inertia response rendering the creation form, or a redirect on authorization/error conditions.
      *
      * @throws \Illuminate\Auth\Access\AuthorizationException If the user is not authorized to create a movie.
      */
@@ -100,15 +100,19 @@ class MoviesController extends Controller
                 'year' => ['sometimes', 'max:4']
             ]);
 
-            $data['local_results'] = Movie::where('title_normalized', 'like', '%' . $attributes['query'] . '%')->get();
+            $localResults = Movie::with('certification')
+                ->where('title_normalized', 'like', '%' . $attributes['query'] . '%')
+                ->get();
+
+            $data['local_results'] = $localResults->toResourceCollection();
 
             $data['search_results'] = $this->searchMovies(
                 $attributes['query'],
-                $attributes['year'] ? $attributes['year'] : null
+                $attributes['year'] ?? null
             );
 
             $data['search_term'] = $attributes['query'];
-            $data['search_year'] = $attributes['year'];
+            $data['search_year'] = $attributes['year'] ?? null;
         } elseif (! empty($request['movie_id'])) {
             $attributes = $request->validate([
                 'movie_id' => ['integer'],
@@ -135,7 +139,7 @@ class MoviesController extends Controller
 
         $data['page_title'] = config('app.name') . ' - Add Movie';
 
-        return view('movies.create', $data);
+        return Inertia::render('Movies/Create', $data);
     }
 
     /**

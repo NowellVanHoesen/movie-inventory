@@ -75,7 +75,7 @@ class SeriesController extends Controller
 
         $data['page_title'] = config('app.name') . ' - Add Series';
 
-        return view('series.create', $data);
+        return Inertia::render('Series/Create', $data);
     }
 
     /**

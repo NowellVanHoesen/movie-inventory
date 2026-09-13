@@ -32,7 +32,28 @@ describe('SeriesController', function () {
 
         $response = $this->get(route('series.create', ['query' => 'Heroes Reborn']));
         $response->assertOk();
-        $response->assertViewHas('search_term', 'Heroes Reborn');
+        $response->assertInertia(fn ($page) => $page
+            ->component('Series/Create')
+            ->where('search_term', 'Heroes Reborn')
+            ->has('search_results')
+            ->has('local_results')
+            ->etc()
+        );
+    });
+
+    it('flags a search result as already owned when it matches a local series', function () {
+        loginAsUser();
+        $this->seed(SeriesSeeder::class);
+
+        $response = $this->get(route('series.create', ['query' => 'Dexter']));
+        $response->assertOk();
+        $response->assertInertia(fn ($page) => $page
+            ->component('Series/Create')
+            ->has('search_results')
+            ->has('local_results', 1)
+            ->where('local_results.0.id', 1405)
+            ->etc()
+        );
     });
 
     it('shows the create form with series_id', function () {
@@ -40,7 +61,12 @@ describe('SeriesController', function () {
 
         $response = $this->get(route('series.create', ['series_id' => 60858, 'search_term' => 'Heroes Reborn']));
         $response->assertOk();
-        $response->assertViewHas('series_detail');
+        $response->assertInertia(fn ($page) => $page
+            ->component('Series/Create')
+            ->has('series_detail')
+            ->has('media_types')
+            ->etc()
+        );
     });
 
     it('validates store request data', function () {

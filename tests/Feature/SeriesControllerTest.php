@@ -105,15 +105,31 @@ describe('SeriesController', function () {
         );
     });
 
-    it('shows season and episode pages', function () {
+    // Season and episode detail no longer have their own routes/pages — they're
+    // shown by selecting a season/episode within Series/Show.vue, so the series
+    // detail response needs to carry the full seasons -> episodes tree up front.
+    it('includes seasons and episodes in the series detail page', function () {
 		$this->seed(SeriesSeeder::class);
         $series = Series::where('slug', 'the-flight-attendant')->firstOrFail();
         $season = Season::where(['series_id' => $series->id, 'season_number' => 1])->firstOrFail();
         $episode = Episode::where(['season_id' => $season->id, 'episode_number' => 4])->firstOrFail();
-        $response = $this->get(route('season.show', [$series, $season]));
+
+        $response = $this->get(route('series.show', $series));
         $response->assertStatus(200);
-        $response = $this->get(route('episode.show', [$series, $season, $episode]));
-        $response->assertStatus(200);
+        $response->assertInertia(fn ($page) => $page
+            ->component('Series/Show')
+            ->has('series.seasons', $series->seasons->count())
+            ->has('series.seasons.0', fn ($seasonJson) => $seasonJson
+                ->where('id', $season->id)
+                ->has('episodes', $season->episodes->count())
+                ->has('episodes.3', fn ($episodeJson) => $episodeJson
+                    ->where('id', $episode->id)
+                    ->etc()
+                )
+                ->etc()
+            )
+            ->etc()
+        );
     });
 
     it('returns validation errors for missing required fields', function () {

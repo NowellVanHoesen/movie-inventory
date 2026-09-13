@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\processSeries;
 use App\Models\Certification;
-use App\Models\Episode;
 use App\Models\MediaType;
-use App\Models\Season;
 use App\Models\Series;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
@@ -182,23 +180,5 @@ class SeriesController extends Controller
     public function destroy(Series $series)
     {
         //
-    }
-
-    public function showSeason(Series $series, Season $season)
-    {
-        $series->media_types_display = $this->get_media_types_display($series->media_types);
-
-        $page_title = config('app.name') . ' - Series: ' . $series->name . ' - Season ' . $season->season_number;
-
-        return view('series.seasons.show', compact('series', 'season', 'page_title'));
-    }
-
-    public function showEpisode(Series $series, Season $season, Episode $episode)
-    {
-        $series->media_types_display = $this->get_media_types_display($series->media_types);
-
-        $page_title = config('app.name') . ' - Series: ' . $series->name . ' - Season ' . $season->season_number . ' - Episode ' . $episode->episode_number;
-
-        return view('series.seasons.episodes.show', compact('series', 'season', 'episode', 'page_title'));
     }
 }

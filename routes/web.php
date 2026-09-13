@@ -34,8 +34,6 @@ Route::controller(SeriesController::class)->group(function () {
     Route::post('/series', 'store')->name('series.store');
     Route::match(['get', 'post'], '/series/create', 'create')->middleware(['auth'])->name('series.create');
     Route::get('/series/{series}', 'show')->name('series.show');
-    Route::get('/series/{series}/season/{season:season_number}', 'showSeason')->name('season.show');
-    Route::get('/series/{series}/season/{season:season_number}/episode/{episode:episode_number}', 'showEpisode')->name('episode.show');
 });
 
 Route::get('/cast/{castMember}', CastMemberController::class)->name('castMember');

@@ -75,6 +75,7 @@ const applyFilters = () => {
             class="absolute top-0 right-2 z-40 cursor-pointer rounded-b-md bg-white/10 px-2.5 py-1.5 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20"
             @click="showPanel = true"
             v-if="!showPanel"
+            dusk="filter-toggle-btn"
         >
             <i class="fa-solid fa-sliders"></i>
         </button>
@@ -89,10 +90,11 @@ const applyFilters = () => {
             <div
                 v-if="showPanel"
                 class="bg-cold-steel-900 absolute top-0 right-0 left-0 z-10 flex flex-col overflow-y-auto rounded-b-lg p-2 lg:p-6"
+                dusk="filter-panel"
             >
                 <div class="flex justify-between">
                     <h2 class="text-2xl font-semibold text-white">Filter Options</h2>
-                    <button @click="showPanel = false" class="cursor-pointer px-2 py-3">
+                    <button @click="showPanel = false" class="cursor-pointer px-2 py-3" dusk="filter-close-btn">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
@@ -114,6 +116,7 @@ const applyFilters = () => {
                                     :id="genre.name"
                                     v-model="selectedGenres"
                                     class="hidden"
+                                    :dusk="`genre-checkbox-${genre.name}`"
                                 />{{ genre.name }}
                             </label>
                         </div>
@@ -121,6 +124,7 @@ const applyFilters = () => {
                             @click="clearFilters"
                             class="bg-cold-steel-600 hover:bg-cold-steel-300 hover:text-cold-steel-900 disabled:bg-cold-steel-800 disabled:text-cold-steel-500 mt-8 inline-block cursor-pointer rounded-md border border-transparent px-4 py-3 text-sm font-medium"
                             v-bind:disabled="selectedGenres.length === 0"
+                            dusk="clear-genre-filter-btn"
                         >
                             Clear Genre Filter
                         </button>
@@ -139,6 +143,7 @@ const applyFilters = () => {
                                     id="sort_title"
                                     v-model="sortCol"
                                     class="hidden"
+                                    dusk="sort-col-title_sortable"
                                 />Title
                             </label>
                             <label
@@ -151,6 +156,7 @@ const applyFilters = () => {
                                     id="sort_release_date"
                                     v-model="sortCol"
                                     class="hidden"
+                                    dusk="sort-col-release_date"
                                 />Release Date
                             </label>
                             <label
@@ -163,6 +169,7 @@ const applyFilters = () => {
                                     id="sort_purchase_date"
                                     v-model="sortCol"
                                     class="hidden"
+                                    dusk="sort-col-purchase_date"
                                 />Purchase Date
                             </label>
                         </div>
@@ -178,6 +185,7 @@ const applyFilters = () => {
                                     id="sort_ascending"
                                     v-model="sortDir"
                                     class="hidden"
+                                    dusk="sort-dir-asc"
                                 />Ascending
                             </label>
                             <label
@@ -190,6 +198,7 @@ const applyFilters = () => {
                                     id="sort_descending"
                                     v-model="sortDir"
                                     class="hidden"
+                                    dusk="sort-dir-desc"
                                 />Descending
                             </label>
                         </div>
@@ -199,6 +208,7 @@ const applyFilters = () => {
                     <button
                         @click="applyFilters"
                         class="bg-cold-steel-600 hover:bg-cold-steel-700 focus:bg-cold-steel-700 inline-flex items-center rounded-md border border-transparent px-4 py-2 text-sm font-semibold text-white transition duration-150 ease-in-out focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:outline-none"
+                        dusk="apply-filters-btn"
                     >
                         Apply
                     </button>

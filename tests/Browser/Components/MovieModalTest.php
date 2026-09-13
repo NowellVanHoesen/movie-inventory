@@ -3,55 +3,56 @@
 use App\Models\MediaType;
 use App\Models\Movie;
 use App\Models\User;
-use Database\Seeders\MoviesSeeder;
 use Tests\Browser;
-
-beforeEach(function () {
-    $this->seed(MoviesSeeder::class);
-});
 
 it('can open a modal and close it on home route', function () {
     $this->browse(function (Browser $browser) {
+        User::factory()->create();
+
         $browser
-            ->loginAs( 1 )
-            ->visit( route('home') )
-            ->waitFor( '[dusk^=movie-btn-]' );
+            ->loginAs(1)
+            ->visit(route('home'))
+            ->waitFor('[dusk^=movie-btn-]');
 
         $slug = str($browser->attribute('[dusk^=movie-btn-]', 'dusk'))->after('movie-btn-')->toString();
 
         $browser
-            ->press( "@movie-btn-{$slug}" )
-            ->waitForText( 'Cast Members' )
-            ->assertUrlIs( route( 'movies.show', $slug ) )
-            ->clickAtPoint( 25, 25 )
+            ->press("@movie-btn-{$slug}")
+            ->waitForText('Cast Members')
+            ->assertUrlIs(route('movies.show', $slug))
+            ->clickAtPoint(25, 25)
             ->waitUntilMissingModal()
             ->pause(100)
-            ->assertRouteIs( 'home' );
+            ->assertRouteIs('home');
     });
 });
 
 it('can open a modal and close it on movies.index route', function () {
     $this->browse(function (Browser $browser) {
+        User::factory()->create();
+
         $browser
-            ->loginAs( 1 )
-            ->visit( route('movies.index') )
-            ->waitFor( '[dusk^=movie-btn-]' );
+            ->loginAs(1)
+            ->visit(route('movies.index'))
+            ->waitFor('[dusk^=movie-btn-]');
 
         $slug = str($browser->attribute('[dusk^=movie-btn-]', 'dusk'))->after('movie-btn-')->toString();
 
         $browser
-            ->press( "@movie-btn-{$slug}" )
-            ->waitForText( 'Cast Members' )
-            ->assertUrlIs( route( 'movies.show', $slug ) )
-            ->clickAtPoint( 25, 25 )
+            ->press("@movie-btn-{$slug}")
+            ->waitForText('Cast Members')
+            ->assertUrlIs(route('movies.show', $slug))
+            ->clickAtPoint(25, 25)
             ->waitUntilMissingModal()
             ->pause(100)
-            ->assertUrlIs( route('movies.index') );
+            ->assertUrlIs(route('movies.index'));
     });
 });
 
 it('does not shift the background page layout when opening or closing a modal', function () {
     $this->browse(function (Browser $browser) {
+        User::factory()->create();
+
         $browser
             ->loginAs(1)
             ->visit(route('movies.index'))
@@ -81,6 +82,8 @@ it('does not shift the background page layout when opening or closing a modal', 
 
 it('does not reset the movie list scroll position when opening or closing a modal after infinite scroll has loaded more pages', function () {
     $this->browse(function (Browser $browser) {
+        User::factory()->create();
+
         $browser
             ->loginAs(1)
             ->visit(route('movies.index'))

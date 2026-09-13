@@ -1,11 +1,7 @@
 <?php
 
-use Database\Seeders\MoviesSeeder;
+use App\Models\User;
 use Tests\Browser;
-
-beforeEach(function () {
-    $this->seed(MoviesSeeder::class);
-});
 
 it('does not show the Add Movie link in the Movies menu when logged out', function () {
     $this->browse(function (Browser $browser) {
@@ -21,6 +17,8 @@ it('does not show the Add Movie link in the Movies menu when logged out', functi
 
 it('shows the Add Movie link in the Movies menu when logged in, and navigates to the movie creation form', function () {
     $this->browse(function (Browser $browser) {
+        User::factory()->create();
+
         $browser
             ->loginAs(1)
             ->visit(route('home'))
@@ -48,6 +46,8 @@ it('does not show the Add Series link in the Series menu when logged out', funct
 
 it('shows the Add Series link in the Series menu when logged in, and navigates to the series creation form', function () {
     $this->browse(function (Browser $browser) {
+        User::factory()->create();
+
         $browser
             ->loginAs(1)
             ->visit(route('home'))

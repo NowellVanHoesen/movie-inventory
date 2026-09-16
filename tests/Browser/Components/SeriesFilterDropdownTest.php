@@ -10,8 +10,7 @@ use Tests\Browser;
  * behind by a previous test in this shared browser session can't leak in and make
  * results order-dependent.
  */
-function clearSeriesFilterCookies(Browser $browser): void
-{
+function clearSeriesFilterCookies(Browser $browser): void {
     $browser->script([
         "document.cookie = 'seriesSelectedGenres=; path=/; max-age=0';",
         "document.cookie = 'seriesSortCol=; path=/; max-age=0';",
@@ -147,7 +146,7 @@ it('filters the series list to only series in the selected genre', function () {
             ->clickViaJs('@genre-checkbox-Mystery')
             ->clickViaJs('@apply-filters-btn')
             ->waitUntilMissing('@filter-panel')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === '.count($expectedSlugs))
+            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === ' . count($expectedSlugs))
             ->assertMissing("@series-btn-{$unrelatedSeries->slug}");
 
         $displayedSlugs = $browser->script(
@@ -190,7 +189,7 @@ it('filters by multiple genres using OR logic', function () {
         $browser->script('window.scrollTo(0, document.body.scrollHeight);');
 
         $browser
-            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === '.count($expectedSlugs), 10)
+            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === ' . count($expectedSlugs), 10)
             ->assertMissing("@series-btn-{$unrelatedSeries->slug}");
 
         $displayedSlugs = $browser->script(
@@ -219,7 +218,7 @@ it('restores the full series list after clearing a genre filter, and remembers t
             ->clickViaJs('@genre-checkbox-Mystery')
             ->clickViaJs('@apply-filters-btn')
             ->waitUntilMissing('@filter-panel')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === '.$mysteryCount)
+            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === ' . $mysteryCount)
             ->clickViaJs('@filter-toggle-btn')
             ->waitFor('@filter-panel')
             ->assertChecked('@genre-checkbox-Mystery')
@@ -255,7 +254,7 @@ it('sorts the filtered list by first air date descending when selected', functio
             ->clickViaJs('@sort-dir-desc')
             ->clickViaJs('@apply-filters-btn')
             ->waitUntilMissing('@filter-panel')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === '.count($expectedSlugs));
+            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === ' . count($expectedSlugs));
 
         $displayedSlugs = $browser->script(
             "return Array.from(document.querySelectorAll('[dusk^=series-btn-]')).map(el => el.getAttribute('dusk').replace('series-btn-', ''));"
@@ -289,7 +288,7 @@ it('sorts the filtered list by name descending when selected', function () {
             ->clickViaJs('@sort-dir-desc')
             ->clickViaJs('@apply-filters-btn')
             ->waitUntilMissing('@filter-panel')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === '.count($expectedSlugs));
+            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === ' . count($expectedSlugs));
 
         $displayedSlugs = $browser->script(
             "return Array.from(document.querySelectorAll('[dusk^=series-btn-]')).map(el => el.getAttribute('dusk').replace('series-btn-', ''));"
@@ -325,7 +324,7 @@ it('persists a genre selection to the cookie immediately, even if the panel is c
         $browser
             ->visit(route('series.index'))
             ->waitFor('@filter-toggle-btn')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === '.$expectedCount);
+            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === ' . $expectedCount);
 
         $finalCount = $browser->script("return document.querySelectorAll('[dusk^=series-btn-]').length;")[0];
 

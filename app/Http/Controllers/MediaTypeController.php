@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-class MediaTypeController extends Controller
-{
+class MediaTypeController extends Controller {
     //
 }

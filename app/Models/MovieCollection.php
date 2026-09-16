@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class MovieCollection extends Model
-{
+class MovieCollection extends Model {
     use HasSlug;
 
     protected $guarded = [];
@@ -18,20 +17,17 @@ class MovieCollection extends Model
 
     public $timestamps = false;
 
-    public function movies()
-    {
+    public function movies() {
         return $this->hasMany(Movie::class, 'collection_id');
     }
 
-    public function getSlugOptions(): SlugOptions
-    {
+    public function getSlugOptions(): SlugOptions {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
 
-    public function getRouteKeyName()
-    {
+    public function getRouteKeyName() {
         return 'slug';
     }
 }

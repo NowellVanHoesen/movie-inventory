@@ -4,10 +4,8 @@ namespace App\Traits;
 
 use App\Models\MediaType;
 
-trait MediaTypeHelpers
-{
-    private function get_media_types()
-    {
+trait MediaTypeHelpers {
+    private function get_media_types() {
         $media_types = MediaType::orderBy('parent_id')->orderBy('name')->get();
 
         $media_types_arr = [];
@@ -21,11 +19,9 @@ trait MediaTypeHelpers
         }
 
         return $media_types_arr;
-
     }
 
-    private function get_media_types_display($media_types)
-    {
+    private function get_media_types_display($media_types) {
         $media_types_display = [];
 
         if (empty($media_types)) {
@@ -40,7 +36,7 @@ trait MediaTypeHelpers
             $current_parent_id = $type->parent_id;
 
             while ($current_parent_id !== 0) {
-                $media_type_parent = $media_types_collection->firstWhere( 'id', $current_parent_id);
+                $media_type_parent = $media_types_collection->firstWhere('id', $current_parent_id);
                 $tmp_media_type_arr = [$media_type_parent->name => $tmp_media_type_arr];
                 $current_parent_id = $media_type_parent->parent_id;
             }

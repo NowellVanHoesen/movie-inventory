@@ -11,8 +11,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Attributes\WithoutRelations;
 use Illuminate\Support\Arr;
 
-class processMovieCollection implements ShouldBeUnique, ShouldQueue
-{
+class processMovieCollection implements ShouldBeUnique, ShouldQueue {
     use InteractsWithTMDB, Queueable;
 
     /**
@@ -28,9 +27,8 @@ class processMovieCollection implements ShouldBeUnique, ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
-    {
         $collection = $this->getMovieCollection($this->collection_id);
+    public function handle(): void {
 
         $movieCollection = MovieCollection::firstOrCreate(
             ['id' => $collection->id],

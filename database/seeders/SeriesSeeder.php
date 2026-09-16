@@ -5,13 +5,11 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class SeriesSeeder extends Seeder
-{
+class SeriesSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void {
         $seriesSeeder = 'database/sql-files/series.sql';
         $seasonSeeder = 'database/sql-files/seasons.sql';
         $episodeSeeder = 'database/sql-files/episodes.sql';

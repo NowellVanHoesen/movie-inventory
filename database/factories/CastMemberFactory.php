@@ -2,20 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Cast_Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Cast_Member>
+ * @extends Factory<Cast_Member>
  */
-class CastMemberFactory extends Factory
-{
+class CastMemberFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         return [
             //
         ];

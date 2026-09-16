@@ -2,30 +2,27 @@
 
 namespace App\Models;
 
+use Database\Factories\MediaTypeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MediaType extends Model
-{
-    /** @use HasFactory<\Database\Factories\MediaTypeFactory> */
+class MediaType extends Model {
+    /** @use HasFactory<MediaTypeFactory> */
     use HasFactory;
 
     protected $fillable = ['name', 'parent_id'];
 
     public $timestamps = false;
 
-    public function movies()
-    {
+    public function movies() {
         return $this->belongsToMany(Movie::class);
     }
 
-    public function series()
-    {
+    public function series() {
         return $this->belongsToMany(Series::class);
     }
 
-    public function seasons()
-    {
+    public function seasons() {
         return $this->belongsToMany(Season::class);
     }
 }

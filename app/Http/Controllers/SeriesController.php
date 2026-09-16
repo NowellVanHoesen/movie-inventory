@@ -12,15 +12,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
 
-class SeriesController extends Controller
-{
+class SeriesController extends Controller {
     use InteractsWithTMDB, MediaTypeHelpers;
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
+    public function index() {
         $query = Series::query();
 
         $genreNames = json_decode(request()->cookie('seriesSelectedGenres', '[]'), true) ?: [];
@@ -68,7 +66,7 @@ class SeriesController extends Controller
 
         $series = $query->paginate(24);
 
-        $page_title = config('app.name').' - Series List';
+        $page_title = config('app.name') . ' - Series List';
 
         return inertia('Series/Index', [
             'series' => Inertia::scroll(fn () => $series->toResourceCollection()),
@@ -82,8 +80,7 @@ class SeriesController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
-    {
+    public function create(Request $request) {
         $data = [];
 
         if (! empty($request['query'])) {
@@ -91,7 +88,7 @@ class SeriesController extends Controller
                 'query' => ['min:2'],
             ]);
 
-            $data['local_results'] = Series::where('name_normalized', 'like', '%'.$attributes['query'].'%')->get();
+            $data['local_results'] = Series::where('name_normalized', 'like', '%' . $attributes['query'] . '%')->get();
 
             $data['search_results'] = $this->searchSeries($attributes['query']);
 
@@ -119,7 +116,7 @@ class SeriesController extends Controller
             $data['search_term'] = $attributes['search_term'] ?? '';
         }
 
-        $data['page_title'] = config('app.name').' - Add Series';
+        $data['page_title'] = config('app.name') . ' - Add Series';
 
         return Inertia::render('Series/Create', $data);
     }
@@ -127,8 +124,7 @@ class SeriesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $attributes = $request->validate([
             'series_id' => ['integer'],
             'purchase_date' => ['nullable', 'date_format:Y-m-d'],
@@ -188,8 +184,7 @@ class SeriesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Series $series)
-    {
+    public function show(Series $series) {
         $series->media_types_display = $this->get_media_types_display($series->media_types);
 
         // $recs = $this->getSeriesRecommendations($series->id);
@@ -198,7 +193,7 @@ class SeriesController extends Controller
 
         $series->load('genres', 'cast_members', 'seasons');
 
-        $page_title = config('app.name').' - Series: '.$series->name;
+        $page_title = config('app.name') . ' - Series: ' . $series->name;
 
         return inertia('Series/Show', [
             'series' => $series,
@@ -209,24 +204,21 @@ class SeriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Series $series)
-    {
+    public function edit(Series $series) {
         //
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Series $series)
-    {
+    public function update(Request $request, Series $series) {
         //
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Series $series)
-    {
+    public function destroy(Series $series) {
         //
     }
 }

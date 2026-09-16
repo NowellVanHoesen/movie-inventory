@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     protected $initial_genres = [
         ['id' => 12, 'name' => 'Adventure'],
         ['id' => 14, 'name' => 'Fantasy'],
@@ -40,8 +39,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::create('genres', function (Blueprint $table) {
             $table->engine('InnoDB');
             $table->integer('id')->unsigned()->primary();
@@ -67,14 +65,12 @@ return new class extends Migration
             $table->foreign('series_id')->references('id')->on('series')->cascadeOnDelete();
             $table->foreign('genre_id')->references('id')->on('genres')->cascadeOnDelete();
         });
-
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('genres');
         Schema::dropIfExists('genre_movies');
         Schema::dropIfExists('genre_movie');

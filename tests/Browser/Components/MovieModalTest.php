@@ -100,9 +100,9 @@ it('does not reset the movie list scroll position when opening or closing a moda
         expect($posterCountBefore)->toBeGreaterThan(24);
 
         $lastDuskId = $browser->script("
-            const buttons = document.querySelectorAll('[dusk^=movie-btn-]');
-            return buttons[buttons.length - 1].getAttribute('dusk');
-        ")[0];
+	        const buttons = document.querySelectorAll('[dusk^=movie-btn-]');
+	        return buttons[buttons.length - 1].getAttribute('dusk');
+	    ")[0];
 
         $scrollYBeforeOpen = $browser->script('return window.scrollY;')[0];
         expect($scrollYBeforeOpen)->toBeGreaterThan(0);
@@ -230,9 +230,9 @@ it('does not reset the movie list after saving an edit on a movie loaded via inf
         expect($posterCountBefore)->toBeGreaterThan(24);
 
         $lastDuskId = $browser->script("
-            const buttons = document.querySelectorAll('[dusk^=movie-btn-]');
-            return buttons[buttons.length - 1].getAttribute('dusk');
-        ")[0];
+	        const buttons = document.querySelectorAll('[dusk^=movie-btn-]');
+	        return buttons[buttons.length - 1].getAttribute('dusk');
+	    ")[0];
 
         $browser
             ->click("[dusk=\"{$lastDuskId}\"]")

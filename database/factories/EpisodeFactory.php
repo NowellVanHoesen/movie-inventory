@@ -2,20 +2,19 @@
 
 namespace Database\Factories;
 
+use App\Models\Episode;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Episode>
+ * @extends Factory<Episode>
  */
-class EpisodeFactory extends Factory
-{
+class EpisodeFactory extends Factory {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    public function definition(): array
-    {
+    public function definition(): array {
         return [
             //
         ];

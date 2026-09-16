@@ -1,8 +1,9 @@
 <?php
 
 use Database\Seeders\MoviesSeeder;
-use function Pest\Laravel\get;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use function Pest\Laravel\get;
 
 uses(RefreshDatabase::class);
 
@@ -12,7 +13,7 @@ beforeEach(function () {
 
 it('has movies index page', function () {
     get(route('movies.index'))
-    ->assertOk();
+        ->assertOk();
 });
 
 it('displays both purchased and wishlist movies in default order (release date desc then title asc)', function () {
@@ -24,7 +25,7 @@ it('displays both purchased and wishlist movies in default order (release date d
             'Into the Deep',
             'Gladiator II',
             'Last Seen Alive',
-            'Dirty Angels'
+            'Dirty Angels',
         ])
         ->assertSeeInOrder([
             'Into the Deep',
@@ -50,7 +51,7 @@ it('displays only wishlist movies in default order (release date desc then title
         ->assertSeeInOrder([
             'Gladiator II',
             'Wicked',
-            'After We Fell'
+            'After We Fell',
         ]);
 });
 
@@ -71,7 +72,7 @@ it('displays only purchased movies in default order (purchase date desc then rel
         ->assertDontSeeText([
             'After We Fell',
             'Gladiator II',
-            'Wicked'
+            'Wicked',
         ])
         ->assertSeeInOrder([
             'Into the Deep',

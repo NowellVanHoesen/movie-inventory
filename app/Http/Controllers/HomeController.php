@@ -5,13 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use App\Models\Series;
 
-class HomeController extends Controller
-{
+class HomeController extends Controller {
     /**
      * Handle the incoming request.
      */
-    public function __invoke()
-    {
+    public function __invoke() {
         $movies = Movie::orderByDesc('purchase_date')
             ->orderBy('title_sortable')
             ->limit(12)

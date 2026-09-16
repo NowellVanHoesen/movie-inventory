@@ -3,8 +3,9 @@
 use App\Models\MediaType;
 use App\Models\Movie;
 use Database\Seeders\MoviesSeeder;
-use function Pest\Laravel\patch;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+
+use function Pest\Laravel\patch;
 
 uses(RefreshDatabase::class);
 

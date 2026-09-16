@@ -16,7 +16,7 @@ Route::get('/search', SearchController::class)->name('search');
 Route::controller(MoviesController::class)->group(function () {
     Route::get('/movies', 'index')->name('movies.index');
     Route::post('/movies', 'store')->name('movies.store');
-    Route::match(['get','post'],'/movies/create', 'create')->middleware(['auth'])->name('movies.create');
+    Route::match(['get', 'post'], '/movies/create', 'create')->middleware(['auth'])->name('movies.create');
     Route::get('/movies/purchased', 'index')->name('movies.purchased');
     Route::get('/movies/wishlist', 'index')->name('movies.wishlist');
     Route::get('/movies/{movie}', 'show')->name('movies.show');
@@ -48,4 +48,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

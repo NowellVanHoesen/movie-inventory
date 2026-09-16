@@ -5,13 +5,11 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class MoviesSeeder extends Seeder
-{
+class MoviesSeeder extends Seeder {
     /**
      * Run the database seeds.
      */
-    public function run(): void
-    {
+    public function run(): void {
         $movieSeeder = 'database/sql-files/movies.sql';
         $movieGenresSeeder = 'database/sql-files/genre_movie.sql';
         $movieMediaTypeSeeder = 'database/sql-files/media_type_movie.sql';

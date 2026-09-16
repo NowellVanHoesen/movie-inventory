@@ -5,13 +5,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::create('media_types', function (Blueprint $table) {
             $table->engine('InnoDB');
             $table->id()->from(1);
@@ -80,14 +78,12 @@ return new class extends Migration
             $table->primary(['series_id', 'media_type_id']);
             $table->foreign('series_id')->references('id')->on('series')->cascadeOnDelete();
         });
-
     }
 
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('media_types');
         Schema::dropIfExists('media_type_movie');
         Schema::dropIfExists('media_type_season');

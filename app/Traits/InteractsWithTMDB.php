@@ -5,10 +5,8 @@ namespace App\Traits;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-trait InteractsWithTMDB
-{
-    private function getMovieDetail(int $movie_id)
-    {
+trait InteractsWithTMDB {
+    private function getMovieDetail(int $movie_id) {
         return $this->sendTMDBRequest(
             "movie/{$movie_id}",
             [
@@ -18,18 +16,16 @@ trait InteractsWithTMDB
         );
     }
 
-    private function getMovieCollection(int $collection_id)
-    {
+    private function getMovieCollection(int $collection_id) {
         return $this->sendTMDBRequest(
             "collection/{$collection_id}",
             [
-                'language' => 'en-US'
+                'language' => 'en-US',
             ]
         );
     }
 
-    private function getMovieCast(int $movie_id)
-    {
+    private function getMovieCast(int $movie_id) {
         return $this->sendTMDBRequest(
             "movie/{$movie_id}/credits",
             [
@@ -93,15 +89,14 @@ trait InteractsWithTMDB
         return $allRecs;
     }
 
-    private function searchMovies(string $query, ?string $year)
-    {
+    private function searchMovies(string $query, ?string $year) {
         $args = [
             'query' => $query,
             'language' => 'en-US',
             'page' => 1,
         ];
 
-        if ( $year ) {
+        if ($year) {
             $args['year'] = $year;
         }
 
@@ -111,8 +106,7 @@ trait InteractsWithTMDB
         );
     }
 
-    private function searchSeries(string $query, int $page = 1)
-    {
+    private function searchSeries(string $query, int $page = 1) {
         return $this->sendTMDBRequest(
             'search/tv',
             [
@@ -123,8 +117,7 @@ trait InteractsWithTMDB
         );
     }
 
-    private function getSeriesDetail(int $series_id)
-    {
+    private function getSeriesDetail(int $series_id) {
         return $this->sendTMDBRequest(
             "tv/{$series_id}",
             [
@@ -134,8 +127,7 @@ trait InteractsWithTMDB
         );
     }
 
-    private function getSeriesCast(int $series_id)
-    {
+    private function getSeriesCast(int $series_id) {
         return $this->sendTMDBRequest(
             "tv/{$series_id}/credits",
             [
@@ -144,8 +136,7 @@ trait InteractsWithTMDB
         );
     }
 
-    private function getSeasonDetail(int $series_id, int $season_number)
-    {
+    private function getSeasonDetail(int $series_id, int $season_number) {
         return $this->sendTMDBRequest(
             "tv/{$series_id}/season/{$season_number}",
             [
@@ -155,8 +146,7 @@ trait InteractsWithTMDB
         );
     }
 
-    private function getSeasonCast(int $series_id, int $season_number)
-    {
+    private function getSeasonCast(int $series_id, int $season_number) {
         return $this->sendTMDBRequest(
             "tv/{$series_id}/season/{$season_number}/credits",
             [
@@ -165,8 +155,7 @@ trait InteractsWithTMDB
         );
     }
 
-    private function getEpisodeDetail(int $series_id, int $season_number, int $episode_number)
-    {
+    private function getEpisodeDetail(int $series_id, int $season_number, int $episode_number) {
         return $this->sendTMDBRequest(
             "tv/{$series_id}/season/{$season_number}/episode/{$episode_number}",
             [
@@ -176,8 +165,7 @@ trait InteractsWithTMDB
         );
     }
 
-    private function getEpisodeCast(int $series_id, int $season_number, int $episode_number)
-    {
+    private function getEpisodeCast(int $series_id, int $season_number, int $episode_number) {
         return $this->sendTMDBRequest(
             "tv/{$series_id}/season/{$season_number}/episode/{$episode_number}/credits",
             [
@@ -186,8 +174,7 @@ trait InteractsWithTMDB
         );
     }
 
-    private function sendTMDBRequest(string $endpoint, array $queryParams = [])
-    {
+    private function sendTMDBRequest(string $endpoint, array $queryParams = []) {
         if (empty($endpoint)) {
             abort(400, 'Endpoint is required');
         }

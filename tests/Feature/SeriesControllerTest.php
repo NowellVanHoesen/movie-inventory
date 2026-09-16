@@ -1,43 +1,45 @@
 <?php
 
-use App\Models\Series;
-use App\Models\Season;
-use App\Models\Episode;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Jobs\processSeries;
+use App\Models\Episode;
+use App\Models\Season;
+use App\Models\Series;
 use Database\Seeders\SeriesSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Queue;
 
 uses(RefreshDatabase::class);
 
 describe('SeriesController', function () {
     beforeEach(function () {
         // Setup common data
-        //Certification::factory()->create(['name' => 'NR']);
+        // Certification::factory()->create(['name' => 'NR']);
     });
 
     it('shows the series index', function () {
-		$this->seed(SeriesSeeder::class);
+        $this->seed(SeriesSeeder::class);
         $response = $this->get(route('series.index'));
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('Series/Index')
-            ->has('series')
-            ->etc()
+        $response->assertInertia(
+            fn ($page) => $page
+                ->component('Series/Index')
+                ->has('series')
+                ->etc()
         );
     });
 
     it('shows the create form with query', function () {
-		loginAsUser();
+        loginAsUser();
 
         $response = $this->get(route('series.create', ['query' => 'Heroes Reborn']));
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('Series/Create')
-            ->where('search_term', 'Heroes Reborn')
-            ->has('search_results')
-            ->has('local_results')
-            ->etc()
+        $response->assertInertia(
+            fn ($page) => $page
+                ->component('Series/Create')
+                ->where('search_term', 'Heroes Reborn')
+                ->has('search_results')
+                ->has('local_results')
+                ->etc()
         );
     });
 
@@ -47,25 +49,27 @@ describe('SeriesController', function () {
 
         $response = $this->get(route('series.create', ['query' => 'Dexter']));
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('Series/Create')
-            ->has('search_results')
-            ->has('local_results', 1)
-            ->where('local_results.0.id', 1405)
-            ->etc()
+        $response->assertInertia(
+            fn ($page) => $page
+                ->component('Series/Create')
+                ->has('search_results')
+                ->has('local_results', 1)
+                ->where('local_results.0.id', 1405)
+                ->etc()
         );
     });
 
     it('shows the create form with series_id', function () {
-	    loginAsUser();
+        loginAsUser();
 
         $response = $this->get(route('series.create', ['series_id' => 60858, 'search_term' => 'Heroes Reborn']));
         $response->assertOk();
-        $response->assertInertia(fn ($page) => $page
-            ->component('Series/Create')
-            ->has('series_detail')
-            ->has('media_types')
-            ->etc()
+        $response->assertInertia(
+            fn ($page) => $page
+                ->component('Series/Create')
+                ->has('series_detail')
+                ->has('media_types')
+                ->etc()
         );
     });
 
@@ -94,14 +98,15 @@ describe('SeriesController', function () {
     });
 
     it('shows a series detail page', function () {
-		$this->seed(SeriesSeeder::class);
+        $this->seed(SeriesSeeder::class);
         $series = Series::where('slug', 'the-flight-attendant')->firstOrFail();
         $response = $this->get(route('series.show', $series));
         $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => $page
-            ->component('Series/Show')
-            ->where('series.slug', $series->slug)
-            ->etc()
+        $response->assertInertia(
+            fn ($page) => $page
+                ->component('Series/Show')
+                ->where('series.slug', $series->slug)
+                ->etc()
         );
     });
 
@@ -109,26 +114,31 @@ describe('SeriesController', function () {
     // shown by selecting a season/episode within Series/Show.vue, so the series
     // detail response needs to carry the full seasons -> episodes tree up front.
     it('includes seasons and episodes in the series detail page', function () {
-		$this->seed(SeriesSeeder::class);
+        $this->seed(SeriesSeeder::class);
         $series = Series::where('slug', 'the-flight-attendant')->firstOrFail();
         $season = Season::where(['series_id' => $series->id, 'season_number' => 1])->firstOrFail();
         $episode = Episode::where(['season_id' => $season->id, 'episode_number' => 4])->firstOrFail();
 
         $response = $this->get(route('series.show', $series));
         $response->assertStatus(200);
-        $response->assertInertia(fn ($page) => $page
-            ->component('Series/Show')
-            ->has('series.seasons', $series->seasons->count())
-            ->has('series.seasons.0', fn ($seasonJson) => $seasonJson
-                ->where('id', $season->id)
-                ->has('episodes', $season->episodes->count())
-                ->has('episodes.3', fn ($episodeJson) => $episodeJson
-                    ->where('id', $episode->id)
-                    ->etc()
+        $response->assertInertia(
+            fn ($page) => $page
+                ->component('Series/Show')
+                ->has('series.seasons', $series->seasons->count())
+                ->has(
+                    'series.seasons.0',
+                    fn ($seasonJson) => $seasonJson
+                        ->where('id', $season->id)
+                        ->has('episodes', $season->episodes->count())
+                        ->has(
+                            'episodes.3',
+                            fn ($episodeJson) => $episodeJson
+                                ->where('id', $episode->id)
+                                ->etc()
+                        )
+                        ->etc()
                 )
                 ->etc()
-            )
-            ->etc()
         );
     });
 

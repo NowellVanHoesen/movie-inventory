@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use Database\Factories\EpisodeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Episode extends Model
-{
-    /** @use HasFactory<\Database\Factories\EpisodeFactory> */
+class Episode extends Model {
+    /** @use HasFactory<EpisodeFactory> */
     use HasFactory;
 
     protected $guarded = [];
@@ -18,18 +18,15 @@ class Episode extends Model
 
     public $timestamps = false;
 
-    public function season()
-    {
+    public function season() {
         return $this->belongsTo(Season::class);
     }
 
-    public function series()
-    {
+    public function series() {
         return $this->hasOneThrough(Series::class, Season::class, 'id', 'id', 'season_id', 'series_id');
     }
 
-    public function cast_members()
-    {
+    public function cast_members() {
         return $this->belongsToMany(CastMember::class, table: 'cast_member_episode', foreignPivotKey: 'episode_id')->withPivot('character', 'order')->orderByPivot('order', 'asc');
     }
 }

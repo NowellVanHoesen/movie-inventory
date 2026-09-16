@@ -8,12 +8,10 @@ use App\Traits\InteractsWithTMDB;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
 
-class MovieCollectionController extends Controller
-{
+class MovieCollectionController extends Controller {
     use InteractsWithTMDB;
 
-    public function index()
-    {
+    public function index() {
         $collections = MovieCollection::orderBy('name_sortable', 'asc')->paginate(24);
 
         $page_title = config('app.name') . ' - Movie Collections';
@@ -24,9 +22,8 @@ class MovieCollectionController extends Controller
         ]);
     }
 
-    public function show(MovieCollection $collection)
-    {
         $collection_details = $this->getMovieCollection($collection->id);
+    public function show(MovieCollection $collection) {
 
         if (!$collection_details) {
             abort(404, 'Collection not found');
@@ -38,9 +35,9 @@ class MovieCollectionController extends Controller
 
         $movie_ids = array_column($collection_details->parts, 'id');
 
-        $movie_slugs = Movie::whereIn('id', $movie_ids)->pluck('slug','id');
+        $movie_slugs = Movie::whereIn('id', $movie_ids)->pluck('slug', 'id');
 
-        $collection_details->parts = collect($collection_details->parts)->map(function ($movie) use ( $movie_slugs ) {
+        $collection_details->parts = collect($collection_details->parts)->map(function ($movie) use ($movie_slugs) {
             return (object) [
                 'id' => $movie->id,
                 'slug' => $movie_slugs->get($movie->id, null),
@@ -53,12 +50,10 @@ class MovieCollectionController extends Controller
 
         $page_title = config('app.name') . ' - Collection: ' . $collection->name;
 
-
-
         return inertia('Movies/Collections/Show', [
             'page_title' => $page_title,
             'collection' => $collection,
-            'collection_details' => $collection_details
+            'collection_details' => $collection_details,
         ]);
     }
 }

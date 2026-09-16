@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
+use Database\Factories\SeasonFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Season extends Model
-{
-    /** @use HasFactory<\Database\Factories\SeasonFactory> */
+class Season extends Model {
+    /** @use HasFactory<SeasonFactory> */
     use HasFactory;
 
     protected $fillable = [
@@ -29,23 +29,19 @@ class Season extends Model
 
     public $timestamps = false;
 
-    public function series()
-    {
+    public function series() {
         return $this->belongsTo(Series::class);
     }
 
-    public function episodes()
-    {
+    public function episodes() {
         return $this->hasMany(Episode::class)->orderBy('episode_number', 'asc');
     }
 
-    public function media_types()
-    {
+    public function media_types() {
         return $this->belongsToMany(MediaType::class);
     }
 
-    public function cast_members()
-    {
+    public function cast_members() {
         return $this->belongsToMany(CastMember::class, table: 'cast_member_season', foreignPivotKey: 'season_id')->withPivot('character', 'order')->orderByPivot('order', 'asc');
     }
 }

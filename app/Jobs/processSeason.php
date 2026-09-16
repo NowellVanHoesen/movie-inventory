@@ -7,13 +7,13 @@ use App\Jobs\processSeasonCastMembers;
 use App\Models\Season;
 use App\Traits\InteractsWithTMDB;
 use Illuminate\Bus\Batchable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Bus;
 
-class processSeason implements ShouldQueue
-{
-    use InteractsWithTMDB, Queueable, Batchable;
+class processSeason implements ShouldBeUnique, ShouldQueue {
+    use Batchable, InteractsWithTMDB, Queueable;
 
     protected int $series_id;
 
@@ -26,8 +26,7 @@ class processSeason implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(array $args)
-    {
+    public function __construct(array $args) {
         $this->series_id = $args['series_id'];
         $this->media_type = $args['media_type'];
         $this->season_number = $args['season_number'];
@@ -37,8 +36,7 @@ class processSeason implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
-    {
+    public function handle(): void {
         // get and save Season detail
         $season_detail = $this->getSeasonDetail($this->series_id, $this->season_number);
 
@@ -66,22 +64,22 @@ class processSeason implements ShouldQueue
 
         $episode_batch = [];
 
-         foreach ($season_detail->episodes as $episode) {
+        foreach ($season_detail->episodes as $episode) {
             $episode_batch[] = new processEpisode([
                 'series_id' => $this->series_id,
                 'season_id' => $season_detail->id,
                 'season_number' => $this->season_number,
-                'episode_number' => $episode->episode_number
+                'episode_number' => $episode->episode_number,
             ]);
-         }
+        }
 
         // set up job chain and episode batch
         Bus::chain([
             new processSeasonCastMembers([
                 'series_id' => $this->series_id,
-                'season_number' => $this->season_number
+                'season_number' => $this->season_number,
             ]),
-            Bus::batch( $episode_batch )
+            Bus::batch($episode_batch),
         ])->dispatch();
     }
 

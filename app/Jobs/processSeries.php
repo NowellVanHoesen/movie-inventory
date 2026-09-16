@@ -5,12 +5,12 @@ namespace App\Jobs;
 use App\Jobs\processSeason;
 use App\Jobs\processSeriesCastMembers;
 use App\Traits\InteractsWithTMDB;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Bus;
 
-class processSeries implements ShouldQueue
-{
+class processSeries implements ShouldBeUnique, ShouldQueue {
     use InteractsWithTMDB, Queueable;
 
     protected int $series_id;
@@ -22,8 +22,7 @@ class processSeries implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(array $args)
-    {
+    public function __construct(array $args) {
         $this->series_id = $args['series_id'];
         $this->media_type = $args['media_type'];
         $this->purchase_date = $args['purchase_date'];
@@ -32,8 +31,7 @@ class processSeries implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
-    {
+    public function handle(): void {
         // get series detail from API
         $series_detail = $this->getSeriesDetail($this->series_id);
 
@@ -45,13 +43,13 @@ class processSeries implements ShouldQueue
                 'series_id' => $this->series_id,
                 'media_type' => $this->media_type,
                 'season_number' => $season->season_number,
-                'purchase_date' => $this->purchase_date
+                'purchase_date' => $this->purchase_date,
             ]);
         }
 
         Bus::chain([
             new processSeriesCastMembers($this->series_id),
-            Bus::batch( $season_batch )
+            Bus::batch($season_batch),
         ])->dispatch();
     }
 

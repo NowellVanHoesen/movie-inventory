@@ -10,9 +10,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Attributes\WithoutRelations;
 
-class processMovieCastMembers implements ShouldBeUnique, ShouldQueue
-{
-    use InteractsWithTMDB, CastMemberHelpers, Queueable;
+class processMovieCastMembers implements ShouldBeUnique, ShouldQueue {
+    use CastMemberHelpers, InteractsWithTMDB, Queueable;
 
     public $deleteWhenMissingModels = true;
 
@@ -31,11 +30,10 @@ class processMovieCastMembers implements ShouldBeUnique, ShouldQueue
      *
      * movie credits (cast): https://api.themoviedb.org/3/movie/{movie_id}/credits { language }
      */
-    public function handle(): void
-    {
         $credits = $this->getMovieCast($this->movie->id);
+    public function handle(): void {
 
-        $this->attachCastMemberToModel( $this->movie, $credits->cast );
+        $this->attachCastMemberToModel($this->movie, $credits->cast);
     }
 
     public function uniqueId() {

@@ -18,15 +18,13 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class MoviesController extends Controller
-{
+class MoviesController extends Controller {
     use InteractsWithTMDB, MediaTypeHelpers;
 
     /**
      * Display a listing of all wishlist and purchased movies.
      */
-    public function index()
-    {
+    public function index() {
         $query = Movie::with(['media_types']);
 
         $genreNames = json_decode(request()->cookie('selectedGenres', '[]'), true) ?: [];
@@ -86,7 +84,7 @@ class MoviesController extends Controller
 
         $movies = $query->paginate(24);
 
-        $page_title = config('app.name').' - '.$pageTitleSuffix;
+        $page_title = config('app.name') . ' - ' . $pageTitleSuffix;
 
         return inertia('Movies/Index', [
             'movies' => Inertia::scroll(fn () => $movies->toResourceCollection()),
@@ -111,8 +109,7 @@ class MoviesController extends Controller
      *
      * @throws AuthorizationException If the user is not authorized to create a movie.
      */
-    public function create(Request $request)
-    {
+    public function create(Request $request) {
         $data = [];
 
         if (! empty($request['query'])) {
@@ -122,7 +119,7 @@ class MoviesController extends Controller
             ]);
 
             $localResults = Movie::with('certification')
-                ->where('title_normalized', 'like', '%'.$attributes['query'].'%')
+                ->where('title_normalized', 'like', '%' . $attributes['query'] . '%')
                 ->get();
 
             $data['local_results'] = $localResults->toResourceCollection();
@@ -158,7 +155,7 @@ class MoviesController extends Controller
             $data['search_term'] = $attributes['search_term'] ?? '';
         }
 
-        $data['page_title'] = config('app.name').' - Add Movie';
+        $data['page_title'] = config('app.name') . ' - Add Movie';
 
         return Inertia::render('Movies/Create', $data);
     }
@@ -166,8 +163,7 @@ class MoviesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $attributes = $request->validate([
             'movie_id' => ['integer'],
             'purchase_date' => ['nullable', 'date_format:Y-m-d'],
@@ -235,8 +231,7 @@ class MoviesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Movie $movie)
-    {
+    public function show(Movie $movie) {
         $movie->media_types_display = $this->get_media_types_display($movie->media_types);
 
         // $recommendations = $this->getMovieRecommendations( $movie->id );
@@ -259,8 +254,7 @@ class MoviesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Movie $movie, Request $request)
-    {
+    public function update(Movie $movie, Request $request) {
         $attributes = $request->validate([
             'movie_id' => ['integer'],
             'purchase_date' => ['nullable', 'date_format:Y-m-d'],
@@ -296,8 +290,7 @@ class MoviesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Movie $movie)
-    {
+    public function destroy(Movie $movie) {
         $movie->delete();
 
         return redirect()->route('movies.index')->with('status', 'Movie deleted successfully.');

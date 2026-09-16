@@ -5,8 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
-class RestoreDatabaseDump extends Command
-{
+class RestoreDatabaseDump extends Command {
     /**
      * The name and signature of the console command.
      *
@@ -24,8 +23,7 @@ class RestoreDatabaseDump extends Command
      */
     protected $description = 'Drop every table in a database and rebuild it from a full SQL dump';
 
-    public function handle(): int
-    {
+    public function handle(): int {
         $path = $this->argument('path');
         $database = $this->option('database');
 
@@ -64,7 +62,7 @@ class RestoreDatabaseDump extends Command
             $column = "Tables_in_{$connection->getDatabaseName()}";
 
             foreach ($tables as $table) {
-                $connection->statement('DROP TABLE IF EXISTS `'.$table->$column.'`');
+                $connection->statement('DROP TABLE IF EXISTS `' . $table->$column . '`');
             }
 
             $connection->statement('SET FOREIGN_KEY_CHECKS=1');

@@ -9,8 +9,7 @@ use Tests\Browser;
  * sortDir) on a loaded page, then reloading, so state left behind by a previous
  * test in this shared browser session can't leak in and make results order-dependent.
  */
-function clearMovieFilterCookies(Browser $browser): void
-{
+function clearMovieFilterCookies(Browser $browser): void {
     $browser->script([
         "document.cookie = 'selectedGenres=; path=/; max-age=0';",
         "document.cookie = 'sortCol=; path=/; max-age=0';",
@@ -115,7 +114,7 @@ it('filters the movie list to only movies in the selected genre', function () {
             ->clickViaJs('@genre-checkbox-Documentary')
             ->clickViaJs('@apply-filters-btn')
             ->waitUntilMissing('@filter-panel')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === '.count($expectedSlugs))
+            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === ' . count($expectedSlugs))
             ->assertMissing("@movie-btn-{$unrelatedMovie->slug}");
 
         $displayedSlugs = $browser->script(
@@ -153,7 +152,7 @@ it('filters by multiple genres using OR logic', function () {
             // Straddles two pages (28 matches, 24 per page), so InfiniteScroll has to
             // auto-follow up with a second fetch — allow more time than a single
             // network round trip needs.
-            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === '.count($expectedSlugs), 10)
+            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === ' . count($expectedSlugs), 10)
             ->assertMissing("@movie-btn-{$unrelatedMovie->slug}");
 
         $displayedSlugs = $browser->script(
@@ -182,7 +181,7 @@ it('restores the full movie list after clearing a genre filter, and remembers th
             ->clickViaJs('@genre-checkbox-Documentary')
             ->clickViaJs('@apply-filters-btn')
             ->waitUntilMissing('@filter-panel')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === '.$documentaryCount)
+            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === ' . $documentaryCount)
             ->clickViaJs('@filter-toggle-btn')
             ->waitFor('@filter-panel')
             ->assertChecked('@genre-checkbox-Documentary')
@@ -218,7 +217,7 @@ it('sorts the filtered list by title ascending when selected', function () {
             ->clickViaJs('@sort-dir-asc')
             ->clickViaJs('@apply-filters-btn')
             ->waitUntilMissing('@filter-panel')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === '.count($expectedSlugs));
+            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === ' . count($expectedSlugs));
 
         $displayedSlugs = $browser->script(
             "return Array.from(document.querySelectorAll('[dusk^=movie-btn-]')).map(el => el.getAttribute('dusk').replace('movie-btn-', ''));"
@@ -252,7 +251,7 @@ it('sorts the filtered list by release date ascending when selected', function (
             ->clickViaJs('@sort-dir-asc')
             ->clickViaJs('@apply-filters-btn')
             ->waitUntilMissing('@filter-panel')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === '.count($expectedSlugs));
+            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === ' . count($expectedSlugs));
 
         $displayedSlugs = $browser->script(
             "return Array.from(document.querySelectorAll('[dusk^=movie-btn-]')).map(el => el.getAttribute('dusk').replace('movie-btn-', ''));"
@@ -293,7 +292,7 @@ it('always places movies without a purchase date last when sorting by purchase d
                 ->clickViaJs("@sort-dir-{$direction}")
                 ->clickViaJs('@apply-filters-btn')
                 ->waitUntilMissing('@filter-panel')
-                ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === '.$totalDocumentary);
+                ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === ' . $totalDocumentary);
 
             $slugs = $browser->script(
                 "return Array.from(document.querySelectorAll('[dusk^=movie-btn-]')).map(el => el.getAttribute('dusk').replace('movie-btn-', ''));"
@@ -332,7 +331,7 @@ it('persists a genre selection to the cookie immediately, even if the panel is c
         $browser
             ->visit(route('movies.index'))
             ->waitFor('@filter-toggle-btn')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === '.$expectedCount);
+            ->waitUntil('document.querySelectorAll(\'[dusk^=movie-btn-]\').length === ' . $expectedCount);
 
         $finalCount = $browser->script("return document.querySelectorAll('[dusk^=movie-btn-]').length;")[0];
 

@@ -10,13 +10,11 @@ use App\Models\MovieCollection;
 use App\Models\Series;
 use Illuminate\Http\Request;
 
-class SearchController extends Controller
-{
+class SearchController extends Controller {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
-    {
+    public function __invoke(Request $request) {
         $movies_results = collect();
         $collections_results = collect();
         $series_results = collect();

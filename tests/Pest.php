@@ -1,7 +1,7 @@
 <?php
 
-pest()->extend(Tests\DuskTestCase::class)
-    ->use(Illuminate\Foundation\Testing\DatabaseTruncation::class)
+pest()->extend(DuskTestCase::class)
+    ->use(DatabaseTruncation::class)
     ->in('Browser');
 
 /*
@@ -16,12 +16,15 @@ pest()->extend(Tests\DuskTestCase::class)
 */
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
-
+use Tests\DuskTestCase;
+use Tests\TestCase;
 
 pest()
-    ->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -50,8 +53,7 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
-{
+function something() {
     // ..
 }
 

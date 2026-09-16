@@ -10,26 +10,25 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class CastMemberController extends Controller
-{
+class CastMemberController extends Controller {
     // Display Cast Member and their associated movies, series, seasons, and episodes.
     public function __invoke(Request $request, CastMember $castMember) {
         $purchasedMemberMovies = $castMember->movies()->purchased()->orderBy('release_date', 'desc')->get();
 
         $wishlistedMemberMovies = $castMember->movies()->wishlist()->orderBy('release_date', 'desc')->get();
 
-        $memberSeries = $castMember->series()->with( 'cast_members' )->get();
+        $memberSeries = $castMember->series()->with('cast_members')->get();
 
-        $memberSeasons = $castMember->seasons()->with( 'series' )->get();
+        $memberSeasons = $castMember->seasons()->with('series')->get();
 
-        foreach ( $memberSeasons as $season ) {
-            $this->pushSeriesWithCharacter( $memberSeries, $season );
+        foreach ($memberSeasons as $season) {
+            $this->pushSeriesWithCharacter($memberSeries, $season);
         }
 
-        $memberEpisodes = $castMember->episodes()->with( 'series' )->get();
+        $memberEpisodes = $castMember->episodes()->with('series')->get();
 
-        foreach ( $memberEpisodes as $episode ) {
-            $this->pushSeriesWithCharacter( $memberSeries, $episode );
+        foreach ($memberEpisodes as $episode) {
+            $this->pushSeriesWithCharacter($memberSeries, $episode);
         }
 
         $memberSeries = $memberSeries->unique('id')->sortBy('first_air_date');
@@ -37,9 +36,9 @@ class CastMemberController extends Controller
         $pageTitle = config('app.name') . ' - Cast Member: ' . $castMember->name;
 
         return inertia('CastMembers/Index', [
-            'purchasedMemberMovies' => MovieResource::collection( $purchasedMemberMovies ),
-            'wishlistedMemberMovies' => MovieResource::collection( $wishlistedMemberMovies ),
-            'memberSeries' => SeriesResource::collection( $memberSeries ),
+            'purchasedMemberMovies' => MovieResource::collection($purchasedMemberMovies),
+            'wishlistedMemberMovies' => MovieResource::collection($wishlistedMemberMovies),
+            'memberSeries' => SeriesResource::collection($memberSeries),
             'page_title' => $pageTitle,
             'castMember' => $castMember,
         ]);
@@ -50,8 +49,7 @@ class CastMemberController extends Controller
      * member's character from the season/episode pivot onto the series so that
      * SeriesResource exposes it the same way it does for a directly-credited series.
      */
-    private function pushSeriesWithCharacter(Collection $memberSeries, Model $pivotHolder): void
-    {
+    private function pushSeriesWithCharacter(Collection $memberSeries, Model $pivotHolder): void {
         $series = $pivotHolder->series;
 
         if (! $series instanceof Series) {

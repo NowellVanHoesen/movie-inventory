@@ -6,12 +6,12 @@ use App\Jobs\processEpisodeCastMembers;
 use App\Models\Episode;
 use App\Traits\InteractsWithTMDB;
 use Illuminate\Bus\Batchable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
-class processEpisode implements ShouldQueue
-{
-    use InteractsWithTMDB, Queueable, Batchable;
+class processEpisode implements ShouldBeUnique, ShouldQueue {
+    use Batchable, InteractsWithTMDB, Queueable;
 
     protected int $series_id;
 
@@ -24,8 +24,7 @@ class processEpisode implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(array $args)
-    {
+    public function __construct(array $args) {
         $this->series_id = $args['series_id'];
         $this->season_id = $args['season_id'];
         $this->season_number = $args['season_number'];
@@ -35,9 +34,8 @@ class processEpisode implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
-    {
         $episode_detail = $this->getEpisodeDetail($this->series_id, $this->season_number, $this->episode_number);
+    public function handle(): void {
 
         $episode_record = Episode::firstOrCreate(
             ['id' => $episode_detail->id],
@@ -57,7 +55,7 @@ class processEpisode implements ShouldQueue
             'series_id' => $this->series_id,
             'season_number' => $this->season_number,
             'episode_id' => $episode_detail->id,
-            'episode_number' => $this->episode_number
+            'episode_number' => $this->episode_number,
         ]);
     }
 

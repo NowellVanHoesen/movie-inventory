@@ -8,8 +8,9 @@ use function Pest\Laravel\post;
 it('renders the login modal over the resolved base page', function () {
     get(route('login'))
         ->assertOk()
-        ->assertInertia(fn ($page) => $page
-            ->where('_modal.component', 'Auth/Login')
+        ->assertInertia(
+            fn ($page) => $page
+                ->where('_modal.component', 'Auth/Login')
         );
 });
 

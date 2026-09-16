@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     protected $initial_certification = [
         ['name' => 'NR', 'meaning' => 'No rating information.', 'order' => 0],
         ['name' => 'G', 'meaning' => 'All ages admitted. There is no content that would be objectionable to most parents. This is one of only two ratings dating back to 1968 that still exists today.', 'order' => 1],
@@ -25,8 +24,7 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
+    public function up(): void {
         Schema::create('certifications', function (Blueprint $table) {
             $table->engine('InnoDB');
             $table->id();
@@ -41,8 +39,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('certifications');
     }
 };

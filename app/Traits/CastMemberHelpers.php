@@ -8,10 +8,8 @@ use App\Models\Movie;
 use App\Models\Season;
 use App\Models\Series;
 
-trait CastMemberHelpers
-{
-    private function getCastMember($cast_member)
-    {
+trait CastMemberHelpers {
+    private function getCastMember($cast_member) {
         return CastMember::firstOrCreate(
             ['id' => $cast_member->id],
             [
@@ -22,11 +20,11 @@ trait CastMemberHelpers
         );
     }
 
-    private function attachCastMemberToModel( $model, $cast_members ) {
        foreach ($cast_members as $cast_member) {
             if ( $model->cast_members()->where('cast_member_id', $cast_member->id)->exists() ) {
                 continue;
             }
+    private function attachCastMemberToModel($model, $cast_members) {
 
             $member = $this->getCastMember($cast_member);
 

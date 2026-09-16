@@ -9,13 +9,11 @@ use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Inertia\ResponseFactory;
 
-class ModalServiceProvider extends ServiceProvider
-{
+class ModalServiceProvider extends ServiceProvider {
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
+    public function register(): void {
         Request::macro('wantsModal', function () {
             return $this->header('X-Modal') ? true : false;
         });
@@ -71,8 +69,7 @@ class ModalServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
+    public function boot(): void {
         //
     }
 }

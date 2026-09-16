@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Movie;
 use App\Models\MovieCollection;
 use App\Traits\InteractsWithTMDB;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 class MovieCollectionController extends Controller {
@@ -22,14 +22,26 @@ class MovieCollectionController extends Controller {
         ]);
     }
 
-        $collection_details = $this->getMovieCollection($collection->id);
     public function show(MovieCollection $collection) {
+        $cacheKey = "tmdb.collection.{$collection->id}";
 
-        if (!$collection_details) {
+        $collection_details = Cache::get($cacheKey);
+
+        if ($collection_details === null) {
+            $collection_details = $this->getMovieCollection($collection->id);
+
+            if ($collection_details !== null) {
+                Cache::put($cacheKey, $collection_details, now()->addDay());
+            }
+        }
+
+        if (! $collection_details) {
             abort(404, 'Collection not found');
         }
 
-        if (isset($collection_details->parts) && !is_array($collection_details->parts)) {
+        // TMDB can omit `parts` entirely, not just return it as a non-array, and
+        // array_column() on a missing property is a TypeError rather than an empty list.
+        if (! isset($collection_details->parts) || ! is_array($collection_details->parts)) {
             $collection_details->parts = [];
         }
 

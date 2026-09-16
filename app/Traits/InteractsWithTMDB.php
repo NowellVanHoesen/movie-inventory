@@ -4,6 +4,8 @@ namespace App\Traits;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
+use RuntimeException;
 
 trait InteractsWithTMDB {
     private function getMovieDetail(int $movie_id) {
@@ -46,48 +48,10 @@ trait InteractsWithTMDB {
         );
     }
 
-    private function getMovieRecommendations(int $movie_id) {
-        return collect([]);
-        $recs = $this->sendTMDBRequest(
-            "movie/{$movie_id}/recommendations"
-        );
-
-        $allRecs = collect( $recs->results );
-
-        if ( $recs->total_pages > 1 ) {
-            for ($page = 2; $page <= $recs->total_pages; $page++ ) {
-                $results = $this->sendTMDBRequest( "movie/{$movie_id}/recommendations", [ 'page' => $page ] );
-
-                if ( !$results || !isset($results->results) ) {
-                    Log::error("Failed to fetch recommendations for movie ID {$movie_id} on page {$page}");
-                    continue;
-                }
-
-                $pagedRecs = $allRecs->merge( collect( $results->results ) );
-                $allRecs = $pagedRecs;
-            }
-        }
-
-        return $allRecs;
-    }
-
-    private function getSeriesRecommendations(int $series_id) {
-        return collect([]);
-        $recs = $this->sendTMDBRequest(
-            "tv/{$series_id}/recommendations"
-        );
-
-        $allRecs = collect( $recs->results );
-
-        if ( $recs->total_pages > 1 ) {
-            for ($page = 2; $page <= $recs->total_pages; $page++ ) {
-                $pagedRecs = $allRecs->merge( collect( $this->sendTMDBRequest( "tv/{$series_id}/recommendations", [ 'page' => $page ] )->results ) );
-                $allRecs = $pagedRecs;
-            }
-        }
-
-        return $allRecs;
-    }
+    // getMovieRecommendations()/getSeriesRecommendations() were removed: both began
+    // with an unconditional `return collect([])`, so ~40 lines of paginated fetching
+    // were unreachable, and their only callers in MoviesController/SeriesController
+    // `show()` are commented out. Recover from git history to re-enable.
 
     private function searchMovies(string $query, ?string $year) {
         $args = [
@@ -174,22 +138,53 @@ trait InteractsWithTMDB {
         );
     }
 
+    /**
+     * Assert a TMDB response arrived, for callers that cannot meaningfully continue
+     * without it (queued jobs). Throwing marks the job failed with a readable reason
+     * instead of letting a null propagate into "Attempt to read property on null".
+     */
+    private function requireTMDBResponse($response, string $context) {
+        if ($response === null) {
+            throw new RuntimeException("TMDB request failed for {$context}. See the preceding TMDB error log entry.");
+        }
+
+        return $response;
+    }
+
+    /**
+     * Returns the decoded response object, or null if TMDB refused the request.
+     *
+     * Callers MUST treat null as a real possibility — TMDB rate-limits, has outages,
+     * and 404s ids that have been removed upstream. Dereferencing the return value
+     * without checking turns any of those into "Attempt to read property on null".
+     */
     private function sendTMDBRequest(string $endpoint, array $queryParams = []) {
         if (empty($endpoint)) {
-            abort(400, 'Endpoint is required');
+            throw new InvalidArgumentException('TMDB endpoint is required');
         }
 
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . config('tmdb.api.auth_key'),
             'accept' => 'application/json',
-        ])->withQueryParameters($queryParams)->get(config('tmdb.api.base_url').'/'.config('tmdb.api.version').'/'.$endpoint);
+        ])
+            ->connectTimeout(5)
+            ->timeout(15)
+            ->withQueryParameters($queryParams)
+            ->get(config('tmdb.api.base_url') . '/' . config('tmdb.api.version') . '/' . $endpoint);
 
-        if ( $response->successful() ) {
+        if ($response->successful()) {
             return $response->object();
         }
 
-        return null;
+        // Previously this returned null with no trace at all, so a rate-limit or
+        // outage surfaced only as a null-dereference 500 with nothing in the log.
+        Log::error('TMDB request failed', [
+            'endpoint' => $endpoint,
+            'status' => $response->status(),
+            'body' => substr($response->body(), 0, 500),
+        ]);
 
+        return null;
 
         // search movies: https://api.themoviedb.org/3/search/movie { query, include_adult, language, primary_release_year, page, region, year }
         // search TV(seasons): https://api.themoviedb.org/3/search/tv { query, first_air_date_year, include_adult, language, page, year }

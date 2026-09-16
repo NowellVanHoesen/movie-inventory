@@ -2,8 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Jobs\processSeason;
-use App\Jobs\processSeriesCastMembers;
 use App\Traits\InteractsWithTMDB;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -13,10 +11,26 @@ use Illuminate\Support\Facades\Bus;
 class processSeries implements ShouldBeUnique, ShouldQueue {
     use InteractsWithTMDB, Queueable;
 
+    /**
+     * Retry transient TMDB failures before giving up — previously a single
+     * rate-limit or timeout permanently lost that ingestion with no retry.
+     */
+    public int $tries = 3;
+
+    public array $backoff = [10, 30];
+
+    /**
+     * Bound the uniqueness lock so a hard worker crash can't wedge this job id.
+     */
+    public int $uniqueFor = 3600;
+
     protected int $series_id;
 
     protected array $media_type;
 
+    // Non-nullable on purpose: series have no wishlist concept (unlike Movie, which
+    // has purchased()/wishlist() scopes and routes), so a series always has a
+    // purchase date. SeriesController@store enforces that with a `required` rule.
     protected string $purchase_date;
 
     /**
@@ -24,7 +38,7 @@ class processSeries implements ShouldBeUnique, ShouldQueue {
      */
     public function __construct(array $args) {
         $this->series_id = $args['series_id'];
-        $this->media_type = $args['media_type'];
+        $this->media_type = $args['media_type'] ?? [];
         $this->purchase_date = $args['purchase_date'];
     }
 
@@ -33,7 +47,10 @@ class processSeries implements ShouldBeUnique, ShouldQueue {
      */
     public function handle(): void {
         // get series detail from API
-        $series_detail = $this->getSeriesDetail($this->series_id);
+        $series_detail = $this->requireTMDBResponse(
+            $this->getSeriesDetail($this->series_id),
+            "series {$this->series_id} detail"
+        );
 
         // set up chain/batch jobs
         $season_batch = [];

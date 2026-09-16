@@ -13,6 +13,19 @@ class processSeriesCastMembers implements ShouldBeUnique, ShouldQueue {
     use CastMemberHelpers, InteractsWithTMDB, Queueable;
 
     /**
+     * Retry transient TMDB failures before giving up — previously a single
+     * rate-limit or timeout permanently lost that ingestion with no retry.
+     */
+    public int $tries = 3;
+
+    public array $backoff = [10, 30];
+
+    /**
+     * Bound the uniqueness lock so a hard worker crash can't wedge this job id.
+     */
+    public int $uniqueFor = 3600;
+
+    /**
      * Create a new job instance.
      */
     public function __construct(protected int $series_id) {
@@ -27,7 +40,10 @@ class processSeriesCastMembers implements ShouldBeUnique, ShouldQueue {
         $series = Series::firstWhere('id', $this->series_id);
 
         // get and attach Series cast members
-        $series_cast = $this->getSeriesCast($this->series_id);
+        $series_cast = $this->requireTMDBResponse(
+            $this->getSeriesCast($this->series_id),
+            "series {$this->series_id} cast"
+        );
 
         $this->attachCastMemberToModel($series, $series_cast->cast);
     }

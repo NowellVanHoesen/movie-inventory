@@ -140,6 +140,10 @@ class MoviesController extends Controller {
 
             $results = $this->getMovieDetail($attributes['movie_id']);
 
+            if ($results === null) {
+                return back()->withErrors(['movie_id' => 'Could not load that movie from TMDB. Please try again.']);
+            }
+
             $genres = [];
 
             foreach ($results->genres as $genre) {
@@ -165,12 +169,19 @@ class MoviesController extends Controller {
      */
     public function store(Request $request) {
         $attributes = $request->validate([
-            'movie_id' => ['integer'],
+            'movie_id' => ['required', 'integer'],
             'purchase_date' => ['nullable', 'date_format:Y-m-d'],
             'media_type' => ['array'],
+            // Matches the rule update() already uses: without it, an unknown id
+            // reaches attach() and fails on the pivot's foreign key instead.
+            'media_type.*' => ['integer', 'exists:media_types,id'],
         ]);
 
         $movie_detail = $this->getMovieDetail($attributes['movie_id']);
+
+        if ($movie_detail === null) {
+            return back()->withErrors(['movie_id' => 'Could not load that movie from TMDB. Nothing was saved — please try again.']);
+        }
 
         $certification_name = 'NR';
         $release_date = $movie_detail->release_date;
@@ -202,21 +213,21 @@ class MoviesController extends Controller {
             'tagline' => $movie_detail->tagline,
             'overview' => $movie_detail->overview,
             'release_date' => $release_date,
-            'purchase_date' => $attributes['purchase_date'],
+            'purchase_date' => $attributes['purchase_date'] ?? null,
             'poster_path' => $movie_detail->poster_path ?: null,
             'backdrop_path' => $movie_detail->backdrop_path ?: null,
             'certification_id' => $certification->id,
             'runtime' => $movie_detail->runtime,
         ]);
 
-        foreach ($movie_detail->genres as $genre) {
-            $movie->genres()->attach($genre->id);
-        }
+        // syncWithoutDetaching over a per-row attach(): one insert instead of N, and
+        // it won't trip the pivot's composite primary key if a row already exists.
+        $movie->genres()->syncWithoutDetaching(
+            collect($movie_detail->genres)->pluck('id')->all()
+        );
 
         if (! empty($attributes['media_type'])) {
-            foreach ($attributes['media_type'] as $media_type_id) {
-                $movie->media_types()->attach($media_type_id);
-            }
+            $movie->media_types()->syncWithoutDetaching($attributes['media_type']);
         }
 
         if (! is_null($movie_detail->belongs_to_collection)) {

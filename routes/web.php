@@ -15,7 +15,7 @@ Route::get('/search', SearchController::class)->name('search');
 
 Route::controller(MoviesController::class)->group(function () {
     Route::get('/movies', 'index')->name('movies.index');
-    Route::post('/movies', 'store')->name('movies.store');
+    Route::post('/movies', 'store')->middleware(['auth'])->name('movies.store');
     Route::match(['get', 'post'], '/movies/create', 'create')->middleware(['auth'])->name('movies.create');
     Route::get('/movies/purchased', 'index')->name('movies.purchased');
     Route::get('/movies/wishlist', 'index')->name('movies.wishlist');
@@ -31,7 +31,7 @@ Route::controller(MovieCollectionController::class)->group(function () {
 
 Route::controller(SeriesController::class)->group(function () {
     Route::get('/series', 'index')->name('series.index');
-    Route::post('/series', 'store')->name('series.store');
+    Route::post('/series', 'store')->middleware(['auth'])->name('series.store');
     Route::match(['get', 'post'], '/series/create', 'create')->middleware(['auth'])->name('series.create');
     Route::get('/series/{series}', 'show')->name('series.show');
 });

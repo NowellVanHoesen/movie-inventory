@@ -14,8 +14,8 @@ class HomeController extends Controller {
             ->orderBy('title_sortable')
             ->limit(12)
             ->get();
-        $series = Series::with(['genres','cast_members'])
-            ->orderByDesc('purchase_date')
+
+        $series = Series::orderByDesc('purchase_date')
             ->limit(6)
             ->get();
 

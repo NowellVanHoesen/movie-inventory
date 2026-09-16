@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Jobs\processEpisodeCastMembers;
 use App\Models\Episode;
 use App\Traits\InteractsWithTMDB;
 use Illuminate\Bus\Batchable;
@@ -12,6 +11,19 @@ use Illuminate\Foundation\Queue\Queueable;
 
 class processEpisode implements ShouldBeUnique, ShouldQueue {
     use Batchable, InteractsWithTMDB, Queueable;
+
+    /**
+     * Retry transient TMDB failures before giving up — previously a single
+     * rate-limit or timeout permanently lost that ingestion with no retry.
+     */
+    public int $tries = 3;
+
+    public array $backoff = [10, 30];
+
+    /**
+     * Bound the uniqueness lock so a hard worker crash can't wedge this job id.
+     */
+    public int $uniqueFor = 3600;
 
     protected int $series_id;
 
@@ -34,8 +46,11 @@ class processEpisode implements ShouldBeUnique, ShouldQueue {
     /**
      * Execute the job.
      */
-        $episode_detail = $this->getEpisodeDetail($this->series_id, $this->season_number, $this->episode_number);
     public function handle(): void {
+        $episode_detail = $this->requireTMDBResponse(
+            $this->getEpisodeDetail($this->series_id, $this->season_number, $this->episode_number),
+            "episode {$this->series_id}/s{$this->season_number}/e{$this->episode_number} detail"
+        );
 
         $episode_record = Episode::firstOrCreate(
             ['id' => $episode_detail->id],

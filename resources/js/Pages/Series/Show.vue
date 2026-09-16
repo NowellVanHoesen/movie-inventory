@@ -100,7 +100,6 @@ const backToEpisodeList = () => {
                         {{ series.original_name }}
                     </p>
                     <p class="mb-2 text-sm">{{ genres }}</p>
-                    <p v-if="!series.purchase_date" class="text-sm font-normal">wishlist</p>
                     <p v-for="(mTypes, parent) in series.media_types_display" :key="parent" class="mt-2 text-sm">
                         <strong>{{ parent }}</strong
                         >:

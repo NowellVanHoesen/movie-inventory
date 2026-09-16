@@ -13,6 +13,19 @@ use Illuminate\Queue\Attributes\WithoutRelations;
 class processMovieCastMembers implements ShouldBeUnique, ShouldQueue {
     use CastMemberHelpers, InteractsWithTMDB, Queueable;
 
+    /**
+     * Retry transient TMDB failures before giving up — previously a single
+     * rate-limit or timeout permanently lost that ingestion with no retry.
+     */
+    public int $tries = 3;
+
+    public array $backoff = [10, 30];
+
+    /**
+     * Bound the uniqueness lock so a hard worker crash can't wedge this job id.
+     */
+    public int $uniqueFor = 3600;
+
     public $deleteWhenMissingModels = true;
 
     /**
@@ -30,8 +43,11 @@ class processMovieCastMembers implements ShouldBeUnique, ShouldQueue {
      *
      * movie credits (cast): https://api.themoviedb.org/3/movie/{movie_id}/credits { language }
      */
-        $credits = $this->getMovieCast($this->movie->id);
     public function handle(): void {
+        $credits = $this->requireTMDBResponse(
+            $this->getMovieCast($this->movie->id),
+            "movie {$this->movie->id} cast"
+        );
 
         $this->attachCastMemberToModel($this->movie, $credits->cast);
     }

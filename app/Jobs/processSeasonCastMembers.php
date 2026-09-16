@@ -12,6 +12,19 @@ use Illuminate\Foundation\Queue\Queueable;
 class processSeasonCastMembers implements ShouldBeUnique, ShouldQueue {
     use CastMemberHelpers, InteractsWithTMDB, Queueable;
 
+    /**
+     * Retry transient TMDB failures before giving up — previously a single
+     * rate-limit or timeout permanently lost that ingestion with no retry.
+     */
+    public int $tries = 3;
+
+    public array $backoff = [10, 30];
+
+    /**
+     * Bound the uniqueness lock so a hard worker crash can't wedge this job id.
+     */
+    public int $uniqueFor = 3600;
+
     protected int $series_id;
 
     protected int $season_number;
@@ -32,7 +45,10 @@ class processSeasonCastMembers implements ShouldBeUnique, ShouldQueue {
         $season = Season::where('series_id', $this->series_id)->where('season_number', $this->season_number)->first();
 
         // get and attach Season cast members
-        $cast = $this->getSeasonCast($this->series_id, $this->season_number);
+        $cast = $this->requireTMDBResponse(
+            $this->getSeasonCast($this->series_id, $this->season_number),
+            "series {$this->series_id} season {$this->season_number} cast"
+        );
 
         $this->attachCastMemberToModel($season, $cast->cast);
     }

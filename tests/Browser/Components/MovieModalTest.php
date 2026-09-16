@@ -22,7 +22,9 @@ it('can open a modal and close it on home route', function () {
             ->assertUrlIs(route('movies.show', $slug))
             ->clickAtPoint(25, 25)
             ->waitUntilMissingModal()
-            ->pause(100)
+            // The modal wrapper leaves the DOM before Inertia finishes restoring the
+            // background URL, so wait on the location rather than a fixed pause.
+            ->waitForLocation('/')
             ->assertRouteIs('home');
     });
 });
@@ -44,7 +46,9 @@ it('can open a modal and close it on movies.index route', function () {
             ->assertUrlIs(route('movies.show', $slug))
             ->clickAtPoint(25, 25)
             ->waitUntilMissingModal()
-            ->pause(100)
+            // The modal wrapper leaves the DOM before Inertia finishes restoring the
+            // background URL, so wait on the location rather than a fixed pause.
+            ->waitForLocation('/movies')
             ->assertUrlIs(route('movies.index'));
     });
 });

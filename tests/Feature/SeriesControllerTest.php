@@ -74,6 +74,8 @@ describe('SeriesController', function () {
     });
 
     it('validates store request data', function () {
+        loginAsUser();
+
         $response = $this->post(route('series.store'), [
             'series_id' => 'not-an-integer',
             'purchase_date' => 'invalid-date',
@@ -84,6 +86,8 @@ describe('SeriesController', function () {
     });
 
     it('stores a new series and dispatches job', function () {
+        loginAsUser();
+
         Queue::fake();
         $payload = [
             'series_id' => 60858,
@@ -143,8 +147,38 @@ describe('SeriesController', function () {
     });
 
     it('returns validation errors for missing required fields', function () {
+        loginAsUser();
+
         $response = $this->post(route('series.store'), ['series_id' => null, 'media_type' => null, 'season_numbers' => null]);
         $response->assertSessionHasErrors(['series_id', 'media_type', 'season_numbers']);
+    });
+
+    // Series have no wishlist (unlike movies, which have purchased()/wishlist()
+    // scopes and dedicated routes), so a series is always owned and must carry a
+    // purchase date. This used to be a `nullable` rule, and the resulting null
+    // reached processSeries' typed property and 500'd with a TypeError.
+    it('rejects a series with no purchase date, since series have no wishlist', function () {
+        loginAsUser();
+
+        $response = $this->post(route('series.store'), [
+            'series_id' => 60858,
+            'purchase_date' => null,
+            'media_type' => [],
+        ]);
+
+        $response->assertSessionHasErrors('purchase_date');
+        $this->assertDatabaseMissing('series', ['id' => 60858]);
+    });
+
+    it('requires authentication to store a series', function () {
+        $response = $this->post(route('series.store'), [
+            'series_id' => 60858,
+            'purchase_date' => '2025-02-04',
+            'media_type' => [3],
+        ]);
+
+        $response->assertRedirect(route('login'));
+        $this->assertDatabaseMissing('series', ['id' => 60858]);
     });
 
     // Add more edge case tests as needed

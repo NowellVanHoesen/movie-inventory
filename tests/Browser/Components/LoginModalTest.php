@@ -28,7 +28,10 @@ it('shows a validation error and keeps the modal open over the original page on 
             ->assertUrlIs(route('login'))
             ->press('@login-cancel-btn')
             ->waitUntilMissingModal()
-            ->pause(200)
+            // The modal wrapper leaves the DOM before Inertia finishes restoring the
+            // background URL, so wait on the location itself rather than a fixed
+            // pause — under full-suite load 200ms wasn't reliably enough.
+            ->waitForLocation(route('movies.index'))
             ->assertUrlIs(route('movies.index'));
     });
 });

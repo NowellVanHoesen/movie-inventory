@@ -19,10 +19,18 @@ class SearchController extends Controller {
         $collections_results = collect();
         $series_results = collect();
 
+        $request->validate([
+            'search' => ['nullable', 'string', 'max:255'],
+        ]);
+
         if ($request->search) {
-            $movies_results = Movie::where('title_normalized', 'like', '%' . $request->search . '%')->orderByDesc('purchase_date')->limit(24)->get();
-            $collections_results = MovieCollection::where('name_normalized', 'like', '%' . $request->search . '%')->orderBy('name')->limit(24)->get();
-            $series_results = Series::where('name_normalized', 'like', '%' . $request->search . '%')->orderByDesc('first_air_date')->limit(24)->get();
+            // Escape LIKE wildcards so a search for "100%" doesn't turn into a
+            // match-everything query.
+            $term = '%' . addcslashes($request->search, '%_\\') . '%';
+
+            $movies_results = Movie::where('title_normalized', 'like', $term)->orderByDesc('purchase_date')->limit(24)->get();
+            $collections_results = MovieCollection::where('name_normalized', 'like', $term)->orderBy('name')->limit(24)->get();
+            $series_results = Series::where('name_normalized', 'like', $term)->orderByDesc('first_air_date')->limit(24)->get();
         }
 
         $page_title = config('app.name') . ' - Search Results for: ' . $request->search;

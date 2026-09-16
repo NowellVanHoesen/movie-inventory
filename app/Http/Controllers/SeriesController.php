@@ -101,6 +101,10 @@ class SeriesController extends Controller {
 
             $series_detail = $this->getSeriesDetail($attributes['series_id']);
 
+            if ($series_detail === null) {
+                return back()->withErrors(['series_id' => 'Could not load that series from TMDB. Please try again.']);
+            }
+
             $genres = [];
 
             foreach ($series_detail->genres as $genre) {
@@ -126,13 +130,24 @@ class SeriesController extends Controller {
      */
     public function store(Request $request) {
         $attributes = $request->validate([
-            'series_id' => ['integer'],
-            'purchase_date' => ['nullable', 'date_format:Y-m-d'],
+            'series_id' => ['required', 'integer'],
+            // Required, unlike movies: series have no wishlist, so every series is
+            // owned and must carry a purchase date. Previously this was `nullable`,
+            // and a null got as far as processSeries' typed property and 500'd with
+            // a TypeError instead of returning a validation message.
+            'purchase_date' => ['required', 'date_format:Y-m-d'],
             'media_type' => ['array'],
+            // Matches the rule update() already uses: without it, an unknown id
+            // reaches attach() and fails on the pivot's foreign key instead.
+            'media_type.*' => ['integer', 'exists:media_types,id'],
             'season_numbers' => ['array'],
         ]);
 
         $series_detail = $this->getSeriesDetail($attributes['series_id']);
+
+        if ($series_detail === null) {
+            return back()->withErrors(['series_id' => 'Could not load that series from TMDB. Nothing was saved — please try again.']);
+        }
 
         $certification_name = 'NR';
 
@@ -161,15 +176,14 @@ class SeriesController extends Controller {
             'purchase_date' => $attributes['purchase_date'],
         ]);
 
-        // add genres
-        foreach ($series_detail->genres as $genre) {
-            $series->genres()->attach($genre->id);
-        }
+        // syncWithoutDetaching over a per-row attach(): one insert instead of N, and
+        // it won't trip the pivot's composite primary key if a row already exists.
+        $series->genres()->syncWithoutDetaching(
+            collect($series_detail->genres)->pluck('id')->all()
+        );
 
         if (! empty($attributes['media_type'])) {
-            foreach ($attributes['media_type'] as $media_type_id) {
-                $series->media_types()->attach($media_type_id);
-            }
+            $series->media_types()->syncWithoutDetaching($attributes['media_type']);
         }
 
         processSeries::dispatch([

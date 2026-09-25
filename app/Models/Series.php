@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
@@ -17,12 +16,6 @@ class Series extends Model {
     protected $with = ['certification'];
 
     public $timestamps = false;
-
-    #[Scope]
-    protected function search($query, $term) {
-        $term = "%{$term}%";
-        $query->where('name', 'like', $term);
-    }
 
     public function seasons() {
         return $this->hasMany(Season::class)->orderBy('air_date', 'asc');

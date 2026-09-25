@@ -29,12 +29,6 @@ class Movie extends Model {
         $query->whereNull('purchase_date');
     }
 
-    #[Scope]
-    protected function search($query, $term) {
-        $term = "%{$term}%";
-        $query->where('title', 'like', $term);
-    }
-
     public function certification() {
         return $this->belongsTo(Certification::class);
     }

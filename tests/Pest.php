@@ -14,7 +14,6 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTruncation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
 use Tests\DuskTestCase;
 use Tests\TestCase;
 
@@ -29,21 +28,6 @@ pest()->extend(DuskTestCase::class)
 
 /*
 |--------------------------------------------------------------------------
-| Expectations
-|--------------------------------------------------------------------------
-|
-| When you're writing tests, you often need to check that values meet certain conditions. The
-| "expect()" function gives you access to a set of "expectations" methods that you can use
-| to assert different things. Of course, you may extend the Expectation API at any time.
-|
-*/
-
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
-
-/*
-|--------------------------------------------------------------------------
 | Functions
 |--------------------------------------------------------------------------
 |
@@ -53,21 +37,9 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something() {
-    // ..
-}
-
 function loginAsUser(?User $user = null) {
     $user = $user ?? User::factory()->create();
     test()->actingAs($user);
 
     return $user;
 }
-
-// pest()->extend()->beforeAll( function () {
-//     Http::fake([
-//         'api.themoviedb.org/*' => Http::response([], 200),
-//     ]);
-// })->group('tmdb');
-
-// pest()->printer()->compact();

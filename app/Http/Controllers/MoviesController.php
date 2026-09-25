@@ -13,7 +13,6 @@ use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -244,20 +243,11 @@ class MoviesController extends Controller {
     public function show(Movie $movie) {
         $movie->media_types_display = $this->get_media_types_display($movie->media_types);
 
-        // $recommendations = $this->getMovieRecommendations( $movie->id );
-
-        // $owned_recommendations = Movie::whereIn( 'id', Arr::pluck($recommendations, 'id') )->get();
-
-        // $page_title = config('app.name') . ' - Movie: ' . $movie->title;
-
         $movie->load('collection', 'genres', 'cast_members', 'media_types');
 
         return Inertia::modal('Movies/MovieModal', [
             'movie' => $movie,
             'media_type_options' => $this->get_media_types(),
-            // 'recommendations' => $recommendations,
-            // 'owned_recommendations' => $owned_recommendations,
-            // 'page_title' => $page_title,
         ], route('movies.index'));
     }
 

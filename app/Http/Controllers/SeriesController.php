@@ -10,7 +10,6 @@ use App\Models\Series;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Inertia\Inertia;
 
 class SeriesController extends Controller {
@@ -203,10 +202,6 @@ class SeriesController extends Controller {
     public function show(Series $series) {
         $series->media_types_display = $this->get_media_types_display($series->media_types);
 
-        // $recs = $this->getSeriesRecommendations($series->id);
-
-        // $owned_recs = Series::whereIn( 'id', Arr::pluck( $recs, 'id' ) )->get();
-
         // Episode cast is deliberately left out: it was ~90% of this payload (2.7MB for
         // ER) and only one episode's is ever shown, so it's fetched on demand below.
         $series->load('genres', 'cast_members', 'seasons.episodes', 'seasons.cast_members');
@@ -230,26 +225,5 @@ class SeriesController extends Controller {
                 ];
             }),
         ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Series $series) {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Series $series) {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Series $series) {
-        //
     }
 }

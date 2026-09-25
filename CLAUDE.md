@@ -59,7 +59,7 @@ All slug-using models implement `HasSlug` via Spatie Sluggable; route model bind
 
 **Controllers** — `app/Http/Controllers/`:
 - `MoviesController` — full CRUD; `create()` calls TMDB to prefill form data
-- `SeriesController` — same pattern plus `showSeason()` / `showEpisode()` nested routes
+- `SeriesController` — same pattern; seasons/episodes are shown within `Series/Show.vue` (episode cast loads on demand via the optional `episode_cast` prop)
 - `HomeController`, `SearchController`, `CastMemberController`, `MovieCollectionController`
 
 **TMDB integration** is centralized in `app/Traits/InteractsWithTMDB.php`. Controllers and Jobs use this trait for all API calls (search, detail, cast, recommendations).
@@ -80,7 +80,7 @@ All slug-using models implement `HasSlug` via Spatie Sluggable; route model bind
 **Pages** live in `resources/js/Pages/`:
 - `Movies/Index.vue` / `Series/Index.vue` — infinite scroll lists with genre filtering and sorting, via the shared `Components/FilterDropdown.vue` (preferences persisted to cookies, namespaced separately per page — see `MoviesController@index` / `SeriesController@index`)
 - `Movies/MovieModal.vue` — detail view rendered as an Inertia modal
-- `Home.vue`, `Welcome.vue`, `Movies/Show.vue`, `Movies/Collections/Index.vue`
+- `Home.vue`, `Series/Show.vue`, `Movies/Collections/Index.vue`, `Movies/Collections/Show.vue`
 - Auth pages under `Pages/Auth/`
 
 **Modal system**: `BaseModal.vue` + `Modal.vue` — attached in the main layout. Movie detail routes open as modals without a full page reload. The `HandleInertiaRequests` middleware returns `null` for asset version on modal requests to prevent asset reloads.

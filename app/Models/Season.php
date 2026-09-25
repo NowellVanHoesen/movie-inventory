@@ -23,8 +23,6 @@ class Season extends Model {
         'poster_path',
     ];
 
-    protected $with = ['episodes', 'cast_members'];
-
     public $incrementing = false;
 
     public $timestamps = false;

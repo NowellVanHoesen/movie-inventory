@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\processSeries;
 use App\Models\Certification;
+use App\Models\Episode;
 use App\Models\Genre;
 use App\Models\Series;
 use App\Traits\InteractsWithTMDB;
@@ -206,13 +207,28 @@ class SeriesController extends Controller {
 
         // $owned_recs = Series::whereIn( 'id', Arr::pluck( $recs, 'id' ) )->get();
 
-        $series->load('genres', 'cast_members', 'seasons');
+        // Episode cast is deliberately left out: it was ~90% of this payload (2.7MB for
+        // ER) and only one episode's is ever shown, so it's fetched on demand below.
+        $series->load('genres', 'cast_members', 'seasons.episodes', 'seasons.cast_members');
 
         $page_title = config('app.name') . ' - Series: ' . $series->name;
 
         return inertia('Series/Show', [
             'series' => $series,
             'page_title' => $page_title,
+            // Only sent on the `only: ['episode_cast']` reload Series/Show.vue issues when
+            // an episode is selected. Scoped to this series' episodes, and echoes the id
+            // back so a slow response can't overwrite a newer selection's cast.
+            'episode_cast' => Inertia::optional(function () use ($series) {
+                $episode = Episode::whereKey(request()->integer('episode'))
+                    ->whereHas('season', fn ($query) => $query->where('series_id', $series->id))
+                    ->first();
+
+                return [
+                    'episode_id' => $episode?->id,
+                    'cast_members' => $episode?->cast_members ?? [],
+                ];
+            }),
         ]);
     }
 

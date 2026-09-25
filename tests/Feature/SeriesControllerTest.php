@@ -148,6 +148,57 @@ describe('SeriesController', function () {
         );
     });
 
+    it('leaves episode cast out of the initial series payload', function () {
+        $this->seed(SeriesSeeder::class);
+        $series = Series::where('slug', 'the-flight-attendant')->firstOrFail();
+
+        $this->get(route('series.show', $series))
+            ->assertOk()
+            ->assertInertia(
+                fn ($page) => $page
+                    ->missing('episode_cast')
+                    ->missing('series.seasons.0.episodes.0.cast_members')
+                    ->etc()
+            );
+    });
+
+    it('returns one episode\'s cast on the episode_cast partial reload', function () {
+        $this->seed(SeriesSeeder::class);
+        $series = Series::where('slug', 'the-flight-attendant')->firstOrFail();
+        $episode = $series->episodes()->has('cast_members')->firstOrFail();
+
+        $this->get(route('series.show', ['series' => $series, 'episode' => $episode->id]))
+            ->assertOk()
+            ->assertInertia(
+                fn ($page) => $page->reloadOnly(
+                    'episode_cast',
+                    fn ($reload) => $reload
+                        ->where('episode_cast.episode_id', $episode->id)
+                        ->has('episode_cast.cast_members', $episode->cast_members()->count())
+                        ->has('episode_cast.cast_members.0.pivot.character')
+                )
+            );
+    });
+
+    it('does not return cast for an episode that belongs to a different series', function () {
+        $this->seed(SeriesSeeder::class);
+        $series = Series::where('slug', 'the-flight-attendant')->firstOrFail();
+        $otherEpisode = Episode::whereHas('season', fn ($q) => $q->where('series_id', '!=', $series->id))
+            ->has('cast_members')
+            ->firstOrFail();
+
+        $this->get(route('series.show', ['series' => $series, 'episode' => $otherEpisode->id]))
+            ->assertOk()
+            ->assertInertia(
+                fn ($page) => $page->reloadOnly(
+                    'episode_cast',
+                    fn ($reload) => $reload
+                        ->where('episode_cast.episode_id', null)
+                        ->has('episode_cast.cast_members', 0)
+                )
+            );
+    });
+
     it('returns validation errors for missing required fields', function () {
         loginAsUser();
 

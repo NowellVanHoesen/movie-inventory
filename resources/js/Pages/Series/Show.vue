@@ -2,6 +2,7 @@
 import Layout from "@/Layouts/Layout.vue";
 import ItemPoster from "../Components/ItemPoster.vue";
 import CastMembers from "../Components/CastMembers.vue";
+import { router } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
 
 const props = defineProps({
@@ -12,6 +13,11 @@ const props = defineProps({
     page_title: {
         type: String,
         default: "Movie Inventory - Series Detail",
+    },
+    // Optional prop: only present after selectEpisode() requests it.
+    episode_cast: {
+        type: Object,
+        default: null,
     },
 });
 
@@ -39,12 +45,9 @@ const castList = computed(() => {
         }
     }
 
-    if (selectedEpisodeId.value && activeSeason) {
-        const activeEpisode = activeSeason.episodes.find((e) => e.id === selectedEpisodeId.value);
-        console.info(activeEpisode);
-        if (activeEpisode?.cast_members) {
-            initialCastList.push(...activeEpisode.cast_members);
-        }
+    // Ignore a response that belongs to a previously selected episode.
+    if (selectedEpisodeId.value && props.episode_cast?.episode_id === selectedEpisodeId.value) {
+        initialCastList.push(...props.episode_cast.cast_members);
     }
 
     const seenIds = new Set();
@@ -69,6 +72,14 @@ const selectSeason = (seasonId) => {
 
 const selectEpisode = (episodeId) => {
     selectedEpisodeId.value = episodeId;
+
+    // Episode cast isn't part of the initial payload (see SeriesController@show);
+    // preserveUrl keeps ?episode= out of the address bar.
+    router.reload({
+        only: ["episode_cast"],
+        data: { episode: episodeId },
+        preserveUrl: true,
+    });
 };
 
 const backToSeasonList = () => {
@@ -115,7 +126,7 @@ const backToEpisodeList = () => {
             <p v-if="!selectedSeasonId" class="col-span-2 rounded-xl bg-white/80 p-2 text-2xl font-bold">Seasons</p>
             <div class="col-span-2 flex flex-none flex-wrap gap-4">
                 <template v-for="season in series.seasons" :key="season.id">
-                    <button @click="selectSeason(season.id)" v-if="!selectedSeasonId" class="group relative rounded-lg max-w-[94px]">
+                    <button @click="selectSeason(season.id)" v-if="!selectedSeasonId" :dusk="`season-btn-${season.id}`" class="group relative rounded-lg max-w-[94px]">
                         <ItemPoster
                             :placeholder="season.poster_path === null"
                             :poster_path="season.poster_path"
@@ -165,6 +176,7 @@ const backToEpisodeList = () => {
 						<template v-for="episode in season.episodes" :key="`${season.id}-${episode.id}`">
 							<button
 								@click="selectEpisode(episode.id)"
+								:dusk="`episode-btn-${episode.id}`"
 								v-if="selectedSeasonId === season.id && !selectedEpisodeId"
 								class="mx-auto grid max-w-47 justify-items-center gap-2 overflow-hidden rounded-lg border bg-white/80"
 							>

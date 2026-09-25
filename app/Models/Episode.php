@@ -12,8 +12,6 @@ class Episode extends Model {
 
     protected $guarded = [];
 
-    protected $with = ['cast_members'];
-
     public $incrementing = false;
 
     public $timestamps = false;

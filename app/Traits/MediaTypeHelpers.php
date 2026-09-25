@@ -5,7 +5,7 @@ namespace App\Traits;
 use App\Models\MediaType;
 
 trait MediaTypeHelpers {
-    private function get_media_types() {
+    private function getMediaTypes() {
         $media_types = MediaType::orderBy('parent_id')->orderBy('name')->get();
 
         $media_types_arr = [];
@@ -21,7 +21,7 @@ trait MediaTypeHelpers {
         return $media_types_arr;
     }
 
-    private function get_media_types_display($media_types) {
+    private function getMediaTypesDisplay($media_types) {
         $media_types_display = [];
 
         if (empty($media_types)) {

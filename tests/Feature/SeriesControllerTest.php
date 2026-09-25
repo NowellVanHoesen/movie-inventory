@@ -165,7 +165,7 @@ describe('SeriesController', function () {
     it('returns one episode\'s cast on the episode_cast partial reload', function () {
         $this->seed(SeriesSeeder::class);
         $series = Series::where('slug', 'the-flight-attendant')->firstOrFail();
-        $episode = $series->episodes()->has('cast_members')->firstOrFail();
+        $episode = $series->episodes()->has('castMembers')->firstOrFail();
 
         $this->get(route('series.show', ['series' => $series, 'episode' => $episode->id]))
             ->assertOk()
@@ -174,7 +174,7 @@ describe('SeriesController', function () {
                     'episode_cast',
                     fn ($reload) => $reload
                         ->where('episode_cast.episode_id', $episode->id)
-                        ->has('episode_cast.cast_members', $episode->cast_members()->count())
+                        ->has('episode_cast.cast_members', $episode->castMembers()->count())
                         ->has('episode_cast.cast_members.0.pivot.character')
                 )
             );
@@ -184,7 +184,7 @@ describe('SeriesController', function () {
         $this->seed(SeriesSeeder::class);
         $series = Series::where('slug', 'the-flight-attendant')->firstOrFail();
         $otherEpisode = Episode::whereHas('season', fn ($q) => $q->where('series_id', '!=', $series->id))
-            ->has('cast_members')
+            ->has('castMembers')
             ->firstOrFail();
 
         $this->get(route('series.show', ['series' => $series, 'episode' => $otherEpisode->id]))

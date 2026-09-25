@@ -134,7 +134,7 @@ it('does not reset the movie list scroll position when opening or closing a moda
 it('toggles the modal into an inline edit form and cancel discards unsaved changes', function () {
     $this->browse(function (Browser $browser) {
         $user = User::factory()->create();
-        $movie = Movie::whereNotNull('purchase_date')->whereHas('media_types')->firstOrFail();
+        $movie = Movie::whereNotNull('purchase_date')->whereHas('mediaTypes')->firstOrFail();
 
         $browser
             ->loginAs($user)
@@ -162,9 +162,9 @@ it('toggles the modal into an inline edit form and cancel discards unsaved chang
 it('saves media type changes and returns to the read-only view', function () {
     $this->browse(function (Browser $browser) {
         $user = User::factory()->create();
-        $movie = Movie::whereNotNull('purchase_date')->whereHas('media_types')->firstOrFail();
+        $movie = Movie::whereNotNull('purchase_date')->whereHas('mediaTypes')->firstOrFail();
         $newMediaType = MediaType::where('parent_id', '!=', 0)
-            ->whereNotIn('id', $movie->media_types->pluck('id'))
+            ->whereNotIn('id', $movie->mediaTypes->pluck('id'))
             ->firstOrFail();
 
         $browser
@@ -187,8 +187,8 @@ it('saves media type changes and returns to the read-only view', function () {
 it('can uncheck every media type and save without error', function () {
     $this->browse(function (Browser $browser) {
         $user = User::factory()->create();
-        $movie = Movie::whereNotNull('purchase_date')->whereHas('media_types')->firstOrFail();
-        $mediaTypeIds = $movie->media_types->pluck('id')->all();
+        $movie = Movie::whereNotNull('purchase_date')->whereHas('mediaTypes')->firstOrFail();
+        $mediaTypeIds = $movie->mediaTypes->pluck('id')->all();
 
         $browser
             ->loginAs($user)

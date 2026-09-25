@@ -24,7 +24,7 @@ class MoviesController extends Controller {
      * Display a listing of all wishlist and purchased movies.
      */
     public function index() {
-        $query = Movie::with(['media_types']);
+        $query = Movie::with(['mediaTypes']);
 
         $genreNames = json_decode(request()->cookie('selectedGenres', '[]'), true) ?: [];
 
@@ -152,7 +152,7 @@ class MoviesController extends Controller {
 
             $results->genres = $genres;
 
-            $data['media_types'] = $this->get_media_types();
+            $data['media_types'] = $this->getMediaTypes();
 
             $data['movie'] = $results;
 
@@ -225,7 +225,7 @@ class MoviesController extends Controller {
         );
 
         if (! empty($attributes['media_type'])) {
-            $movie->media_types()->syncWithoutDetaching($attributes['media_type']);
+            $movie->mediaTypes()->syncWithoutDetaching($attributes['media_type']);
         }
 
         if (! is_null($movie_detail->belongs_to_collection)) {
@@ -241,13 +241,13 @@ class MoviesController extends Controller {
      * Display the specified resource.
      */
     public function show(Movie $movie) {
-        $movie->media_types_display = $this->get_media_types_display($movie->media_types);
+        $movie->media_types_display = $this->getMediaTypesDisplay($movie->mediaTypes);
 
-        $movie->load('collection', 'genres', 'cast_members', 'media_types');
+        $movie->load('collection', 'genres', 'castMembers', 'mediaTypes');
 
         return Inertia::modal('Movies/MovieModal', [
             'movie' => $movie,
-            'media_type_options' => $this->get_media_types(),
+            'media_type_options' => $this->getMediaTypes(),
         ], route('movies.index'));
     }
 
@@ -266,7 +266,7 @@ class MoviesController extends Controller {
             $movie->update(['purchase_date' => $attributes['purchase_date']]);
         }
 
-        $movie->media_types()->sync($attributes['media_type']);
+        $movie->mediaTypes()->sync($attributes['media_type']);
 
         return redirect()->route('movies.show', $movie);
     }

@@ -40,7 +40,7 @@ it('updates purchase date and media types for a movie', function () {
     $movie->refresh();
 
     expect($movie->purchase_date)->toBe('2020-06-15')
-        ->and($movie->media_types->pluck('id')->sort()->values()->all())
+        ->and($movie->mediaTypes->pluck('id')->sort()->values()->all())
         ->toBe(collect([$dvd->id, $blu_ray->id])->sort()->values()->all());
 });
 
@@ -48,7 +48,7 @@ it('clears purchase date back to wishlist and detaches all media types when medi
     loginAsUser();
 
     $movie = Movie::where('imdb_id', 'tt1194173')->first();
-    expect($movie->media_types)->not->toBeEmpty();
+    expect($movie->mediaTypes)->not->toBeEmpty();
 
     patch(route('movies.update', $movie), [
         'purchase_date' => null,
@@ -58,7 +58,7 @@ it('clears purchase date back to wishlist and detaches all media types when medi
     $movie->refresh();
 
     expect($movie->purchase_date)->toBeNull()
-        ->and($movie->media_types)->toBeEmpty();
+        ->and($movie->mediaTypes)->toBeEmpty();
 });
 
 it('fails validation gracefully instead of crashing when media_type is omitted entirely', function () {

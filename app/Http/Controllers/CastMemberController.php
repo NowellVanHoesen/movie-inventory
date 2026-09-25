@@ -17,7 +17,7 @@ class CastMemberController extends Controller {
 
         $wishlistedMemberMovies = $castMember->movies()->wishlist()->orderBy('release_date', 'desc')->get();
 
-        $memberSeries = $castMember->series()->with('cast_members')->get();
+        $memberSeries = $castMember->series()->with('castMembers')->get();
 
         $memberSeasons = $castMember->seasons()->with('series')->get();
 

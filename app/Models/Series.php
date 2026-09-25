@@ -33,11 +33,11 @@ class Series extends Model {
         return $this->belongsToMany(Genre::class);
     }
 
-    public function media_types() {
+    public function mediaTypes() {
         return $this->belongsToMany(MediaType::class);
     }
 
-    public function cast_members() {
+    public function castMembers() {
         return $this->belongsToMany(CastMember::class, table: 'cast_member_series', foreignPivotKey: 'series_id')->withPivot('character', 'order')->orderByPivot('order', 'asc');
     }
 

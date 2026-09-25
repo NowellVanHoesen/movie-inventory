@@ -75,7 +75,7 @@ class ProcessSeason implements ShouldBeUnique, ShouldQueue {
         // so on a retry or a re-added series these rows already exist and the pivot's
         // composite primary key turns a second attach() into an integrity violation.
         if (! empty($this->media_type)) {
-            $season_record->media_types()->syncWithoutDetaching($this->media_type);
+            $season_record->mediaTypes()->syncWithoutDetaching($this->media_type);
         }
 
         $episode_batch = [];

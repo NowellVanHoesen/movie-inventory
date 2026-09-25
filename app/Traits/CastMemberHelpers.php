@@ -40,7 +40,7 @@ trait CastMemberHelpers {
             return;
         }
 
-        $alreadyAttached = $model->cast_members()->pluck('cast_members.id')->all();
+        $alreadyAttached = $model->castMembers()->pluck('cast_members.id')->all();
 
         $incoming = $cast_members
             ->reject(fn ($cast_member) => in_array($cast_member->id, $alreadyAttached))
@@ -62,6 +62,6 @@ trait CastMemberHelpers {
             ];
         }
 
-        $model->cast_members()->attach($pivotData);
+        $model->castMembers()->attach($pivotData);
     }
 }

@@ -22,7 +22,7 @@ class SeriesResource extends JsonResource {
             'release_year' => $this->first_air_date ? date('Y', strtotime($this->first_air_date)) : 'TBD',
             'poster_path' => $this->poster_path,
             'genres' => GenreResource::collection($this->whenLoaded('genres')),
-            'cast_members' => CastMembersResource::collection($this->whenLoaded('cast_members')),
+            'cast_members' => CastMembersResource::collection($this->whenLoaded('castMembers')),
             'character' => $this->when($this->getRawOriginal('pivot_character'), $this->getRawOriginal('pivot_character')),
             'certification' => $this->certification->name,
         ];

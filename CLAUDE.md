@@ -83,7 +83,7 @@ All slug-using models implement `HasSlug` via Spatie Sluggable; route model bind
 - `Home.vue`, `Series/Show.vue`, `Movies/Collections/Index.vue`, `Movies/Collections/Show.vue`
 - Auth pages under `Pages/Auth/`
 
-**Modal system**: `BaseModal.vue` + `Modal.vue` — attached in the main layout. Movie detail routes open as modals without a full page reload. The `HandleInertiaRequests` middleware returns `null` for asset version on modal requests to prevent asset reloads.
+**Modal system**: `BaseModal.vue` + `Modal.vue` — attached in the main layout. Movie detail routes open as modals without a full page reload. The `HandleInertiaRequests` middleware returns `null` for asset version on modal requests to prevent asset reloads. Series detail is intentionally a full page, not a modal: its nested season/episode views and backdrop don't fit a modal, while the movie modal suits quick browsing from a poster grid. Don't "fix" this asymmetry.
 
 **Key components**: `MoviePoster.vue`, `SeriesPoster.vue`, `CastMembers.vue`, `FilterDropdown.vue`, `ItemPoster.vue`
 
@@ -103,3 +103,5 @@ Browser/Dusk tests (`tests/Browser/`) use `DatabaseTruncation` against a **separ
 - Pivot tables for cast store `character` (string) and `order` (int) alongside the FK pair
 - Sortable/searchable fields have `_normalized` and `_sortable` column variants on the main tables
 - Queue connection is `database`; always run `php artisan queue:listen` during local dev (included in `composer run dev`)
+- Naming: PHP classes StudlyCase (including jobs, e.g. `ProcessSeries`); methods, relations and new local variables camelCase (`castMembers()`, `getMediaTypes()`). Older snake_case locals (`$series_detail`) are converted opportunistically when a file is touched, not mass-renamed. Props passed to Inertia and JSON keys stay snake_case (`page_title`, `cast_members`) — Laravel serializes camelCase relations to snake_case keys, so the Vue side never changes when a relation is renamed.
+- Renaming a job class breaks any queued/failed payloads that reference the old name; deploy such changes with an empty queue.

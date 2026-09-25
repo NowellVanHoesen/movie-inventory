@@ -114,7 +114,7 @@ class SeriesController extends Controller {
 
             $series_detail->genres = $genres;
 
-            $data['media_types'] = $this->get_media_types();
+            $data['media_types'] = $this->getMediaTypes();
 
             $data['series_detail'] = $series_detail;
 
@@ -184,7 +184,7 @@ class SeriesController extends Controller {
         );
 
         if (! empty($attributes['media_type'])) {
-            $series->media_types()->syncWithoutDetaching($attributes['media_type']);
+            $series->mediaTypes()->syncWithoutDetaching($attributes['media_type']);
         }
 
         ProcessSeries::dispatch([
@@ -200,11 +200,11 @@ class SeriesController extends Controller {
      * Display the specified resource.
      */
     public function show(Series $series) {
-        $series->media_types_display = $this->get_media_types_display($series->media_types);
+        $series->media_types_display = $this->getMediaTypesDisplay($series->mediaTypes);
 
         // Episode cast is deliberately left out: it was ~90% of this payload (2.7MB for
         // ER) and only one episode's is ever shown, so it's fetched on demand below.
-        $series->load('genres', 'cast_members', 'seasons.episodes', 'seasons.cast_members');
+        $series->load('genres', 'castMembers', 'seasons.episodes', 'seasons.castMembers');
 
         $page_title = config('app.name') . ' - Series: ' . $series->name;
 
@@ -221,7 +221,7 @@ class SeriesController extends Controller {
 
                 return [
                     'episode_id' => $episode?->id,
-                    'cast_members' => $episode?->cast_members ?? [],
+                    'cast_members' => $episode?->castMembers ?? [],
                 ];
             }),
         ]);

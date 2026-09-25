@@ -118,8 +118,9 @@ class MoviesController extends Controller {
                 'year' => ['sometimes', 'max:4'],
             ]);
 
+            // Escape LIKE wildcards, as SearchController does, so "100%" isn't match-all.
             $localResults = Movie::with('certification')
-                ->where('title_normalized', 'like', '%' . $attributes['query'] . '%')
+                ->where('title_normalized', 'like', '%' . addcslashes($attributes['query'], '%_\\') . '%')
                 ->get();
 
             $data['local_results'] = $localResults->toResourceCollection();
@@ -203,8 +204,6 @@ class MoviesController extends Controller {
             }
         }
 
-        $certification = Certification::select('id')->where('name', '=', $certification_name)->first();
-
         $movie = Movie::create([
             'id' => $movie_detail->id,
             'imdb_id' => $movie_detail->imdb_id ?: null,
@@ -216,7 +215,7 @@ class MoviesController extends Controller {
             'purchase_date' => $attributes['purchase_date'] ?? null,
             'poster_path' => $movie_detail->poster_path ?: null,
             'backdrop_path' => $movie_detail->backdrop_path ?: null,
-            'certification_id' => $certification->id,
+            'certification_id' => Certification::idFor($certification_name),
             'runtime' => $movie_detail->runtime,
         ]);
 
@@ -277,23 +276,7 @@ class MoviesController extends Controller {
             $movie->update(['purchase_date' => $attributes['purchase_date']]);
         }
 
-        // attach media types that were added
-        if (! empty($attributes['media_type'])) {
-            foreach ($attributes['media_type'] as $media_type_id) {
-                if (! $movie->media_types->contains($media_type_id)) {
-                    $movie->media_types()->attach($media_type_id);
-                }
-            }
-        }
-
-        $media_types_flipped = array_flip($attributes['media_type']);
-
-        // detach media types that were removed
-        foreach ($movie->media_types as $assigned_type) {
-            if (! array_key_exists($assigned_type->id, $media_types_flipped)) {
-                $movie->media_types()->detach($assigned_type->id);
-            }
-        }
+        $movie->media_types()->sync($attributes['media_type']);
 
         return redirect()->route('movies.show', $movie);
     }

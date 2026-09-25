@@ -88,7 +88,8 @@ class SeriesController extends Controller {
                 'query' => ['min:2'],
             ]);
 
-            $data['local_results'] = Series::where('name_normalized', 'like', '%' . $attributes['query'] . '%')->get();
+            // Escape LIKE wildcards, as SearchController does, so "100%" isn't match-all.
+            $data['local_results'] = Series::where('name_normalized', 'like', '%' . addcslashes($attributes['query'], '%_\\') . '%')->get();
 
             $data['search_results'] = $this->searchSeries($attributes['query']);
 
@@ -157,9 +158,9 @@ class SeriesController extends Controller {
             }
 
             $certification_name = $rDate->rating;
-        }
 
-        $certification_id = Certification::select('id')->where('name', '=', $certification_name)->first();
+            break;
+        }
 
         $series = Series::create([
             'id' => $series_detail->id,
@@ -171,7 +172,7 @@ class SeriesController extends Controller {
             'homepage' => $series_detail->homepage,
             'poster_path' => $series_detail->poster_path ?: null,
             'backdrop_path' => $series_detail->backdrop_path ?: null,
-            'certification_id' => $certification_id->id,
+            'certification_id' => Certification::idFor($certification_name),
             'first_air_date' => $series_detail->first_air_date,
             'purchase_date' => $attributes['purchase_date'],
         ]);

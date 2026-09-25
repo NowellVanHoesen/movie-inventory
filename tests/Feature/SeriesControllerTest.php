@@ -1,11 +1,13 @@
 <?php
 
 use App\Jobs\processSeries;
+use App\Models\Certification;
 use App\Models\Episode;
 use App\Models\Season;
 use App\Models\Series;
 use Database\Seeders\SeriesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 
 uses(RefreshDatabase::class);
@@ -179,6 +181,54 @@ describe('SeriesController', function () {
 
         $response->assertRedirect(route('login'));
         $this->assertDatabaseMissing('series', ['id' => 60858]);
+    });
+
+    it('uses the first US content rating, falling back to NR when it is not one we seed', function (array $ratings, string $expected) {
+        loginAsUser();
+        Queue::fake();
+        Http::preventStrayRequests();
+        Http::fake([
+            'api.themoviedb.org/3/tv/900002*' => Http::response([
+                'id' => 900002,
+                'external_ids' => ['imdb_id' => null],
+                'name' => 'Rated Show',
+                'original_name' => 'Rated Show',
+                'tagline' => '',
+                'overview' => '',
+                'homepage' => '',
+                'poster_path' => null,
+                'backdrop_path' => null,
+                'first_air_date' => '2020-01-01',
+                'genres' => [],
+                'content_ratings' => ['results' => $ratings],
+            ]),
+        ]);
+
+        $this->post(route('series.store'), [
+            'series_id' => 900002,
+            'purchase_date' => '2025-02-04',
+            'media_type' => [],
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('series', [
+            'id' => 900002,
+            'certification_id' => Certification::where('name', $expected)->value('id'),
+        ]);
+    })->with([
+        'unseeded rating' => [[['iso_3166_1' => 'US', 'rating' => 'TV-Y7-FV']], 'NR'],
+        'first US rating wins' => [[['iso_3166_1' => 'US', 'rating' => 'TV-14'], ['iso_3166_1' => 'US', 'rating' => 'TV-MA']], 'TV-14'],
+        'no US rating' => [[['iso_3166_1' => 'GB', 'rating' => '15']], 'NR'],
+    ]);
+
+    it('treats LIKE wildcards in the create search as literal characters', function () {
+        loginAsUser();
+        $this->seed(SeriesSeeder::class);
+        Http::preventStrayRequests();
+        Http::fake(['api.themoviedb.org/*' => Http::response(['results' => []])]);
+
+        $this->get(route('series.create', ['query' => '%%']))
+            ->assertOk()
+            ->assertInertia(fn ($page) => $page->has('local_results', 0)->etc());
     });
 
     // Add more edge case tests as needed

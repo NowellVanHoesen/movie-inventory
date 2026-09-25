@@ -7,62 +7,27 @@ use App\Models\Certification;
 use App\Models\Episode;
 use App\Models\Genre;
 use App\Models\Series;
+use App\Traits\AppliesIndexPreferences;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SeriesController extends Controller {
-    use InteractsWithTMDB, MediaTypeHelpers;
+    use AppliesIndexPreferences, InteractsWithTMDB, MediaTypeHelpers;
 
     /**
      * Display a listing of the resource.
      */
     public function index() {
-        $query = Series::query();
-
-        $genreNames = json_decode(request()->cookie('seriesSelectedGenres', '[]'), true) ?: [];
-
-        // These cookies sit in bootstrap/app.php's encryptCookies except-list so the
-        // filter component can write them from JS, which also makes them fully
-        // client-writable. Treat them as untrusted: a JSON scalar such as "nope"
-        // survives the ?: above and then throws inside whereIn, so require an actual
-        // array, keep only string genre names, and cap how many we'll match on.
-        $genreNames = is_array($genreNames)
-            ? array_slice(array_values(array_filter($genreNames, 'is_string')), 0, 50)
-            : [];
-
-        if (! empty($genreNames)) {
-            $query->whereHas('genres', function ($genreQuery) use ($genreNames) {
-                $genreQuery->whereIn('name', $genreNames);
-            });
-        }
-
-        $sortCol = request()->cookie('seriesSortCol', 'name_sortable');
-
-        // Same reasoning: an unrecognized column would reach orderBy() and throw an
-        // unhandled "Column not found" 500 that the user can't clear from the UI,
-        // since the page they'd fix it on is the page that's failing.
-        if (! in_array($sortCol, ['name_sortable', 'first_air_date', 'purchase_date'], true)) {
-            $sortCol = 'name_sortable';
-        }
-
-        $sortDir = request()->cookie('seriesSortDir', 'asc');
-        $secondarySort = 'name_sortable';
-
-        if ($sortCol === 'name_sortable') {
-            $secondarySort = 'first_air_date';
-        }
-
-        if ($sortDir === 'desc') {
-            $query->orderByDesc($sortCol)->orderBy($secondarySort);
-        } else {
-            if ($sortCol === 'purchase_date') {
-                $query->orderByRaw('purchase_date is null');
-            }
-
-            $query->orderBy($sortCol)->orderBy($secondarySort);
-        }
+        $query = $this->applyIndexPreferences(
+            Series::query(),
+            ['genres' => 'seriesSelectedGenres', 'sortCol' => 'seriesSortCol', 'sortDir' => 'seriesSortDir'],
+            titleCol: 'name_sortable',
+            dateCol: 'first_air_date',
+            defaultSortCol: 'name_sortable',
+            defaultSortDir: 'asc',
+        );
 
         $series = $query->paginate(24);
 

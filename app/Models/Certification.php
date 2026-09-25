@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Certification extends Model {
+    public $timestamps = false;
+
     /**
      * The id of the named certification, falling back to NR for anything not in the
      * table. TMDB returns ratings we don't seed (e.g. "TV-Y7-FV", "Unrated", foreign

@@ -7,6 +7,7 @@ use App\Jobs\ProcessMovieCollection;
 use App\Models\Certification;
 use App\Models\Genre;
 use App\Models\Movie;
+use App\Traits\AppliesIndexPreferences;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
 use Carbon\Carbon;
@@ -18,7 +19,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 
 class MoviesController extends Controller {
-    use InteractsWithTMDB, MediaTypeHelpers;
+    use AppliesIndexPreferences, InteractsWithTMDB, MediaTypeHelpers;
 
     /**
      * Display a listing of all wishlist and purchased movies.
@@ -26,28 +27,8 @@ class MoviesController extends Controller {
     public function index() {
         $query = Movie::with(['mediaTypes']);
 
-        $genreNames = json_decode(request()->cookie('selectedGenres', '[]'), true) ?: [];
-
-        // These cookies sit in bootstrap/app.php's encryptCookies except-list so the
-        // filter component can write them from JS, which also makes them fully
-        // client-writable. Treat them as untrusted: a JSON scalar such as "nope"
-        // survives the ?: above and then throws inside whereIn, so require an actual
-        // array, keep only string genre names, and cap how many we'll match on.
-        $genreNames = is_array($genreNames)
-            ? array_slice(array_values(array_filter($genreNames, 'is_string')), 0, 50)
-            : [];
-
-        if (! empty($genreNames)) {
-            $query->whereHas('genres', function ($genreQuery) use ($genreNames) {
-                $genreQuery->whereIn('name', $genreNames);
-            });
-        }
-
         $pageTitleSuffix = 'Movie List';
-
         $defaultSortCol = 'release_date';
-        $sortDir = request()->cookie('sortDir', 'desc');
-        $secondarySort = 'title_sortable';
 
         if (Route::is('movies.purchased')) {
             $query->purchased();
@@ -58,28 +39,14 @@ class MoviesController extends Controller {
             $pageTitleSuffix = 'Movie Wishlist';
         }
 
-        $sortCol = request()->cookie('sortCol', $defaultSortCol);
-
-        // Same reasoning: an unrecognized column would reach orderBy() and throw an
-        // unhandled "Column not found" 500 that the user can't clear from the UI,
-        // since the page they'd fix it on is the page that's failing.
-        if (! in_array($sortCol, ['title_sortable', 'release_date', 'purchase_date'], true)) {
-            $sortCol = $defaultSortCol;
-        }
-
-        if ($sortCol === 'title_sortable') {
-            $secondarySort = 'release_date';
-        }
-
-        if ($sortDir === 'desc') {
-            $query->orderByDesc($sortCol)->orderBy($secondarySort);
-        } else {
-            if ($sortCol === 'purchase_date') {
-                $query->orderByRaw('purchase_date is null');
-            }
-
-            $query->orderBy($sortCol)->orderBy($secondarySort);
-        }
+        $this->applyIndexPreferences(
+            $query,
+            ['genres' => 'selectedGenres', 'sortCol' => 'sortCol', 'sortDir' => 'sortDir'],
+            titleCol: 'title_sortable',
+            dateCol: 'release_date',
+            defaultSortCol: $defaultSortCol,
+            defaultSortDir: 'desc',
+        );
 
         $movies = $query->paginate(24);
 

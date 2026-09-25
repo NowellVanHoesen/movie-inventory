@@ -11,7 +11,10 @@ jobs:
         steps:
             - name: ssh into server to run deploy script
               uses: appleboy/ssh-action@master
+              env:
+                  RELEASE_TAG: ${{ github.event.release.tag_name }}
               with:
+                envs: RELEASE_TAG
                 host: ${{ secrets.SG_DEPLOY_HOST }}
                 username: ${{ secrets.SG_DEPLOY_USER }}
                 key: ${{ secrets.SG_DEPLOY_RSA_PRIVATE }}
@@ -19,4 +22,4 @@ jobs:
                 port: ${{ secrets.SG_DEPLOY_PORT}}
                 script: |
                     cd ~/www/movies.nvweb.dev
-                    ./.github/workflows/deploy.sh
+                    ./.github/workflows/deploy.sh "$RELEASE_TAG"

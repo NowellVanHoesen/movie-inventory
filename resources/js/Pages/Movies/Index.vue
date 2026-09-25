@@ -1,8 +1,8 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
-import MoviePoster from "../Components/MoviePoster.vue";
-import FilterDropdown from "../Components/FilterDropdown.vue";
-import BackToTop from "../Components/BackToTop.vue";
+import MoviePoster from "@/Components/MoviePoster.vue";
+import FilterDropdown from "@/Components/FilterDropdown.vue";
+import BackToTop from "@/Components/BackToTop.vue";
 import MovieModal from "./MovieModal.vue";
 import { InfiniteScroll, router, usePage } from "@inertiajs/vue3";
 import { computed } from "vue";

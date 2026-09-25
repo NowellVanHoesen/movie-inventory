@@ -1,6 +1,6 @@
 <script setup>
 import { useForm, usePage } from "@inertiajs/vue3";
-import FormButton from "../../Components/FormButton.vue";
+import FormButton from "@/Components/FormButton.vue";
 
 defineProps({
     status: {

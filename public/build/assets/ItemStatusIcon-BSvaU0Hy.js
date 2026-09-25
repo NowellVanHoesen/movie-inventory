@@ -1,0 +1,1 @@
+import{e as a,n as t,o as s}from"./app-B0GCIYmn.js";const l={__name:"ItemStatusIcon",props:{purchased:{type:Boolean,default:!1}},setup(e){return(c,r)=>(s(),a("i",{class:t("fa-solid fa-lg absolute top-4 right-2 text-shadow-lg/30 "+(e.purchased?"fa-circle-check text-green-check":"fa-heart text-red-heart"))},null,2))}};export{l as _};

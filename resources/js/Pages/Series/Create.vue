@@ -1,10 +1,10 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
 import { Link, router, useForm } from "@inertiajs/vue3";
-import ItemPoster from "../Components/ItemPoster.vue";
-import ItemOverlayDetail from "../Components/ItemOverlayDetail.vue";
-import ItemStatusIcon from "../Components/ItemStatusIcon.vue";
-import FormButton from "../Components/FormButton.vue";
+import ItemPoster from "@/Components/ItemPoster.vue";
+import ItemOverlayDetail from "@/Components/ItemOverlayDetail.vue";
+import ItemStatusIcon from "@/Components/ItemStatusIcon.vue";
+import FormButton from "@/Components/FormButton.vue";
 import { computed } from "vue";
 
 const props = defineProps({

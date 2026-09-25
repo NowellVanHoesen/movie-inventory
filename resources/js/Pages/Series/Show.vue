@@ -1,7 +1,7 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
-import ItemPoster from "../Components/ItemPoster.vue";
-import CastMembers from "../Components/CastMembers.vue";
+import ItemPoster from "@/Components/ItemPoster.vue";
+import CastMembers from "@/Components/CastMembers.vue";
 import { router } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
 

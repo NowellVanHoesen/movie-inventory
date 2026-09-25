@@ -1,8 +1,8 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
-import ItemPoster from "../../Components/ItemPoster.vue";
-import MoviePoster from "../../Components/MoviePoster.vue";
-import MoviePosterPlaceholder from "../../Components/MoviePosterPlaceholder.vue";
+import ItemPoster from "@/Components/ItemPoster.vue";
+import MoviePoster from "@/Components/MoviePoster.vue";
+import MoviePosterPlaceholder from "@/Components/MoviePosterPlaceholder.vue";
 
 const props = defineProps({
     page_title: {

@@ -1,8 +1,8 @@
 <script setup>
-import Modal from "../Components/Modal.vue";
+import Modal from "@/Components/Modal.vue";
 import { Link, useForm } from "@inertiajs/vue3";
-import CastMembers from "../Components/CastMembers.vue";
-import FormButton from "../Components/FormButton.vue";
+import CastMembers from "@/Components/CastMembers.vue";
+import FormButton from "@/Components/FormButton.vue";
 import { modalBaseUrl } from "@/useModal.js";
 import { computed, ref } from "vue";
 

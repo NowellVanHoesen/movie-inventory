@@ -1,0 +1,1 @@
+import{c as a,o as r,w as s,C as o,G as t,g as l,s as n}from"./app-B0GCIYmn.js";const d={__name:"PosterLink",setup(u){return(e,c)=>(r(),a(l(n),t(e.$attrs,{class:"group relative mb-auto block max-w-fit rounded-xl overflow-hidden"}),{default:s(()=>[o(e.$slots,"default")]),_:3},16))}};export{d as _};

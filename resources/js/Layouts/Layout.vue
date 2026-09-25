@@ -1,7 +1,7 @@
 <script setup>
-import Footer from "../Pages/Components/Footer.vue";
-import Header from "../Pages/Components/Header.vue";
-import BaseModal from "../Pages/Components/BaseModal.vue";
+import Footer from "@/Components/Footer.vue";
+import Header from "@/Components/Header.vue";
+import BaseModal from "@/Components/BaseModal.vue";
 import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 

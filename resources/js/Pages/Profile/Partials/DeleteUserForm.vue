@@ -1,7 +1,7 @@
 <script setup>
 import { ref, nextTick } from "vue";
 import { useForm } from "@inertiajs/vue3";
-import Modal from "../../Components/Modal.vue";
+import Modal from "@/Components/Modal.vue";
 
 const confirmingUserDeletion = ref(false);
 const passwordInput = ref(null);

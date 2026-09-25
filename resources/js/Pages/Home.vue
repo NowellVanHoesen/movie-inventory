@@ -1,7 +1,7 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
-import MoviePoster from "./Components/MoviePoster.vue";
-import SeriesPoster from "./Components/SeriesPoster.vue";
+import MoviePoster from "@/Components/MoviePoster.vue";
+import SeriesPoster from "@/Components/SeriesPoster.vue";
 import { ref } from "vue";
 
 defineProps({

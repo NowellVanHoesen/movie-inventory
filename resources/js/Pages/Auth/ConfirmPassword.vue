@@ -1,6 +1,6 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
-import FormButton from "../Components/FormButton.vue";
+import FormButton from "@/Components/FormButton.vue";
 import { useForm } from "@inertiajs/vue3";
 
 const form = useForm({

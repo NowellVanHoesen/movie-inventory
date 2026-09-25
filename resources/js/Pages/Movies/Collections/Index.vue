@@ -1,7 +1,7 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
-import MovieCollectionPoster from "../../Components/MovieCollectionPoster.vue";
-import BackToTop from "../../Components/BackToTop.vue";
+import MovieCollectionPoster from "@/Components/MovieCollectionPoster.vue";
+import BackToTop from "@/Components/BackToTop.vue";
 import { InfiniteScroll } from "@inertiajs/vue3";
 
 defineProps({

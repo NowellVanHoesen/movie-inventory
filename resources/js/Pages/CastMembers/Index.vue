@@ -1,8 +1,8 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
-import MoviePoster from "../Components/MoviePoster.vue";
-import SeriesPoster from "../Components/SeriesPoster.vue";
-import CastMembers from "../Components/CastMembers.vue";
+import MoviePoster from "@/Components/MoviePoster.vue";
+import SeriesPoster from "@/Components/SeriesPoster.vue";
+import CastMembers from "@/Components/CastMembers.vue";
 import { computed } from "vue";
 
 const props = defineProps({

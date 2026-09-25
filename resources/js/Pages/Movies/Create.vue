@@ -1,9 +1,9 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
-import ItemPoster from "../Components/ItemPoster.vue";
-import ItemOverlayDetail from "../Components/ItemOverlayDetail.vue";
-import ItemStatusIcon from "../Components/ItemStatusIcon.vue";
-import FormButton from "../Components/FormButton.vue";
+import ItemPoster from "@/Components/ItemPoster.vue";
+import ItemOverlayDetail from "@/Components/ItemOverlayDetail.vue";
+import ItemStatusIcon from "@/Components/ItemStatusIcon.vue";
+import FormButton from "@/Components/FormButton.vue";
 import { router, useForm } from "@inertiajs/vue3";
 import { open } from "@/useModal.js";
 import { computed } from "vue";

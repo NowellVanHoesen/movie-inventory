@@ -1,8 +1,8 @@
 <script setup>
 import Layout from "@/Layouts/Layout.vue";
-import SeriesPoster from '../Components/SeriesPoster.vue';
-import FilterDropdown from '../Components/FilterDropdown.vue';
-import BackToTop from '../Components/BackToTop.vue';
+import SeriesPoster from '@/Components/SeriesPoster.vue';
+import FilterDropdown from '@/Components/FilterDropdown.vue';
+import BackToTop from '@/Components/BackToTop.vue';
 import { InfiniteScroll, router, usePage } from '@inertiajs/vue3';
 
 const props = defineProps({

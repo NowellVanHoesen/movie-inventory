@@ -24,7 +24,7 @@ const castToShow = computed(() => {
         return [];
     }
 
-    let cast_members = props.cast.filter((cast_member) => !cast_member.pivot.character.toLowerCase().includes("uncredited"));
+    let cast_members = props.cast.filter((cast_member) => !(cast_member.pivot?.character ?? "").toLowerCase().includes("uncredited"));
 
     if (cast_members.length <= props.display_limit) {
         return cast_members;
@@ -51,7 +51,7 @@ const castToShow = computed(() => {
                 <Link :href="route('castMember', cast_member)" class="text-indigo-600">{{ cast_member.name }}</Link>
                 <span
                     class="flex flex-1 text-right before:mx-1 before:mb-[0.3rem] before:flex-1 before:border-b-2 before:border-dotted before:border-b-gray-500 before:content-['']"
-                    >{{ cast_member.pivot.character }}</span
+                    >{{ cast_member.pivot?.character }}</span
                 >
             </li>
         </ul>

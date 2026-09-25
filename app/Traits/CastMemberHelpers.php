@@ -56,7 +56,8 @@ trait CastMemberHelpers {
             $member = $this->getCastMember($cast_member);
 
             $pivotData[$member->id] = [
-                'character' => $cast_member->character,
+                // The pivot column is NOT NULL; TMDB occasionally omits or nulls it.
+                'character' => $cast_member->character ?? '',
                 'order' => $cast_member->order,
             ];
         }

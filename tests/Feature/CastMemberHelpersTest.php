@@ -93,3 +93,18 @@ it('does nothing for an empty payload', function () {
 
     expect($movie->cast_members()->count())->toBe($before);
 });
+
+it('stores an empty character when TMDB sends null or omits it, instead of failing the insert', function () {
+    $movie = Movie::firstOrFail();
+
+    $nullCharacter = tmdbCredit(9000010, 'placeholder', 0);
+    $nullCharacter->character = null;
+
+    $missingCharacter = tmdbCredit(9000011, 'placeholder', 1);
+    unset($missingCharacter->character);
+
+    $this->host->attach($movie, [$nullCharacter, $missingCharacter]);
+
+    expect($movie->cast_members()->whereIn('cast_members.id', [9000010, 9000011])->pluck('character')->all())
+        ->toBe(['', '']);
+});

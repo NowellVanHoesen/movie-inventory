@@ -1,5 +1,5 @@
 <script setup>
-import Layout from '../../layouts/Layout.vue';
+import Layout from "@/Layouts/Layout.vue";
 import SeriesPoster from '../Components/SeriesPoster.vue';
 import FilterDropdown from '../Components/FilterDropdown.vue';
 import BackToTop from '../Components/BackToTop.vue';

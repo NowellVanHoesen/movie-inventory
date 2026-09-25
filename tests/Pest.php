@@ -1,9 +1,5 @@
 <?php
 
-pest()->extend(DuskTestCase::class)
-    ->use(DatabaseTruncation::class)
-    ->in('Browser');
-
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -26,6 +22,10 @@ pest()
     ->extend(TestCase::class)
     ->use(RefreshDatabase::class)
     ->in('Feature');
+
+pest()->extend(DuskTestCase::class)
+    ->use(DatabaseTruncation::class)
+    ->in('Browser');
 
 /*
 |--------------------------------------------------------------------------

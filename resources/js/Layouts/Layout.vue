@@ -2,12 +2,15 @@
 import Footer from "../Pages/Components/Footer.vue";
 import Header from "../Pages/Components/Header.vue";
 import BaseModal from "../Pages/Components/BaseModal.vue";
+import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
+
+const page = usePage();
 
 const props = defineProps({
     heading: {
         type: String,
-        default: "",
+        default: null,
     },
     backdrop: {
         type: String,
@@ -26,7 +29,7 @@ const bgStyle = computed(() => {
 });
 
 const heading = computed(() => {
-    return props.heading ?? page.props.appName;
+    return props.heading || page.props.appName;
 });
 </script>
 

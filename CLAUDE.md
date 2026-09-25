@@ -75,7 +75,7 @@ All slug-using models implement `HasSlug` via Spatie Sluggable; route model bind
 
 ### Frontend (Vue 3 + Inertia)
 
-**Layout**: `resources/js/layouts/Layout.vue` wraps all pages with Navigation and Footer.
+**Layout**: `resources/js/Layouts/Layout.vue` wraps all pages with Navigation and Footer.
 
 **Pages** live in `resources/js/Pages/`:
 - `Movies/Index.vue` / `Series/Index.vue` — infinite scroll lists with genre filtering and sorting, via the shared `Components/FilterDropdown.vue` (preferences persisted to cookies, namespaced separately per page — see `MoviesController@index` / `SeriesController@index`)

@@ -1,5 +1,5 @@
 <script setup>
-import Layout from "../../layouts/Layout.vue";
+import Layout from "@/Layouts/Layout.vue";
 import ItemPoster from "../Components/ItemPoster.vue";
 import CastMembers from "../Components/CastMembers.vue";
 import { computed, ref } from "vue";

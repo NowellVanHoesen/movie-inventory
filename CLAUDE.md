@@ -65,8 +65,8 @@ All slug-using models implement `HasSlug` via Spatie Sluggable; route model bind
 **TMDB integration** is centralized in `app/Traits/InteractsWithTMDB.php`. Controllers and Jobs use this trait for all API calls (search, detail, cast, recommendations).
 
 **Job Queue** (`app/Jobs/`) handles async TMDB data ingestion after a movie or series is saved:
-- `processSeries` → orchestrates a chain/batch: `processSeason` → `processEpisode` per season
-- Separate jobs for attaching cast: `processMovieCastMembers`, `processSeriesCastMembers`, `processSeasonCastMembers`, `processEpisodeCastMembers`, `processMovieCollection`
+- `ProcessSeries` → orchestrates a chain/batch: `ProcessSeason` → `ProcessEpisode` per season
+- Separate jobs for attaching cast: `ProcessMovieCastMembers`, `ProcessSeriesCastMembers`, `ProcessSeasonCastMembers`, `ProcessEpisodeCastMembers`, `ProcessMovieCollection`
 
 **Shared data** is injected via `app/Http/Middleware/HandleInertiaRequests.php`:
 - `auth.user`, `appName`, `placeholderPoster`, `placeholderStill`

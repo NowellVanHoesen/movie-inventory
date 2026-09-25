@@ -1,6 +1,6 @@
 <?php
 
-use App\Jobs\processSeries;
+use App\Jobs\ProcessSeries;
 use App\Models\Certification;
 use App\Models\Episode;
 use App\Models\Season;
@@ -100,7 +100,7 @@ describe('SeriesController', function () {
         $response = $this->post(route('series.store'), $payload);
         $response->assertRedirect();
         $this->assertDatabaseHas('series', ['id' => 60858]);
-        Queue::assertPushed(processSeries::class);
+        Queue::assertPushed(ProcessSeries::class);
     });
 
     it('shows a series detail page', function () {
@@ -209,7 +209,7 @@ describe('SeriesController', function () {
     // Series have no wishlist (unlike movies, which have purchased()/wishlist()
     // scopes and dedicated routes), so a series is always owned and must carry a
     // purchase date. This used to be a `nullable` rule, and the resulting null
-    // reached processSeries' typed property and 500'd with a TypeError.
+    // reached ProcessSeries' typed property and 500'd with a TypeError.
     it('rejects a series with no purchase date, since series have no wishlist', function () {
         loginAsUser();
 

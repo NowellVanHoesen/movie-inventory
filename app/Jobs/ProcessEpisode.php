@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
-class processEpisode implements ShouldBeUnique, ShouldQueue {
+class ProcessEpisode implements ShouldBeUnique, ShouldQueue {
     use Batchable, InteractsWithTMDB, Queueable;
 
     /**
@@ -66,7 +66,7 @@ class processEpisode implements ShouldBeUnique, ShouldQueue {
             ]
         );
 
-        processEpisodeCastMembers::dispatch([
+        ProcessEpisodeCastMembers::dispatch([
             'series_id' => $this->series_id,
             'season_number' => $this->season_number,
             'episode_id' => $episode_detail->id,
@@ -75,6 +75,6 @@ class processEpisode implements ShouldBeUnique, ShouldQueue {
     }
 
     public function uniqueId() {
-        return "{$this->series_id}-{$this->season_id}-{$this->episode_number}-detail";
+        return "episode-{$this->series_id}-{$this->season_id}-{$this->episode_number}-detail";
     }
 }

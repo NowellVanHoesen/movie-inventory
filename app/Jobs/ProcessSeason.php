@@ -10,7 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Bus;
 
-class processSeason implements ShouldBeUnique, ShouldQueue {
+class ProcessSeason implements ShouldBeUnique, ShouldQueue {
     use Batchable, InteractsWithTMDB, Queueable;
 
     /**
@@ -81,7 +81,7 @@ class processSeason implements ShouldBeUnique, ShouldQueue {
         $episode_batch = [];
 
         foreach ($season_detail->episodes as $episode) {
-            $episode_batch[] = new processEpisode([
+            $episode_batch[] = new ProcessEpisode([
                 'series_id' => $this->series_id,
                 'season_id' => $season_detail->id,
                 'season_number' => $this->season_number,
@@ -91,7 +91,7 @@ class processSeason implements ShouldBeUnique, ShouldQueue {
 
         // set up job chain and episode batch
         Bus::chain([
-            new processSeasonCastMembers([
+            new ProcessSeasonCastMembers([
                 'series_id' => $this->series_id,
                 'season_number' => $this->season_number,
             ]),

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\processMovieCastMembers;
-use App\Jobs\processMovieCollection;
+use App\Jobs\ProcessMovieCastMembers;
+use App\Jobs\ProcessMovieCollection;
 use App\Models\Certification;
 use App\Models\Genre;
 use App\Models\Movie;
@@ -229,10 +229,10 @@ class MoviesController extends Controller {
         }
 
         if (! is_null($movie_detail->belongs_to_collection)) {
-            processMovieCollection::dispatch($movie_detail->belongs_to_collection->id);
+            ProcessMovieCollection::dispatch($movie_detail->belongs_to_collection->id);
         }
 
-        processMovieCastMembers::dispatch($movie);
+        ProcessMovieCastMembers::dispatch($movie);
 
         return redirect()->route('movies.show', $movie);
     }

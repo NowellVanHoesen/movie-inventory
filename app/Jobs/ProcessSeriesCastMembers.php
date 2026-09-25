@@ -2,15 +2,14 @@
 
 namespace App\Jobs;
 
-use App\Models\Movie;
+use App\Models\Series;
 use App\Traits\CastMemberHelpers;
 use App\Traits\InteractsWithTMDB;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\Attributes\WithoutRelations;
 
-class processMovieCastMembers implements ShouldBeUnique, ShouldQueue {
+class ProcessSeriesCastMembers implements ShouldBeUnique, ShouldQueue {
     use CastMemberHelpers, InteractsWithTMDB, Queueable;
 
     /**
@@ -26,33 +25,30 @@ class processMovieCastMembers implements ShouldBeUnique, ShouldQueue {
      */
     public int $uniqueFor = 3600;
 
-    public $deleteWhenMissingModels = true;
-
     /**
      * Create a new job instance.
      */
-    public function __construct(
-        #[WithoutRelations]
-        private Movie $movie
-    ) {
+    public function __construct(protected int $series_id) {
         //
     }
 
     /**
      * Execute the job.
-     *
-     * movie credits (cast): https://api.themoviedb.org/3/movie/{movie_id}/credits { language }
      */
     public function handle(): void {
-        $credits = $this->requireTMDBResponse(
-            $this->getMovieCast($this->movie->id),
-            "movie {$this->movie->id} cast"
+        // get series DB detail
+        $series = Series::firstWhere('id', $this->series_id);
+
+        // get and attach Series cast members
+        $series_cast = $this->requireTMDBResponse(
+            $this->getSeriesCast($this->series_id),
+            "series {$this->series_id} cast"
         );
 
-        $this->attachCastMemberToModel($this->movie, $credits->cast);
+        $this->attachCastMemberToModel($series, $series_cast->cast);
     }
 
     public function uniqueId() {
-        return "movie-{$this->movie->id}-cast";
+        return "series-{$this->series_id}-cast";
     }
 }

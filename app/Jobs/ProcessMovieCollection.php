@@ -11,7 +11,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Attributes\WithoutRelations;
 use Illuminate\Support\Arr;
 
-class processMovieCollection implements ShouldBeUnique, ShouldQueue {
+class ProcessMovieCollection implements ShouldBeUnique, ShouldQueue {
     use InteractsWithTMDB, Queueable;
 
     /**

@@ -9,7 +9,7 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
-class processSeasonCastMembers implements ShouldBeUnique, ShouldQueue {
+class ProcessSeasonCastMembers implements ShouldBeUnique, ShouldQueue {
     use CastMemberHelpers, InteractsWithTMDB, Queueable;
 
     /**

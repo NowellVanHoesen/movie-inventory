@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\processSeries;
+use App\Jobs\ProcessSeries;
 use App\Models\Certification;
 use App\Models\Episode;
 use App\Models\Genre;
@@ -134,7 +134,7 @@ class SeriesController extends Controller {
             'series_id' => ['required', 'integer'],
             // Required, unlike movies: series have no wishlist, so every series is
             // owned and must carry a purchase date. Previously this was `nullable`,
-            // and a null got as far as processSeries' typed property and 500'd with
+            // and a null got as far as ProcessSeries' typed property and 500'd with
             // a TypeError instead of returning a validation message.
             'purchase_date' => ['required', 'date_format:Y-m-d'],
             'media_type' => ['array'],
@@ -187,7 +187,7 @@ class SeriesController extends Controller {
             $series->media_types()->syncWithoutDetaching($attributes['media_type']);
         }
 
-        processSeries::dispatch([
+        ProcessSeries::dispatch([
             'series_id' => $series->id,
             'media_type' => $attributes['media_type'] ?? [],
             'purchase_date' => $attributes['purchase_date'],

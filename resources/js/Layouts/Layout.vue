@@ -3,7 +3,7 @@ import Footer from "@/Components/Footer.vue";
 import Header from "@/Components/Header.vue";
 import BaseModal from "@/Components/BaseModal.vue";
 import { usePage } from "@inertiajs/vue3";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 
 const page = usePage();
 
@@ -31,6 +31,28 @@ const bgStyle = computed(() => {
 const heading = computed(() => {
     return props.heading || page.props.appName;
 });
+
+const flashMessage = ref(null);
+let flashTimer = null;
+
+const dismissFlash = () => {
+    clearTimeout(flashTimer);
+    flashMessage.value = null;
+};
+
+watch(
+    () => page.props.flash?.message,
+    (message) => {
+        if (!message) {
+            return;
+        }
+
+        clearTimeout(flashTimer);
+        flashMessage.value = message;
+        flashTimer = setTimeout(dismissFlash, 5000);
+    },
+    { immediate: true },
+);
 </script>
 
 <template>
@@ -48,6 +70,22 @@ const heading = computed(() => {
                 >
                     {{ heading }}
                 </h1>
+                <div
+                    v-if="flashMessage"
+                    dusk="flash-message"
+                    role="status"
+                    class="bg-green-check text-cold-steel-800 mx-auto mb-4 flex w-full items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold"
+                >
+                    <span>{{ flashMessage }}</span>
+                    <button
+                        type="button"
+                        class="cursor-pointer px-2"
+                        aria-label="Dismiss"
+                        @click="dismissFlash"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
                 <slot />
             </div>
         </main>

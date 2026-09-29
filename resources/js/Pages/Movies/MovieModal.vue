@@ -2,6 +2,7 @@
 import Modal from "@/Components/Modal.vue";
 import { Link, useForm } from "@inertiajs/vue3";
 import CastMembers from "@/Components/CastMembers.vue";
+import ConfirmDialog from "@/Components/ConfirmDialog.vue";
 import FormButton from "@/Components/FormButton.vue";
 import { modalBaseUrl } from "@/useModal.js";
 import { computed, ref } from "vue";
@@ -58,6 +59,23 @@ const submit = () => {
         },
     });
 };
+
+const confirmingDelete = ref(false);
+
+const deleteForm = useForm({});
+
+const destroy = () => {
+    deleteForm.delete(route("movies.destroy", props.movie.slug), {
+        preserveScroll: true,
+        // Redirect back to the page beneath the modal once the movie is gone.
+        headers: {
+            "X-Modal-Base-Url": modalBaseUrl(),
+        },
+        onFinish: () => {
+            confirmingDelete.value = false;
+        },
+    });
+};
 </script>
 
 <template>
@@ -82,15 +100,14 @@ const submit = () => {
                         >
                             Edit
                         </button>
-                        <Link
-                            href=""
-                            method="delete"
-                            as="button"
+                        <button
+                            type="button"
+                            dusk="delete-movie-btn"
                             class="inline-flex cursor-pointer items-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-semibold tracking-widest text-white uppercase transition duration-150 ease-in-out hover:bg-red-500 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 focus:outline-none active:bg-red-700"
+                            @click="confirmingDelete = true"
                         >
                             Delete
-                        </Link>
-                        <form method="POST" :action="movie.delete_link" id="delete-movie" class="hidden"></form>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -185,5 +202,13 @@ const submit = () => {
                 </div>
             </div>
         </div>
+        <ConfirmDialog
+            :show="confirmingDelete"
+            :title="`Delete ${movie.title}?`"
+            message="This permanently removes the movie from your inventory."
+            :processing="deleteForm.processing"
+            @confirm="destroy"
+            @cancel="confirmingDelete = false"
+        />
     </Modal>
 </template>

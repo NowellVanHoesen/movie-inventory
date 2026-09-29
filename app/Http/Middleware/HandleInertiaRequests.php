@@ -49,6 +49,9 @@ class HandleInertiaRequests extends Middleware {
             'appName' => config('app.name'),
             'placeholderPoster' => config('tmdb.placeholder.poster'),
             'placeholderStill' => config('tmdb.placeholder.still'),
+            'flash' => [
+                'message' => fn () => $request->session()->get('message'),
+            ],
         ];
     }
 }

@@ -244,6 +244,8 @@ class MoviesController extends Controller {
     public function destroy(Movie $movie) {
         $movie->delete();
 
-        return redirect()->route('movies.index')->with('status', 'Movie deleted successfully.');
+        // `message`, not `status`: Breeze flashes machine codes (e.g. `profile-updated`)
+        // under `status`, and `message` is what the layout's flash banner displays.
+        return Inertia::backFromModal()->with('message', "{$movie->title} deleted.");
     }
 }

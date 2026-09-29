@@ -15,15 +15,29 @@ npm run dev       # development
 npm run build     # production build
 ```
 
-**Testing (Pest):**
+After every `npm run build`, clear and rebuild Laravel's caches so the Herd-served site picks up the new build:
 ```bash
-php artisan test                                    # all tests
-php artisan test tests/Feature/MoviesControllerTest.php   # single file
-php artisan test --filter="it creates a movie"     # single test by name
-php artisan test --coverage                         # with coverage
+php artisan optimize:clear
+php artisan optimize
 ```
 
-**Browser/Dusk tests must be run via `php artisan dusk`, not `php artisan test tests/Browser/...`.** Dusk tests drive the live Herd-served site, which reads the app's normal `.env` — only the `dusk` command performs Laravel's `.env` ↔ `.env.dusk.local` swap needed to point that live site at the dedicated `movie_inventory_dusk` database (see `tests/DuskTestCase.php`). Running them via `php artisan test` instead silently exercises whatever `movie_inventory` currently is.
+**But tests need an uncached config.** With `bootstrap/cache/config.php` present, `php artisan test` ignores `phpunit.xml`'s env overrides (Feature tests fail with `419` CSRF errors), and `php artisan dusk`'s `.env` ↔ `.env.dusk.local` swap has no effect, so the live site would keep using `movie_inventory` instead of `movie_inventory_dusk`. Run `php artisan optimize:clear` before either test command, then `php artisan optimize` again when done.
+
+**Testing (Pest):**
+```bash
+php artisan test --testsuite=Feature,Unit                  # all Feature + Unit tests
+php artisan test tests/Feature/movies/MoviesDestroyTest.php # single file
+php artisan test --filter="it creates a movie"             # single test by name
+php artisan test --testsuite=Feature,Unit --coverage        # with coverage
+php artisan dusk                                            # all Browser/Dusk tests
+php artisan dusk tests/Browser/Components/MovieModalTest.php # single Dusk file
+```
+
+**Never run a bare `php artisan test`.** `phpunit.xml` includes a `Browser` testsuite, so a bare run also picks up `tests/Browser`, which then drives the live site against `movie_inventory` (see below) — and the existing Dusk tests mutate data (e.g. the movie-edit tests change media types on real movies). Always scope it with `--testsuite=Feature,Unit` or a path under `tests/Feature` / `tests/Unit`.
+
+**Browser/Dusk tests must be run via `php artisan dusk`, not `php artisan test tests/Browser/...`.** Dusk tests drive the live Herd-served site, which reads the app's normal `.env` — only the `dusk` command performs Laravel's `.env` ↔ `.env.dusk.local` swap needed to point that live site at the dedicated `movie_inventory_dusk` database (see `tests/DuskTestCase.php`). Running them via `php artisan test` instead silently exercises whatever `movie_inventory` currently is. Dusk tests exercise the **built** assets, so run `npm run build` and then `php artisan optimize:clear` before `php artisan dusk` after any frontend change (re-run `php artisan optimize` once the Dusk run is finished).
+
+If every Dusk test fails with `SessionNotCreatedException: This version of ChromeDriver only supports Chrome version …`, Chrome auto-updated past the installed driver; fix it with `php artisan dusk:chrome-driver --detect`.
 
 **Restoring a database from a full SQL dump:**
 ```bash
@@ -96,6 +110,8 @@ Tailwind v4 configured via `@tailwindcss/vite`; no `tailwind.config.js` — all 
 Tests use **Pest 4**. Feature/Unit tests use `RefreshDatabase` on a dedicated MySQL database (`movie_inventory_tests`); the `tests/Pest.php` helper provides `loginAsUser(?User $user = null)` for auth context. TMDB HTTP calls should be faked via `Http::fake()` in tests.
 
 Browser/Dusk tests (`tests/Browser/`) use `DatabaseTruncation` against a **separate** dedicated database, `movie_inventory_dusk`, restored from a full personal-collection SQL dump via `php artisan db:restore-dump` (see Development Commands above) rather than seeded per-test. It's kept separate from `movie_inventory_tests` because `RefreshDatabase`/`DatabaseTruncation` share a process-wide "already migrated" flag that triggers an unconditional `migrate:fresh` the first time either runs in a process — sharing one database would let a Feature-test run wipe the Dusk baseline. `tests/DuskTestCase.php` repoints this process's own Eloquent queries at `movie_inventory_dusk` (so assertions in test files see the same data the live site does) and excepts the bulk content tables from truncation so the imported dataset survives the whole run. `users` is intentionally left truncated between tests — since MySQL's `TRUNCATE` resets `AUTO_INCREMENT`, a freshly created `User::factory()->create()` in any given test reliably lands back on id 1.
+
+Because those content tables persist for the whole run (and can only be rebuilt with `db:restore-dump`), **Dusk tests must never delete or destructively change a real dataset movie/series.** Tests that delete create their own throwaway record and remove it in a `finally` block — see `createThrowawayMovie()` in `tests/Browser/Components/MovieModalTest.php` (fixed id `999999901`; `Movie` has no factory, so it's built with `Movie::create()`).
 
 ### Key Conventions
 

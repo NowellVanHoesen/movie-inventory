@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Certification;
 use App\Models\MediaType;
 use App\Models\Movie;
 use App\Models\User;
@@ -253,4 +254,81 @@ it('does not reset the movie list after saving an edit on a movie loaded via inf
 
         expect($posterCountAfter)->toBeGreaterThanOrEqual($posterCountBefore);
     });
+});
+
+// movie_inventory_dusk's content tables persist across the whole run (and can only
+// be rebuilt via db:restore-dump), so delete tests must never touch a real movie.
+function createThrowawayMovie(): Movie {
+    Movie::whereKey(999999901)->delete();
+
+    return Movie::create([
+        'id' => 999999901,
+        'imdb_id' => 'tt99999901',
+        'title' => 'Dusk Throwaway Movie',
+        'original_title' => 'Dusk Throwaway Movie',
+        'tagline' => 'Created to be deleted.',
+        'overview' => 'A placeholder movie used by the delete confirmation Dusk tests.',
+        'release_date' => '2000-01-01',
+        'certification_id' => Certification::firstOrFail()->id,
+        'runtime' => 90,
+    ]);
+}
+
+it('cancels the delete confirmation without closing the movie modal', function () {
+    $movie = createThrowawayMovie();
+
+    try {
+        $this->browse(function (Browser $browser) use ($movie) {
+            $user = User::factory()->create();
+
+            $browser
+                ->loginAs($user)
+                ->visit(route('movies.show', $movie))
+                ->waitForText($movie->tagline)
+                ->clickViaJs('@delete-movie-btn')
+                ->waitFor('@confirm-dialog')
+                ->assertSeeIn('@confirm-dialog', "Delete {$movie->title}?")
+                ->press('@confirm-dialog-cancel')
+                ->waitUntilMissing('@confirm-dialog')
+                ->assertSee($movie->tagline)
+                ->assertUrlIs(route('movies.show', $movie))
+                ->clickViaJs('@delete-movie-btn')
+                ->waitFor('@confirm-dialog')
+                ->keys('@confirm-dialog-cancel', '{escape}')
+                ->waitUntilMissing('@confirm-dialog')
+                ->assertSee($movie->tagline)
+                ->assertUrlIs(route('movies.show', $movie));
+        });
+
+        expect(Movie::find($movie->id))->not->toBeNull();
+    } finally {
+        Movie::whereKey($movie->id)->delete();
+    }
+});
+
+it('deletes the movie after confirmation and returns to the page beneath the modal', function () {
+    $movie = createThrowawayMovie();
+
+    try {
+        $this->browse(function (Browser $browser) use ($movie) {
+            $user = User::factory()->create();
+
+            $browser
+                ->loginAs($user)
+                ->visit(route('movies.show', $movie))
+                ->waitForText($movie->tagline)
+                ->clickViaJs('@delete-movie-btn')
+                ->waitFor('@confirm-dialog')
+                ->press('@confirm-dialog-confirm')
+                ->waitUntilMissingModal()
+                ->waitForLocation('/movies')
+                ->assertUrlIs(route('movies.index'))
+                ->waitFor('@flash-message')
+                ->assertSeeIn('@flash-message', "{$movie->title} deleted.");
+        });
+
+        expect(Movie::find($movie->id))->toBeNull();
+    } finally {
+        Movie::whereKey($movie->id)->delete();
+    }
 });

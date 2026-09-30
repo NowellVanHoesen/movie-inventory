@@ -31,6 +31,7 @@ const castToShow = computed(() => {
     );
 
     if (cast_members.length <= props.display_limit) {
+		dispShowAllBtn.value = false;
         return cast_members;
     }
 

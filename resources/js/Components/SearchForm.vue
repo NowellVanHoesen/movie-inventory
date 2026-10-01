@@ -19,7 +19,6 @@ const form = useForm({
                 placeholder="Search the site..."
                 aria-label="Search"
                 dusk="header-search-input"
-                class="placeholder:text-cold-steel-200 col-start-1 row-start-1 block w-full rounded-md border-0 bg-gray-50 py-1.5 pr-3 pl-10 text-gray-900 outline-none focus:ring-0 text-sm leading-6"
             />
             <i
                 class="fa-solid fa-magnifying-glass text-cold-steel-200 pointer-events-none col-start-1 row-start-1 ml-3 block h-5 w-5 self-center align-middle leading-6"

@@ -40,21 +40,27 @@ it('loads an episode\'s guest cast into the cast panel when the episode is selec
         $browser
             ->visit(route('series.show', $series))
             ->waitFor("@season-btn-{$season->id}")
-            ->click("@season-btn-{$season->id}")
+            ->clickViaJs("@season-btn-{$season->id}")
             ->waitFor("@episode-btn-{$episode->id}");
 
         expect($browser->script("return {$hasGuest($guest)};")[0])->toBeFalse();
 
         $browser
-            ->click("@episode-btn-{$episode->id}")
+            ->clickViaJs("@episode-btn-{$episode->id}")
             ->waitForText('Runtime');
 
         // The panel shows 20 names until expanded, and episode guests sort last.
-        $browser->script("[...document.querySelectorAll('button')].find(b => b.textContent.trim() === 'Show All')?.click();");
+        $browser->script("document.querySelector('[dusk=cast-show-all-btn]')?.click();");
 
         $browser->waitUntil($hasGuest($guest));
 
         // preserveUrl: selecting an episode must not leave ?episode= in the address bar.
         expect($browser->driver->getCurrentURL())->toBe(route('series.show', $series));
+
+        // Closing the episode drops its guests from the panel again.
+        $browser
+            ->clickViaJs('@episode-close-btn')
+            ->waitFor("@episode-btn-{$episode->id}")
+            ->waitUntil("!({$hasGuest($guest)})");
     });
 });

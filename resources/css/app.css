@@ -1,25 +1,38 @@
-@import '~fontawesome/css/fontawesome.min.css';
-@import '~fontawesome/css/solid.min.css';
+@import "~fontawesome/css/fontawesome.min.css";
+@import "~fontawesome/css/solid.min.css";
 @import "tailwindcss";
 @source "../views";
 
 @theme {
-	--color-cold-steel-50: #ECEDEF;
-	--color-cold-steel-100: #D8DBE0;
-	--color-cold-steel-200: #B2B7C0;
-	--color-cold-steel-300: #8B93A1;
-	--color-cold-steel-400: #656F81;
-	--color-cold-steel-500: #4B5668;
-	--color-cold-steel-600: #3e4b62;
-	--color-cold-steel-700: #333c50;
-	--color-cold-steel-800: #323C4E;
-	--color-cold-steel-900: #293040;
-	--color-green-check: #bada55;
-	--color-red-heart: #f5131a;
+    --color-cold-steel-50: #ecedef;
+    --color-cold-steel-100: #d8dbe0;
+    --color-cold-steel-200: #b2b7c0;
+    --color-cold-steel-300: #8b93a1;
+    --color-cold-steel-400: #656f81;
+    --color-cold-steel-500: #4b5668;
+    --color-cold-steel-600: #3e4b62;
+    --color-cold-steel-700: #333c50;
+    --color-cold-steel-800: #323c4e;
+    --color-cold-steel-900: #293040;
+    --color-green-check: #bada55;
+    --color-red-heart: #f5131a;
 }
 
 @layer base {
-	*:focus {
-		outline: 2px solid #1e3d83;
-	}
+    *:focus {
+        outline: 2px solid #1e3d83;
+    }
+
+    input {
+        @apply placeholder:text-cold-steel-200 rounded-md border-0 bg-gray-50 px-3 py-1.5 text-sm leading-6 text-gray-900 outline-none focus:ring-0;
+    }
+
+    input[type="text"],
+    input[type="search"] {
+        @apply col-start-1 row-start-1;
+    }
+
+    input[type="search"] {
+        @apply pr-3 pl-10;
+    }
 }

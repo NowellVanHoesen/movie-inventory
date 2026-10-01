@@ -86,7 +86,7 @@ const submitSave = () => {
     <Layout :heading="page_title" :backdrop="movie?.backdrop_path">
         <form class="mx-auto max-w-xl" @submit.prevent="submitSearch">
             <div class="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-4">
-                <div class="sm:col-span-2">
+                <div class="col-span-2">
                     <label for="query" class="block text-sm font-bold">Title Search</label>
                     <input
                         id="query"
@@ -96,19 +96,13 @@ const submitSave = () => {
                         required
                         autofocus
                         dusk="movie-search-query-input"
-                        class="border-cold-steel-300 mt-1 w-full rounded-md border px-2 py-1 text-sm text-gray-900"
+                        class="w-full"
                     />
                     <p v-if="searchForm.errors.query" class="mt-1 text-sm text-red-600">{{ searchForm.errors.query }}</p>
                 </div>
                 <div>
                     <label for="year" class="block text-sm font-bold">Year</label>
-                    <input
-                        id="year"
-                        type="text"
-                        v-model="searchForm.year"
-                        dusk="movie-search-year-input"
-                        class="border-cold-steel-300 mt-1 w-full rounded-md border px-2 py-1 text-sm text-gray-900"
-                    />
+                    <input id="year" type="text" v-model="searchForm.year" dusk="movie-search-year-input" class="w-full" />
                     <p v-if="searchForm.errors.year" class="mt-1 text-sm text-red-600">{{ searchForm.errors.year }}</p>
                 </div>
                 <div class="flex items-end">
@@ -117,7 +111,11 @@ const submitSave = () => {
             </div>
         </form>
 
-        <div v-if="search_results" class="mt-6 grid grid-cols-[repeat(auto-fill,minmax(154px,1fr))] gap-5">
+        <div
+            v-if="search_results"
+            class="mt-6 grid gap-5"
+            :class="search_results.results.length === 0 ? 'text-center' : 'grid-cols-[repeat(auto-fill,minmax(185px,1fr))]'"
+        >
             <template v-for="result in search_results.results" :key="result.id">
                 <button
                     v-if="result.release_date && localMovieFor(result.id)"
@@ -129,7 +127,7 @@ const submitSave = () => {
                     <ItemStatusIcon :purchased="localMovieFor(result.id).purchase_date !== null" />
                     <ItemPoster :placeholder="!result.poster_path" :poster_path="result.poster_path" size="w154" />
                     <ItemOverlayDetail
-                        class="text-left invisible group-hover:visible group-focus:visible"
+                        class="invisible text-left group-hover:visible group-focus:visible"
                         :title="result.title"
                         :release_year="releaseYear(result.release_date)"
                     />
@@ -143,7 +141,9 @@ const submitSave = () => {
                 >
                     <ItemPoster :placeholder="!result.poster_path" :poster_path="result.poster_path" size="w154" />
                     <ItemOverlayDetail
-                        :class="result.poster_path ? 'text-left invisible group-hover:visible group-focus:visible' : 'text-left'"
+                        :class="
+                            result.poster_path ? 'invisible text-left group-hover:visible group-focus:visible' : 'text-left'
+                        "
                         :title="result.title"
                         :release_year="releaseYear(result.release_date)"
                     />
@@ -165,7 +165,9 @@ const submitSave = () => {
                     <p v-if="movie.title !== movie.original_title">
                         <strong>Original Title</strong>: ( {{ movie.original_title }} )
                     </p>
-                    <p><em>{{ movie.tagline }}</em></p>
+                    <p>
+                        <em>{{ movie.tagline }}</em>
+                    </p>
                     <p class="text-sm">{{ genres }}</p>
                     <p class="text-sm font-normal">{{ movie.release_date }}</p>
                     <p class="mt-4">{{ movie.overview }}</p>

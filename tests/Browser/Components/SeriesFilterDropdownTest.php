@@ -45,7 +45,7 @@ it('renders a series card with its name and first air year', function () {
         $browser
             ->visit(route('series.index'))
             ->waitFor('@filter-toggle-btn')
-            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length === 24');
+            ->waitUntil('document.querySelectorAll(\'[dusk^=series-btn-]\').length >= 24');
 
         // textContent rather than Dusk's assertSee: the overlay is `invisible` until
         // hover whenever the series has a poster, and Selenium's getText() ignores

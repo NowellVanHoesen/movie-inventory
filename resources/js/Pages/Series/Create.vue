@@ -91,7 +91,7 @@ const submitSave = () => {
                         required
                         autofocus
                         dusk="series-search-query-input"
-                        class="border-cold-steel-300 mt-1 w-full rounded-md border px-2 py-1 text-sm text-gray-900"
+                        class="w-full"
                     />
                     <p v-if="searchForm.errors.query" class="mt-1 text-sm text-red-600">{{ searchForm.errors.query }}</p>
                 </div>
@@ -101,7 +101,11 @@ const submitSave = () => {
             </div>
         </form>
 
-        <div v-if="search_results" class="mt-6 grid grid-cols-[repeat(auto-fill,minmax(185px,1fr))] gap-5">
+        <div
+            v-if="search_results"
+            class="mt-6 grid gap-5"
+            :class="search_results.results.length === 0 ? 'text-center' : 'grid-cols-[repeat(auto-fill,minmax(185px,1fr))]'"
+        >
             <template v-for="result in search_results.results" :key="result.id">
                 <Link
                     v-if="localSeriesFor(result.id)"
@@ -112,7 +116,7 @@ const submitSave = () => {
                     <ItemStatusIcon :purchased="localSeriesFor(result.id).purchase_date !== null" />
                     <ItemPoster :placeholder="!result.poster_path" :poster_path="result.poster_path" />
                     <ItemOverlayDetail
-                        class="text-left invisible group-hover:visible group-focus:visible"
+                        class="invisible text-left group-hover:visible group-focus:visible"
                         :title="result.name"
                         :release_year="releaseYear(result.first_air_date)"
                     />
@@ -126,7 +130,9 @@ const submitSave = () => {
                 >
                     <ItemPoster :placeholder="!result.poster_path" :poster_path="result.poster_path" />
                     <ItemOverlayDetail
-                        :class="result.poster_path ? 'text-left invisible group-hover:visible group-focus:visible' : 'text-left'"
+                        :class="
+                            result.poster_path ? 'invisible text-left group-hover:visible group-focus:visible' : 'text-left'
+                        "
                         :title="result.name"
                         :release_year="releaseYear(result.first_air_date)"
                     />
@@ -137,7 +143,10 @@ const submitSave = () => {
 
         <div v-else-if="series_detail" class="mt-6 grid gap-4 lg:grid-cols-[1fr_minmax(280px,40%)]">
             <div class="grid gap-4 rounded-xl bg-white/80 p-6 text-gray-900 md:grid-cols-[185px_1fr]">
-                <img :src="`https://image.tmdb.org/t/p/w185${series_detail.poster_path}`" :alt="`${series_detail.name} series poster`" />
+                <img
+                    :src="`https://image.tmdb.org/t/p/w185${series_detail.poster_path}`"
+                    :alt="`${series_detail.name} series poster`"
+                />
                 <div class="sm:flex sm:flex-col">
                     <p class="text-2xl leading-none">
                         {{ series_detail.name }}
@@ -146,7 +155,10 @@ const submitSave = () => {
                     <p v-if="series_detail.tagline">
                         <em class="text-base">{{ series_detail.tagline }}</em>
                     </p>
-                    <p v-if="series_detail.original_name && series_detail.original_name !== series_detail.name" class="text-sm">
+                    <p
+                        v-if="series_detail.original_name && series_detail.original_name !== series_detail.name"
+                        class="text-sm"
+                    >
                         {{ series_detail.original_name }}
                     </p>
                     <p class="text-sm">{{ genres }}</p>
@@ -199,7 +211,7 @@ const submitSave = () => {
                 </form>
             </div>
             <div class="lg:col-span-full">
-                <p class="mb-2 text-xl text-cold-steel-100">Seasons</p>
+                <p class="text-cold-steel-100 mb-2 text-xl">Seasons</p>
                 <div class="grid grid-cols-[repeat(auto-fill,minmax(225px,1fr))] gap-4">
                     <label
                         v-for="season in series_detail.seasons"

@@ -44,9 +44,10 @@ const castToShow = computed(() => {
 <template>
     <div>
         <div class="flex items-center justify-between">
-            <h2 class="text-2xl">Cast Members</h2>
+            <h2 class="text-2xl py-1">Cast Members</h2>
             <button
                 v-if="dispShowAllBtn"
+                dusk="cast-show-all-btn"
                 @click.prevent="showAll = !showAll"
                 class="bg-cold-steel-600 hover:bg-cold-steel-700 focus:bg-cold-steel-700 cursor-pointer rounded-md border border-transparent px-4 py-2 text-sm font-semibold text-white transition duration-150 ease-in-out focus:ring-2 focus:ring-blue-300 focus:ring-offset-2 focus:outline-none"
             >

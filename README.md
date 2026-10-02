@@ -1,66 +1,160 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Movie Inventory
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A personal app for tracking a movie and TV series collection. You search for a title, pick the formats you own (or add it to a wishlist), and the app pulls the rest — posters, cast, genres, certifications, seasons and episodes — from the [TMDB](https://www.themoviedb.org/) API.
 
-## About Laravel
+Built with Laravel 12, Vue 3 and Inertia.js 2.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+> This product uses the TMDB API but is not endorsed or certified by TMDB.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Movies** — poster grid with infinite scroll, genre filtering and sorting, separate purchased and wishlist views, and a detail view that opens as a modal
+- **Series** — a full detail page with seasons, episodes and per-episode cast
+- **Movie collections** — franchises grouped together (e.g. the Marvel universe)
+- **Cast members** — a page per person listing the movies and series they appear in
+- **Search** across the inventory
+- **Adding titles from TMDB** — search TMDB, save the title, and queued jobs fetch cast, collections, seasons and episodes in the background
+- **Public browsing, authenticated editing** — anyone can browse; adding, editing and deleting require a login
 
-## Learning Laravel
+## Tech stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Layer    | Tools                                                                 |
+| -------- | --------------------------------------------------------------------- |
+| Backend  | PHP 8.4, Laravel 12, Inertia.js 2, Spatie Sluggable, Ziggy            |
+| Frontend | Vue 3, Tailwind CSS v4, Headless UI, Font Awesome, Vite 7             |
+| Data     | MySQL, Laravel `database` queue, TMDB API                             |
+| Testing  | Pest 4 (Feature/Unit), Laravel Dusk (Browser)                         |
+| Tooling  | Laravel Pint, Prettier                                                |
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Requirements
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP 8.4+ and Composer
+- Node.js and npm
+- MySQL
+- A TMDB API read access token (a free account at [themoviedb.org](https://www.themoviedb.org/settings/api))
 
-## Laravel Sponsors
+## Getting started
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+git clone git@github.com:NowellVanHoesen/movie-inventory.git
+cd movie-inventory
 
-### Premium Partners
+composer install
+npm install
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+cp .env.example .env
+php artisan key:generate
+```
 
-## Contributing
+Edit `.env` to point `DB_*` at a MySQL database (local dev uses `movie_inventory`) and set the TMDB token:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+| Variable            | Required | Default                      | Purpose                                  |
+| ------------------- | -------- | ---------------------------- | ---------------------------------------- |
+| `TMDB_API_AUTH_KEY` | yes      | —                            | TMDB API read access token (bearer token) |
+| `TMDB_API_BASE_URL` | no       | `https://api.themoviedb.org` | TMDB API host                            |
+| `TMDB_API_VERSION`  | no       | `3`                          | TMDB API version                         |
 
-## Code of Conduct
+Then create the schema and start everything:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan migrate
+composer run dev
+```
 
-## Security Vulnerabilities
+`composer run dev` runs the PHP server, the queue worker, the log viewer and Vite together. The queue worker matters: TMDB data for a newly added movie or series is ingested by queued jobs, so nothing arrives without one running.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+`php artisan migrate:fresh --seed` loads sample movie and series data from the SQL files in `database/sql-files/`.
+
+There is no public registration route, so create your user by hand, for example in `php artisan tinker`:
+
+```php
+App\Models\User::factory()->create(['email' => 'you@example.com', 'password' => 'secret']);
+```
+
+## Development
+
+```bash
+composer run dev   # server + queue + logs + vite
+npm run dev        # Vite only
+npm run build      # production build
+```
+
+If the site is served by Laravel Herd, rebuild Laravel's caches after each `npm run build` so it picks up the new assets:
+
+```bash
+php artisan optimize:clear
+php artisan optimize
+```
+
+Code style is enforced with Laravel Pint:
+
+```bash
+./vendor/bin/pint         # fix
+./vendor/bin/pint --test  # check only
+```
+
+## Testing
+
+Tests use three separate MySQL databases:
+
+| Database                | Used by                                                        |
+| ----------------------- | -------------------------------------------------------------- |
+| `movie_inventory`       | local development                                              |
+| `movie_inventory_tests` | Feature and Unit tests (`RefreshDatabase`)                     |
+| `movie_inventory_dusk`  | Browser tests, restored from a full SQL dump of the collection |
+
+```bash
+php artisan optimize:clear                                   # tests need an uncached config
+
+php artisan test --testsuite=Feature,Unit                    # all Feature + Unit tests
+php artisan test tests/Feature/movies/MoviesDestroyTest.php  # one file
+php artisan test --filter="it creates a movie"               # one test by name
+
+php artisan dusk                                             # all Browser tests
+```
+
+Three things to know before the first run:
+
+- **Never run a bare `php artisan test`.** It also picks up the Browser suite, which drives the live site against `movie_inventory` and changes real data. Always scope it with `--testsuite=Feature,Unit` or a path.
+- **Clear the config cache first.** With a cached config, `phpunit.xml`'s overrides are ignored and Dusk's `.env.dusk.local` swap has no effect. Run `php artisan optimize` again when you are done.
+- **Run Browser tests with `php artisan dusk` only.** They exercise the built assets, so run `npm run build` after any frontend change.
+
+Create or refresh the Dusk database from a phpMyAdmin-style dump:
+
+```bash
+php artisan db:restore-dump /path/to/dump.sql --database=movie_inventory_dusk
+```
+
+If every Dusk test fails with a ChromeDriver version error, run `php artisan dusk:chrome-driver --detect`.
+
+## Project structure
+
+```
+app/
+  Models/                       Movie, Series, Season, Episode, CastMember, Genre, …
+  Http/Controllers/             Movies, Series, Search, CastMember, MovieCollection, …
+  Http/Resources/               API resources passed to Inertia pages
+  Jobs/                         queued TMDB ingestion (ProcessSeries, ProcessSeason, …)
+  Traits/InteractsWithTMDB.php  every TMDB API call
+  Console/Commands/             db:restore-dump
+resources/
+  js/Pages/                     Inertia pages (Movies, Series, Search, CastMembers, Auth, …)
+  js/Components/                shared Vue components
+  js/Layouts/                   page layout
+  css/app.css                   Tailwind v4 config and theme
+tests/
+  Feature/  Unit/               Pest tests
+  Browser/                      Dusk tests
+```
+
+[CLAUDE.md](CLAUDE.md) has the detailed architecture notes and conventions.
+
+## Deployment
+
+Publishing a GitHub release triggers [.github/workflows/deploy.yml](.github/workflows/deploy.yml), which connects to the host over SSH and runs [.github/workflows/deploy.sh](.github/workflows/deploy.sh) with the release tag. The script puts the site in maintenance mode, checks out that tag, installs Composer and npm dependencies, runs migrations, rebuilds Laravel's caches and brings the site back up.
+
+Renaming a job class breaks queued payloads that reference the old name, so deploy those changes with an empty queue.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT

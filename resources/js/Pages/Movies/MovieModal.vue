@@ -148,7 +148,7 @@ const destroy = () => {
                 </div>
                 <p class="mt-4">{{ movie.overview }}</p>
                 <div class="mt-4">
-                    <CastMembers v-if="!isEditing" :cast="movie?.cast_members" :display_limit="20" :multi_cols="true" />
+                    <CastMembers v-if="!isEditing" :cast="movie?.cast_members" :display_limit="20" :multi_cols="true" :contain_expanded="true" />
                     <form v-else @submit.prevent="submit">
                         <div>
                             <label for="purchase_date" class="block text-sm font-bold">Date Purchased</label>

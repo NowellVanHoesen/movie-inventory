@@ -332,3 +332,39 @@ it('deletes the movie after confirmation and returns to the page beneath the mod
         Movie::whereKey($movie->id)->delete();
     }
 });
+
+it('scrolls the expanded cast list inside the modal instead of growing the modal', function () {
+    // Well past the 20-member display limit, so "Show All" adds a lot of rows.
+    $movie = Movie::withCount('castMembers')->having('cast_members_count', '>', 60)->firstOrFail();
+
+    $this->browse(function (Browser $browser) use ($movie) {
+        // offsetHeight, not getBoundingClientRect(): the modal opens with a scale-90 ->
+        // scale-100 transition, and a transformed rect would differ mid-animation.
+        $panelHeight = "return document.querySelector('[dusk=modal-wrapper] .z-500').offsetHeight;";
+        $listMetrics = "const el = document.querySelector('[dusk=cast-list]'); return JSON.stringify({ scroll: el.scrollHeight, client: el.clientHeight, overflowY: getComputedStyle(el).overflowY, items: el.querySelectorAll('li').length });";
+
+        $browser
+            ->visit(route('movies.show', $movie))
+            ->waitFor('@cast-show-all-btn');
+
+        $heightBefore = $browser->script($panelHeight)[0];
+        $collapsed = json_decode($browser->script($listMetrics)[0]);
+
+        // Collapsed: no scroll container, so no scrollbar.
+        expect($collapsed->overflowY)->toBe('visible');
+
+        $browser->click('@cast-show-all-btn')->waitForText('Show Less');
+
+        $expanded = json_decode($browser->script($listMetrics)[0]);
+
+        expect($expanded->items)->toBeGreaterThan($collapsed->items)
+            ->and($expanded->overflowY)->toBe('auto')
+            ->and($expanded->client)->toBe($collapsed->client)
+            ->and($expanded->scroll)->toBeGreaterThan($expanded->client)
+            ->and(abs($browser->script($panelHeight)[0] - $heightBefore))->toBeLessThan(1);
+
+        $browser->click('@cast-show-all-btn')->waitForText('Show All');
+
+        expect(json_decode($browser->script($listMetrics)[0])->overflowY)->toBe('visible');
+    });
+});

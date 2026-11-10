@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Certification;
+use App\Models\Movie;
+use Database\Seeders\MoviesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
@@ -55,4 +57,20 @@ it('falls back to NR when TMDB returns a certification we do not seed', function
         'id' => 900001,
         'certification_id' => Certification::where('name', 'NR')->value('id'),
     ]);
+});
+
+it('rejects re-adding a movie that is already stored instead of erroring', function () {
+    loginAsUser();
+    $this->seed(MoviesSeeder::class);
+    Queue::fake();
+    Http::preventStrayRequests();
+    Http::fake();
+
+    $existing = Movie::where('imdb_id', 'tt1194173')->firstOrFail();
+
+    post(route('movies.store'), ['movie_id' => $existing->id, 'media_type' => []])
+        ->assertSessionHasErrors(['movie_id' => 'That movie is already in your inventory.']);
+
+    Http::assertNothingSent();
+    Queue::assertNothingPushed();
 });

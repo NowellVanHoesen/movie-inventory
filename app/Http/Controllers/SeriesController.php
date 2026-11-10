@@ -11,6 +11,7 @@ use App\Traits\AppliesIndexPreferences;
 use App\Traits\InteractsWithTMDB;
 use App\Traits\MediaTypeHelpers;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class SeriesController extends Controller {
@@ -50,7 +51,7 @@ class SeriesController extends Controller {
 
         if (! empty($request['query'])) {
             $attributes = $request->validate([
-                'query' => ['min:2'],
+                'query' => ['required', 'string', 'min:2', 'max:255'],
             ]);
 
             // Escape LIKE wildcards, as SearchController does, so "100%" isn't match-all.
@@ -62,7 +63,7 @@ class SeriesController extends Controller {
         } elseif (! empty($request['series_id'])) {
             $attributes = $request->validate([
                 'series_id' => ['integer'],
-                'search_term' => ['min:2'],
+                'search_term' => ['nullable', 'string', 'min:2', 'max:255'],
             ]);
 
             $series_detail = $this->getSeriesDetail($attributes['series_id']);
@@ -96,17 +97,23 @@ class SeriesController extends Controller {
      */
     public function store(Request $request) {
         $attributes = $request->validate([
-            'series_id' => ['required', 'integer'],
+            // unique: the id is TMDB's and the table's primary key, so re-adding a
+            // series (or a double submit) otherwise 500s on a duplicate-key error.
+            'series_id' => ['required', 'integer', Rule::unique('series', 'id')],
             // Required, unlike movies: series have no wishlist, so every series is
             // owned and must carry a purchase date. Previously this was `nullable`,
             // and a null got as far as ProcessSeries' typed property and 500'd with
             // a TypeError instead of returning a validation message.
             'purchase_date' => ['required', 'date_format:Y-m-d'],
             'media_type' => ['array'],
-            // Matches the rule update() already uses: without it, an unknown id
-            // reaches attach() and fails on the pivot's foreign key instead.
+            // Without it, an unknown id reaches attach() and fails on the pivot's
+            // foreign key instead of returning a validation error.
             'media_type.*' => ['integer', 'exists:media_types,id'],
+            // The seasons picked in Series/Create.vue; empty means all of them.
             'season_numbers' => ['array'],
+            'season_numbers.*' => ['integer', 'min:0'],
+        ], [
+            'series_id.unique' => 'That series is already in your inventory.',
         ]);
 
         $series_detail = $this->getSeriesDetail($attributes['series_id']);
@@ -156,6 +163,7 @@ class SeriesController extends Controller {
             'series_id' => $series->id,
             'media_type' => $attributes['media_type'] ?? [],
             'purchase_date' => $attributes['purchase_date'],
+            'season_numbers' => array_map('intval', $attributes['season_numbers'] ?? []),
         ]);
 
         return redirect()->route('series.show', $series);

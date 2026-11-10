@@ -48,3 +48,13 @@ it('shows TMDB movie detail when a movie_id is provided', function () {
                 ->etc()
         );
 });
+
+it('returns validation errors, not a 500, for malformed search input', function (array $params, array $errors) {
+    loginAsUser();
+
+    get(route('movies.create', $params))->assertSessionHasErrors($errors);
+})->with([
+    'query as an array' => [['query' => ['ab', 'cd']], ['query']],
+    'non-numeric year' => [['query' => 'bourne', 'year' => 'abcde'], ['year']],
+    'year as an array' => [['query' => 'bourne', 'year' => ['2012']], ['year']],
+]);

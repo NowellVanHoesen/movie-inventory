@@ -44,6 +44,12 @@ class ProcessSeasonCastMembers implements ShouldBeUnique, ShouldQueue {
         // get Season DB detail
         $season = Season::where('series_id', $this->series_id)->where('season_number', $this->season_number)->first();
 
+        if ($season === null) {
+            $this->fail("Series {$this->series_id} season {$this->season_number} does not exist; cannot attach its cast.");
+
+            return;
+        }
+
         // get and attach Season cast members
         $cast = $this->requireTMDBResponse(
             $this->getSeasonCast($this->series_id, $this->season_number),

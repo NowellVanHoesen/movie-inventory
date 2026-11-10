@@ -14,7 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -30,11 +30,14 @@ class MoviesController extends Controller {
         $pageTitleSuffix = 'Movie List';
         $defaultSortCol = 'release_date';
 
-        if (Route::is('movies.purchased')) {
+        // request()->routeIs(), not Route::is(): when this page renders as a modal's
+        // background, the router's current route is the modal's (movies.show), while
+        // the background request carries the purchased/wishlist route.
+        if (request()->routeIs('movies.purchased')) {
             $query->purchased();
             $pageTitleSuffix = 'Purchased Movies';
             $defaultSortCol = 'purchase_date';
-        } elseif (Route::is('movies.wishlist')) {
+        } elseif (request()->routeIs('movies.wishlist')) {
             $query->wishlist();
             $pageTitleSuffix = 'Movie Wishlist';
         }
@@ -79,9 +82,11 @@ class MoviesController extends Controller {
         $data = [];
 
         if (! empty($request['query'])) {
+            // `string` matters: without it `query[]=a&query[]=b` passes min:2 (an
+            // array of 2) and 500s in addcslashes() instead of returning a 422.
             $attributes = $request->validate([
-                'query' => ['min:2'],
-                'year' => ['sometimes', 'max:4'],
+                'query' => ['required', 'string', 'min:2', 'max:255'],
+                'year' => ['nullable', 'digits:4'],
             ]);
 
             // Escape LIKE wildcards, as SearchController does, so "100%" isn't match-all.
@@ -101,8 +106,8 @@ class MoviesController extends Controller {
         } elseif (! empty($request['movie_id'])) {
             $attributes = $request->validate([
                 'movie_id' => ['integer'],
-                'search_term' => ['min:2'],
-                'search_year' => ['sometimes', 'max:4'],
+                'search_term' => ['nullable', 'string', 'min:2', 'max:255'],
+                'search_year' => ['nullable', 'digits:4'],
             ]);
 
             $results = $this->getMovieDetail($attributes['movie_id']);
@@ -136,12 +141,16 @@ class MoviesController extends Controller {
      */
     public function store(Request $request) {
         $attributes = $request->validate([
-            'movie_id' => ['required', 'integer'],
+            // unique: the id is TMDB's and the table's primary key, so re-adding a
+            // movie (or a double submit) otherwise 500s on a duplicate-key error.
+            'movie_id' => ['required', 'integer', Rule::unique('movies', 'id')],
             'purchase_date' => ['nullable', 'date_format:Y-m-d'],
             'media_type' => ['array'],
             // Matches the rule update() already uses: without it, an unknown id
             // reaches attach() and fails on the pivot's foreign key instead.
             'media_type.*' => ['integer', 'exists:media_types,id'],
+        ], [
+            'movie_id.unique' => 'That movie is already in your inventory.',
         ]);
 
         $movie_detail = $this->getMovieDetail($attributes['movie_id']);

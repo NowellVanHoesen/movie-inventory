@@ -50,6 +50,12 @@ class ProcessEpisodeCastMembers implements ShouldBeUnique, ShouldQueue {
         // get Episode DB details
         $episode = Episode::firstWhere('id', $this->episode_id);
 
+        if ($episode === null) {
+            $this->fail("Episode {$this->episode_id} does not exist; cannot attach its cast.");
+
+            return;
+        }
+
         $cast = $this->requireTMDBResponse(
             $this->getEpisodeCast($this->series_id, $this->season_number, $this->episode_number),
             "episode {$this->series_id}/s{$this->season_number}/e{$this->episode_number} cast"

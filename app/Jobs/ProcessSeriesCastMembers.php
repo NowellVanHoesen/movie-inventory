@@ -39,6 +39,12 @@ class ProcessSeriesCastMembers implements ShouldBeUnique, ShouldQueue {
         // get series DB detail
         $series = Series::firstWhere('id', $this->series_id);
 
+        if ($series === null) {
+            $this->fail("Series {$this->series_id} does not exist; cannot attach its cast.");
+
+            return;
+        }
+
         // get and attach Series cast members
         $series_cast = $this->requireTMDBResponse(
             $this->getSeriesCast($this->series_id),

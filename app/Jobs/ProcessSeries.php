@@ -34,12 +34,20 @@ class ProcessSeries implements ShouldBeUnique, ShouldQueue {
     protected string $purchase_date;
 
     /**
+     * Season numbers chosen in Series/Create.vue. Empty means import every season.
+     *
+     * @var list<int>
+     */
+    protected array $season_numbers;
+
+    /**
      * Create a new job instance.
      */
     public function __construct(array $args) {
         $this->series_id = $args['series_id'];
         $this->media_type = $args['media_type'] ?? [];
         $this->purchase_date = $args['purchase_date'];
+        $this->season_numbers = $args['season_numbers'] ?? [];
     }
 
     /**
@@ -56,6 +64,10 @@ class ProcessSeries implements ShouldBeUnique, ShouldQueue {
         $season_batch = [];
 
         foreach ($series_detail->seasons as $season) {
+            if (! empty($this->season_numbers) && ! in_array($season->season_number, $this->season_numbers, true)) {
+                continue;
+            }
+
             $season_batch[] = new ProcessSeason([
                 'series_id' => $this->series_id,
                 'media_type' => $this->media_type,

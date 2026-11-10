@@ -37,6 +37,12 @@ trait MediaTypeHelpers {
 
             while ($current_parent_id !== 0) {
                 $media_type_parent = $media_types_collection->firstWhere('id', $current_parent_id);
+
+                // An orphaned parent_id would otherwise dereference null and 500.
+                if ($media_type_parent === null) {
+                    break;
+                }
+
                 $tmp_media_type_arr = [$media_type_parent->name => $tmp_media_type_arr];
                 $current_parent_id = $media_type_parent->parent_id;
             }

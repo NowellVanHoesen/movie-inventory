@@ -1,12 +1,15 @@
 <?php
 
 use App\Jobs\ProcessSeries;
+use App\Jobs\ProcessSeriesCastMembers;
 use App\Models\Certification;
 use App\Models\Episode;
 use App\Models\Season;
 use App\Models\Series;
 use Database\Seeders\SeriesSeeder;
+use Illuminate\Bus\PendingBatch;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 
@@ -284,3 +287,81 @@ describe('SeriesController', function () {
 
     // Add more edge case tests as needed
 });
+
+it('rejects re-adding a series that is already stored instead of erroring', function () {
+    loginAsUser();
+    $this->seed(SeriesSeeder::class);
+    Queue::fake();
+    Http::preventStrayRequests();
+    Http::fake();
+
+    $existing = Series::where('slug', 'the-flight-attendant')->firstOrFail();
+
+    $this->post(route('series.store'), ['series_id' => $existing->id, 'purchase_date' => '2025-02-04'])
+        ->assertSessionHasErrors(['series_id' => 'That series is already in your inventory.']);
+
+    Http::assertNothingSent();
+    Queue::assertNothingPushed();
+});
+
+it('returns a validation error, not a 500, for a malformed series search', function () {
+    loginAsUser();
+
+    $this->get(route('series.create', ['query' => ['ab', 'cd']]))->assertSessionHasErrors(['query']);
+});
+
+it('passes the selected seasons on to ProcessSeries', function () {
+    loginAsUser();
+    Queue::fake();
+
+    $this->post(route('series.store'), [
+        'series_id' => 60858,
+        'purchase_date' => '2025-02-04',
+        'media_type' => [],
+        'season_numbers' => ['1'],
+    ])->assertRedirect();
+
+    Queue::assertPushed(ProcessSeries::class, function (ProcessSeries $job) {
+        return (fn () => $this->season_numbers)->call($job) === [1];
+    });
+});
+
+it('rejects non-integer season numbers', function () {
+    loginAsUser();
+
+    $this->post(route('series.store'), [
+        'series_id' => 60858,
+        'purchase_date' => '2025-02-04',
+        'season_numbers' => ['one'],
+    ])->assertSessionHasErrors(['season_numbers.0']);
+});
+
+it('only batches the selected seasons, or every season when none are selected', function (array $selected, array $expected) {
+    Bus::fake();
+    Http::preventStrayRequests();
+    Http::fake([
+        'api.themoviedb.org/3/tv/60858*' => Http::response([
+            'id' => 60858,
+            'seasons' => [['season_number' => 0], ['season_number' => 1], ['season_number' => 2]],
+        ]),
+    ]);
+
+    (new ProcessSeries([
+        'series_id' => 60858,
+        'media_type' => [],
+        'purchase_date' => '2025-02-04',
+        'season_numbers' => $selected,
+    ]))->handle();
+
+    Bus::assertChained([
+        ProcessSeriesCastMembers::class,
+        Bus::chainedBatch(function (PendingBatch $batch) use ($expected) {
+            $numbers = $batch->jobs->map(fn ($job) => (fn () => $this->season_number)->call($job))->all();
+
+            return $numbers === $expected;
+        }),
+    ]);
+})->with([
+    'one season selected' => [[1], [1]],
+    'none selected' => [[], [0, 1, 2]],
+]);

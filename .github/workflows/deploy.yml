@@ -21,5 +21,5 @@ jobs:
           passphrase: ${{ secrets.SG_DEPLOY_RSA_PASSWORD}}
           port: ${{ secrets.SG_DEPLOY_PORT}}
           script: |
-            cd ~/www/movies.nvweb.dev
-            .github/workflows/deploy.sh "$RELEASE_TAG"
+            cd ~/www/movies.nvweb.dev/public_html
+            sh .github/workflows/deploy.sh "$RELEASE_TAG"
